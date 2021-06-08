@@ -20,7 +20,8 @@ public class ImageImpl implements Image {
    * @param blue a two-dimensional array of the blue values for every pixel in the image
    *              where each inner array represents a row of pixel values
    * @throws IllegalArgumentException if any of the arguments are null, if each row in
-   *         every color channel is not the same length, or if the color channels are empty.
+   *         every color channel is not the same length, if the color channels are empty,
+   *         or if color values are outside the range of [0, 255].
    */
   public ImageImpl(Integer[][] red, Integer[][] green, Integer[][] blue)
       throws IllegalArgumentException{
@@ -70,7 +71,7 @@ public class ImageImpl implements Image {
 
   /**
    * Checks the validity of a color channel for an image. A valid color channel has the
-   * same number of non-zero values in every row.
+   * same number of non-zero values in the range of [0, 255] in every row.
    *
    * @param channel the color channel to check the validity of
    * @throws IllegalArgumentException if the channel has no color values or if each row of the
@@ -84,6 +85,11 @@ public class ImageImpl implements Image {
     for (Integer[] row : channel) {
       if (row.length != length) {
         throw new IllegalArgumentException("Each row of a color channel must be the same length");
+      }
+      for (Integer value : row) {
+        if (value < 0 || value > 255) {
+          throw new IllegalArgumentException("Color values must be in the range of [0, 255].");
+        }
       }
     }
   }
