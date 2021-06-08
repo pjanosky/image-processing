@@ -1,7 +1,7 @@
 package model;
 
 public interface ImageOperation {
-  Image process(Image image);
+  Image apply(Image image);
 }
 
 
