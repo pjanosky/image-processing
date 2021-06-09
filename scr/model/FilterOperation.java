@@ -6,7 +6,7 @@ package model;
  */
 public class FilterOperation implements ImageOperation {
 
-  private final Integer[][] kernel;
+  private final Double[][] kernel;
 
   /**
    * Constructs a new FilterOperation from the given kernel.
@@ -15,7 +15,7 @@ public class FilterOperation implements ImageOperation {
    * @throws IllegalArgumentException if the kernel is invalid. A valid kernel is a non-empty,
    *                                  odd-dimensioned, square 2d array.
    */
-  public FilterOperation(Integer[][] kernel) throws IllegalArgumentException {
+  public FilterOperation(Double[][] kernel) throws IllegalArgumentException {
     if (kernel == null) {
       throw new IllegalArgumentException("Kernel must not be null.");
     }
@@ -49,15 +49,15 @@ public class FilterOperation implements ImageOperation {
    * @return the new value of the color channel for the filtered image
    */
   private int filteredPixelValue(Image image, ColorChannel channel, int row, int col) {
-    int value = 0;
+    double value = 0;
     for (int r = row - 1; r < row + 1; r += 1) {
       for (int c = col - 1; c < col + 1; c += 1) {
         if (validCoordinates(image, row, col)) {
-          value += kernel[r][c] * image.getValueAt(r, c, channel);
+          value += kernel[r][c] * ((double) image.getValueAt(r, c, channel));
         }
       }
     }
-    return value;
+    return (int) value;
   }
 
   /**
@@ -67,7 +67,7 @@ public class FilterOperation implements ImageOperation {
    * @param kernel the 2-dimensional array to check
    * @throws IllegalArgumentException if the array is invalid.
    */
-  private static void ensureValidKernel(Integer[][] kernel) throws IllegalArgumentException {
+  private static void ensureValidKernel(Double[][] kernel) throws IllegalArgumentException {
     if (kernel.length == 0) {
       throw new IllegalArgumentException("Kernel must be non-empty");
     }
@@ -75,7 +75,7 @@ public class FilterOperation implements ImageOperation {
     if (width % 2 != 0) {
       throw new IllegalArgumentException("Kernel must have an odd dimension.");
     }
-    for (Integer[] row : kernel) {
+    for (Double[] row : kernel) {
       if (row.length != width) {
         throw new IllegalArgumentException("Kernel must be a square matrix.");
       }
