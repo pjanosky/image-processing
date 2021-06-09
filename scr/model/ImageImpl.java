@@ -51,22 +51,47 @@ public class ImageImpl implements Image {
 
   @Override
   public int getRedValueAt(int row, int col) {
+    checkCoordinates(row, col);
     return red[row][col];
   }
 
   @Override
   public int getGreenValueAt(int row, int col) {
+    checkCoordinates(row, col);
     return green[row][col];
   }
 
   @Override
   public int getBlueValueAt(int row, int col) {
+    checkCoordinates(row, col);
     return blue[row][col];
   }
 
   @Override
-  public Color getPixelAt(int row, int col) {
-    return new Color(blue[row][col] + (green[row][col] << 8) + (red[row][col] << 8));
+  public int getValueAt(int row, int col, ColorChannel channel) {
+    switch (channel) {
+      case RED:
+        return getRedValueAt(row, col);
+      case GREEN:
+        return getGreenValueAt(row, col);
+      case BLUE:
+        return getBlueValueAt(row, col);
+      default:
+        throw new IllegalArgumentException("Unsupported color channel");
+    }
+  }
+
+  @Override
+  public Pixel getPixelAt(int row, int col) {
+    return new Pixel(
+        getRedValueAt(row, col),
+        getGreenValueAt(row, col),
+        getBlueValueAt(row, col));
+  }
+
+  @Override
+  public Image fromRGB(Integer[][] red, Integer[][] green, Integer[][] blue) {
+    return new ImageImpl(red, green, blue);
   }
 
   /**
@@ -115,5 +140,18 @@ public class ImageImpl implements Image {
       }
     }
     return true;
+  }
+
+  /**
+   * Checks whether a coordinate is a valid index for a pixel in this image.
+   *
+   * @param row the row of the image from top to bottom
+   * @param col the column of the image from left to right
+   * @throws IllegalArgumentException if the row o
+   */
+  private void checkCoordinates(int row, int col) throws IllegalArgumentException {
+    if (row < 0 || row >= getHeight() || col < 0 || col >= getWidth()) {
+      throw new IllegalArgumentException("Invalid row or column.");
+    }
   }
 }
