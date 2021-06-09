@@ -1,74 +1,82 @@
 package model;
 
 import java.lang.reflect.Array;
+import java.util.List;
 
 /**
  * Represents a 24-bit image consisting of 3 8-bit red, green, and blue, color channels.
  */
 public class Image24Bit implements Image {
 
-  private final Integer[][] red;
-  private final Integer[][] green;
-  private final Integer[][] blue;
+//  private final Integer[][] red;
+//  private final Integer[][] green;
+//  private final Integer[][] blue;
 
+  private final List<List<Pixel>> pixelList;
 
   public static final int MAX_VALUE = 255;
 
-  /**
-   * Constructs a new ImageImp from the red, green, and blue color channels.
-   *
-   * @param red   a two-dimensional array of the red values for every pixel in the image where each
-   *              inner array represents a row of pixel values
-   * @param green a two-dimensional array of the green values for every pixel in the image where
-   *              each inner array represents a row of pixel values
-   * @param blue  a two-dimensional array of the blue values for every pixel in the image where each
-   *              inner array represents a row of pixel values
-   * @throws IllegalArgumentException if any of the arguments are null, if each row in every color
-   *                                  channel is not the same length, if the color channels are
-   *                                  empty, or if color values are outside the range of [0, 255].
-   */
-  public Image24Bit(Integer[][] red, Integer[][] green, Integer[][] blue)
-      throws IllegalArgumentException {
-    ensureValidChannel(red);
-    ensureValidChannel(green);
-    ensureValidChannel(blue);
-    if (!sameDimensions(red, green, blue)) {
-      throw new IllegalArgumentException(
-          "Red, green, and blue channels must be the same size.");
+//  /**
+//   * Constructs a new ImageImp from the red, green, and blue color channels.
+//   *
+//   * @param red   a two-dimensional array of the red values for every pixel in the image where each
+//   *              inner array represents a row of pixel values
+//   * @param green a two-dimensional array of the green values for every pixel in the image where
+//   *              each inner array represents a row of pixel values
+//   * @param blue  a two-dimensional array of the blue values for every pixel in the image where each
+//   *              inner array represents a row of pixel values
+//   * @throws IllegalArgumentException if any of the arguments are null, if each row in every color
+//   *                                  channel is not the same length, if the color channels are
+//   *                                  empty, or if color values are outside the range of [0, 255].
+//   */
+//  public Image24Bit(Integer[][] red, Integer[][] green, Integer[][] blue)
+//      throws IllegalArgumentException {
+//    ensureValidChannel(red);
+//    ensureValidChannel(green);
+//    ensureValidChannel(blue);
+//    if (!sameDimensions(red, green, blue)) {
+//      throw new IllegalArgumentException(
+//          "Red, green, and blue channels must be the same size.");
+//    }
+//
+//    this.red = red;
+//    this.green = green;
+//    this.blue = blue;
+//  }
+
+  public Image24Bit(List<List<Pixel>> pixelList) throws IllegalArgumentException {
+    if (pixelList == null) {
+      throw new IllegalArgumentException("The pixels cannot be null!");
     }
-
-    this.red = red;
-    this.green = green;
-    this.blue = blue;
+    this.pixelList = pixelList;
   }
-
 
   @Override
   public int getWidth() {
-    return Array.getLength(red[0]);
+    return pixelList.get(0).size();
   }
 
   @Override
   public int getHeight() {
-    return Array.getLength(red);
+    return pixelList.size();
   }
 
   @Override
   public int getRedValueAt(int row, int col) {
     checkCoordinates(row, col);
-    return red[row][col];
+    return pixelList.get(row).get(col).getRedValue();
   }
 
   @Override
   public int getGreenValueAt(int row, int col) {
     checkCoordinates(row, col);
-    return green[row][col];
+    return pixelList.get(row).get(col).getGreenValue();
   }
 
   @Override
   public int getBlueValueAt(int row, int col) {
     checkCoordinates(row, col);
-    return blue[row][col];
+    return pixelList.get(row).get(col).getBlueValue();
   }
 
   @Override
@@ -86,17 +94,14 @@ public class Image24Bit implements Image {
   }
 
   @Override
-  public Pixel24Bit getPixelAt(int row, int col) {
-    return new Pixel24Bit(
-        getRedValueAt(row, col),
-        getGreenValueAt(row, col),
-        getBlueValueAt(row, col));
+  public Pixel getPixelAt(int row, int col) {
+    return pixelList.get(row).get(col);
   }
 
-  @Override
-  public Image fromRGB(Integer[][] red, Integer[][] green, Integer[][] blue) {
-    return new Image24Bit(red, green, blue);
-  }
+//  @Override
+//  public Image fromRGB(Integer[][] red, Integer[][] green, Integer[][] blue) {
+//    return new Image24Bit(red, green, blue);
+//  }
 
   /**
    * Checks the validity of a color channel for an image. A valid color channel has the same number
@@ -155,7 +160,7 @@ public class Image24Bit implements Image {
    * @throws IllegalArgumentException if the row o
    */
   private void checkCoordinates(int row, int col) throws IllegalArgumentException {
-    if (row < 0 || row >= getHeight() || col < 0 || col >= getWidth()) {
+    if (row < 0 || row >= getHeight() || col < 0 || col >= getWidth() ) {
       throw new IllegalArgumentException("Invalid row or column.");
     }
   }
