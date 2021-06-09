@@ -1,7 +1,5 @@
 package model;
 
-import java.awt.Color;
-
 /**
  * Represents a picture as a collection of pixels.
  */
@@ -71,7 +69,7 @@ public interface Image {
    * @throws IllegalArgumentException if the row or column is an invalid index
    *         for a pixel in the image
    */
-  Pixel getPixelAt(int row, int col) throws IllegalArgumentException;
+  Pixel24Bit getPixelAt(int row, int col) throws IllegalArgumentException;
 
   /**
    * Constructs a {@link Image} in a manner selected be each concrete subclass of this class.

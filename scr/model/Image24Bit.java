@@ -1,30 +1,34 @@
 package model;
 
-import java.awt.Color;
 import java.lang.reflect.Array;
 
 /**
  * Represents a 24-bit image consisting of 3 8-bit red, green, and blue, color channels.
  */
-public class ImageImpl implements Image {
+public class Image24Bit implements Image {
+
   private final Integer[][] red;
   private final Integer[][] green;
   private final Integer[][] blue;
 
+
+  public static final int MAX_VALUE = 255;
+
   /**
    * Constructs a new ImageImp from the red, green, and blue color channels.
-   * @param red a two-dimensional array of the red values for every pixel in the image
-   *              where each inner array represents a row of pixel values
-   * @param green a two-dimensional array of the green values for every pixel in the image
-   *              where each inner array represents a row of pixel values
-   * @param blue a two-dimensional array of the blue values for every pixel in the image
-   *              where each inner array represents a row of pixel values
-   * @throws IllegalArgumentException if any of the arguments are null, if each row in
-   *         every color channel is not the same length, if the color channels are empty,
-   *         or if color values are outside the range of [0, 255].
+   *
+   * @param red   a two-dimensional array of the red values for every pixel in the image where each
+   *              inner array represents a row of pixel values
+   * @param green a two-dimensional array of the green values for every pixel in the image where
+   *              each inner array represents a row of pixel values
+   * @param blue  a two-dimensional array of the blue values for every pixel in the image where each
+   *              inner array represents a row of pixel values
+   * @throws IllegalArgumentException if any of the arguments are null, if each row in every color
+   *                                  channel is not the same length, if the color channels are
+   *                                  empty, or if color values are outside the range of [0, 255].
    */
-  public ImageImpl(Integer[][] red, Integer[][] green, Integer[][] blue)
-      throws IllegalArgumentException{
+  public Image24Bit(Integer[][] red, Integer[][] green, Integer[][] blue)
+      throws IllegalArgumentException {
     ensureValidChannel(red);
     ensureValidChannel(green);
     ensureValidChannel(blue);
@@ -32,7 +36,7 @@ public class ImageImpl implements Image {
       throw new IllegalArgumentException(
           "Red, green, and blue channels must be the same size.");
     }
-    
+
     this.red = red;
     this.green = green;
     this.blue = blue;
@@ -82,8 +86,8 @@ public class ImageImpl implements Image {
   }
 
   @Override
-  public Pixel getPixelAt(int row, int col) {
-    return new Pixel(
+  public Pixel24Bit getPixelAt(int row, int col) {
+    return new Pixel24Bit(
         getRedValueAt(row, col),
         getGreenValueAt(row, col),
         getBlueValueAt(row, col));
@@ -91,16 +95,16 @@ public class ImageImpl implements Image {
 
   @Override
   public Image fromRGB(Integer[][] red, Integer[][] green, Integer[][] blue) {
-    return new ImageImpl(red, green, blue);
+    return new Image24Bit(red, green, blue);
   }
 
   /**
-   * Checks the validity of a color channel for an image. A valid color channel has the
-   * same number of non-zero values in the range of [0, 255] in every row.
+   * Checks the validity of a color channel for an image. A valid color channel has the same number
+   * of non-zero values in the range of [0, 255] in every row.
    *
    * @param channel the color channel to check the validity of
    * @throws IllegalArgumentException if the channel has no color values or if each row of the
-   *         channel is not the same length.
+   *                                  channel is not the same length.
    */
   private static void ensureValidChannel(Integer[][] channel) throws IllegalArgumentException {
     if (channel.length == 0 || channel[0].length == 0) {
@@ -112,7 +116,7 @@ public class ImageImpl implements Image {
         throw new IllegalArgumentException("Each row of a color channel must be the same length");
       }
       for (Integer value : row) {
-        if (value < 0 || value > 255) {
+        if (value < 0 || value > MAX_VALUE) {
           throw new IllegalArgumentException("Color values must be in the range of [0, 255].");
         }
       }
@@ -121,8 +125,9 @@ public class ImageImpl implements Image {
 
   /**
    * Determines whether a number of color channels have the same width and height.
-   * @param channels the positive number of channels to check the dimensions of.
-   *                 Channels must not have any empty rows or columns.
+   *
+   * @param channels the positive number of channels to check the dimensions of. Channels must not
+   *                 have any empty rows or columns.
    * @return whether the color channels have the same width an height
    */
   private static boolean sameDimensions(Integer[][]... channels) {

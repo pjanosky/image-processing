@@ -3,7 +3,7 @@ package model;
 /**
  * Represents the color of one pixel in an image with RGB values
  */
-public class Pixel {
+public class Pixel24Bit {
 
   private final int red;
   private final int green;
@@ -18,7 +18,7 @@ public class Pixel {
    * @param green the green value of the pixel
    * @param blue the blue value of the pixel
    */
-  public Pixel(int red, int green, int blue) {
+  public Pixel24Bit(int red, int green, int blue) {
     if (!validValue(red) || !validValue(green) || !validValue(blue)) {
       throw new IllegalArgumentException("Color values must be in the range [0, 255]");
     }
@@ -40,7 +40,12 @@ public class Pixel {
     return this.blue;
   }
 
+  /**
+   * Determines whether a color value for this pixel is in the rang [0, 255].
+   * @param value the color value to check
+   * @return whether the value is valid
+   */
   private static boolean validValue(int value) {
-    return value > 0 && value < MAX_VALUE;
+    return value >= 0 && value <= MAX_VALUE;
   }
 }

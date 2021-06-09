@@ -45,7 +45,7 @@ public class FilterOperation implements ImageOperation {
    * kernel for this filer.
    *
    * @param image   the image to calculate the
-   * @param channel
+   * @param channel the color channel to apply the filter to
    * @return the new value of the color channel for the filtered image
    */
   private int filteredPixelValue(Image image, ColorChannel channel, int row, int col) {
