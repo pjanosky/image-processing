@@ -62,6 +62,7 @@ public class Image24Bit implements Image {
 
   @Override
   public int getValueAt(int row, int col, ColorChannel channel) {
+    checkCoordinates(row, col);
     switch (channel) {
       case RED:
         return getRedValueAt(row, col);
@@ -76,6 +77,7 @@ public class Image24Bit implements Image {
 
   @Override
   public Pixel getPixelAt(int row, int col) {
+    checkCoordinates(row, col);
     return pixels[row][col];
   }
 
