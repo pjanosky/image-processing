@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Objects;
+
 /**
  * Represents the color of one pixel in an image composed of 3 8-bit color channels.
  */
@@ -40,7 +42,10 @@ public class Pixel {
   }
 
   public double[] getRgbVector() {
-    return new double[]{(double) red, (double) green, (double) blue};
+    return new double[]{
+        (double) getRedValue(),
+        (double) getGreenValue(),
+        (double) getBlueValue()};
   }
 
   /**
@@ -59,6 +64,31 @@ public class Pixel {
     } else {
       return value;
     }
+  }
+
+  @Override
+  public String toString() {
+    return String.format("%d %d %d", getRedValue(), getGreenValue(), getBlueValue());
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (o == this) {
+      return true;
+    }
+    if (!(o instanceof Pixel)) {
+      return false;
+    }
+    Pixel other = (Pixel) o;
+
+    return this.getRedValue() == other.getRedValue()
+        && this.getGreenValue() == other.getGreenValue()
+        && this.getBlueValue() == other.getBlueValue();
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(getRedValue(), getGreenValue(), getBlueValue());
   }
 }
 
