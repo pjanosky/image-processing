@@ -22,14 +22,6 @@ public interface Image {
   int getHeight();
 
   /**
-   * Gets the 2D array of pixels of the image.
-   *
-   * @return the matrix of pixels
-   */
-
-  List<List<Pixel>> getPixelList();
-
-  /**
    * Gets the red channel value of a pixel at a certain location in the image.
    *
    * @param row the row of the pixel measured from the top to bottom of the image
@@ -87,13 +79,11 @@ public interface Image {
    */
   Pixel getPixelAt(int row, int col) throws IllegalArgumentException;
 
-//  /**
-//   * Constructs a {@link Image} in a manner selected be each concrete subclass of this class.
-//   *
-//   * @param red   the red channel of the image
-//   * @param green the green channel of the image
-//   * @param blue  the blue channel of the image
-//   * @return the new {@code Image}
-//   */
-//  Image fromRGB(Integer[][] red, Integer[][] green, Integer[][] blue);
+  /**
+   * Constructs a {@link Image} in a manner selected be each concrete subclass of this class.
+   *
+   * @param pixels the pixels of the image
+   * @return the new {@code Image}
+   */
+  Image fromPixels(Pixel[][] pixels);
 }
