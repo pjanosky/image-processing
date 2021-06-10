@@ -3,11 +3,9 @@ package model;
 /**
  *
  */
-public interface ImageProcessingModel {
+public interface ImageProcessingModel extends ImageProcessingModelState {
 
   void setCurrentImage(Image image);
-
-  Image getCurrentImage();
 
   void applyOperation(ImageOperation operation);
 
