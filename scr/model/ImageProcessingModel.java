@@ -8,7 +8,7 @@ public interface ImageProcessingModel {
 
   void applyOperation(ImageOperation operation);
 
-  void exportCurrentImage(String filePath);
+  void exportCurrentImage(ImageImportExporter importExporter, String filePath);
 
-  void importImage(String filePath);
+  void importImage(ImageImportExporter importExporter, String filePath);
 }
