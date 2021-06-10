@@ -1,6 +1,8 @@
 package model;
 
 public interface ImageImportExporter {
-  Image import();
-  
+  Image importImage(String filePath);
+
+  void exportImage(String filePath, Image image);
+
 }
