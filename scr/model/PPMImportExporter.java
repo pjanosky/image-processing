@@ -6,6 +6,10 @@ import java.io.OutputStream;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+/**
+ * Represents an image importer and exporter for PPM formatted files. This object will be called
+ * when the scanned file is in PPM format.
+ */
 public class PPMImportExporter implements ImageImportExporter {
 
   @Override

@@ -1,5 +1,8 @@
 package model;
 
+/**
+ *
+ */
 public interface ImageProcessingModel {
 
   void setCurrentImage(Image image);
