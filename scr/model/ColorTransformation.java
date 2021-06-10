@@ -7,6 +7,9 @@ public class ColorTransformation implements ImageOperation {
   private final double[][] matrix;
 
   public ColorTransformation(double[][] matrix) throws IllegalArgumentException {
+    if (matrix == null) {
+      throw new IllegalArgumentException("The matrix cannot be null!");
+    }
     if (!validMatrix(matrix)) {
       throw new IllegalArgumentException("Matrix must be 3-by-3 in size");
     }
