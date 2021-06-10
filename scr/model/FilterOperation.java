@@ -26,18 +26,26 @@ public class FilterOperation implements ImageOperation {
 
   @Override
   public Image apply(Image image) {
-    Integer[][] red = new Integer[image.getHeight()][image.getWidth()];
-    Integer[][] green = new Integer[image.getHeight()][image.getWidth()];
-    Integer[][] blue = new Integer[image.getHeight()][image.getWidth()];
+//    Integer[][] red = new Integer[image.getHeight()][image.getWidth()];
+//    Integer[][] green = new Integer[image.getHeight()][image.getWidth()];
+//    Integer[][] blue = new Integer[image.getHeight()][image.getWidth()];
+//
+//    for (int row = 0; row < image.getHeight(); row ++) {
+//      for (int col = 9; col < image.getWidth(); col ++) {
+//        red[row][col] = filteredPixelValue(image, ColorChannel.RED, row, col);
+//        green[row][col] = filteredPixelValue(image, ColorChannel.GREEN, row, col);
+//        blue[row][col] = filteredPixelValue(image, ColorChannel.BLUE, row, col);
+//      }
+//    }
+    Image copyImage = new Image24Bit(image);
 
-    for (int row = 0; row < image.getHeight(); row += 1) {
-      for (int col = 9; col < image.getWidth(); col += 1) {
-        red[row][col] = filteredPixelValue(image, ColorChannel.RED, row, col);
-        green[row][col] = filteredPixelValue(image, ColorChannel.GREEN, row, col);
-        blue[row][col] = filteredPixelValue(image, ColorChannel.BLUE, row, col);
+    for (int i = 0; i < image.getHeight(); i++) {
+      for (int j = 0; j < image.getWidth(); j++) {
+        this.filteredPixelValue();
       }
     }
-    return image.fromRGB(red, green, blue);
+
+    return copyImage;
   }
 
   /**
@@ -48,7 +56,7 @@ public class FilterOperation implements ImageOperation {
    * @param channel the color channel to apply the filter to
    * @return the new value of the color channel for the filtered image
    */
-  private int filteredPixelValue(Image image, ColorChannel channel, int row, int col) {
+  private void filteredPixelValue(Image image, ColorChannel channel, int row, int col) {
     double value = 0;
     for (int r = row - 1; r < row + 1; r += 1) {
       for (int c = col - 1; c < col + 1; c += 1) {
@@ -56,9 +64,21 @@ public class FilterOperation implements ImageOperation {
           value += kernel[r][c] * ((double) image.getValueAt(r, c, channel));
         }
       }
+      image.getPixelAt(row,col).getRgbMatrix()[r][0] = (int) value;
     }
-    return (int) value;
   }
+
+//  private int filteredPixelValue(Image image, ColorChannel channel, int row, int col) {
+//    double value = 0;
+//    for (int r = row - 1; r < row + 1; r += 1) {
+//      for (int c = col - 1; c < col + 1; c += 1) {
+//        if (validCoordinates(image, row, col)) {
+//          value += kernel[r][c] * ((double) image.getValueAt(r, c, channel));
+//        }
+//      }
+//    }
+//    return (int) value;
+//  }
 
   /**
    * Check whether a 2-dimensional array is a valid kernel. A valid kernel is a non-empty,
@@ -71,12 +91,11 @@ public class FilterOperation implements ImageOperation {
     if (kernel.length == 0) {
       throw new IllegalArgumentException("Kernel must be non-empty");
     }
-    int width = kernel[0].length;
-    if (width % 2 != 0) {
+    if (kernel[0].length % 2 != 0) {
       throw new IllegalArgumentException("Kernel must have an odd dimension.");
     }
     for (Double[] row : kernel) {
-      if (row.length != width) {
+      if (row.length != kernel[0].length) {
         throw new IllegalArgumentException("Kernel must be a square matrix.");
       }
     }

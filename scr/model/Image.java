@@ -1,5 +1,7 @@
 package model;
 
+import java.util.List;
+
 /**
  * Represents a picture as a collection of pixels.
  */
@@ -18,6 +20,14 @@ public interface Image {
    * @return the height of the image in pixels
    */
   int getHeight();
+
+  /**
+   * Gets the 2D array of pixels of the image.
+   *
+   * @return the matrix of pixels
+   */
+
+  List<List<Pixel>> getPixelList();
 
   /**
    * Gets the red channel value of a pixel at a certain location in the image.

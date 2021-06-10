@@ -51,6 +51,13 @@ public class Image24Bit implements Image {
     this.pixelList = pixelList;
   }
 
+  public Image24Bit(Image image) throws IllegalArgumentException {
+    if (image == null) {
+      throw new IllegalArgumentException("The image cannot be null!");
+    }
+    this.pixelList = image.getPixelList();
+  }
+
   @Override
   public int getWidth() {
     return pixelList.get(0).size();
@@ -59,6 +66,11 @@ public class Image24Bit implements Image {
   @Override
   public int getHeight() {
     return pixelList.size();
+  }
+
+  @Override
+  public List<List<Pixel>> getPixelList() {
+    return this.pixelList;
   }
 
   @Override
