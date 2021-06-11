@@ -1,9 +1,6 @@
-import java.io.FileOutputStream;
-import java.io.IOException;
 import model.Image;
 import model.Image24Bit;
 import model.Pixel;
-import model.PpmImportExporter;
 import model.RgbPixel;
 
 /**
@@ -13,12 +10,13 @@ public class ImageExamples {
 
   /**
    * Generates a checkerboard image.
-   * @param numRows the number of row in the checkerboard
-   * @param numCols the number of cols in the checkerboard
-   * @param recWidth the width of each rectangle in pixels
+   *
+   * @param numRows   the number of row in the checkerboard
+   * @param numCols   the number of cols in the checkerboard
+   * @param recWidth  the width of each rectangle in pixels
    * @param recHeight the height of each rectangle in pixels
-   * @param color1 a Pixel representing the color of half of the rectangles
-   * @param color2 a Pixel representing the color of the other half of the rectangles
+   * @param color1    a Pixel representing the color of half of the rectangles
+   * @param color2    a Pixel representing the color of the other half of the rectangles
    * @return the checkerboard image
    */
   public static Image checkerboard(int numRows, int numCols, int recWidth, int recHeight,
@@ -40,7 +38,8 @@ public class ImageExamples {
 
   /**
    * Generates a rainbow image
-   * @param width the width of the image in pixels
+   *
+   * @param width        the width of the image in pixels
    * @param stripeHeight the height of each color stripe in the rainbow
    * @return the rainbow image
    */
@@ -61,19 +60,5 @@ public class ImageExamples {
       }
     }
     return new Image24Bit(pixels);
-  }
-
-  // Example for how to create checkerboard images (DELETE LATER)
-  public static void main(String[] args) {
-//    Image image = checkerboard(5, 4, 5, 5,
-//        new Pixel(0, 0, 0),
-//        new Pixel(255, 255, 255));
-    Image image = rainbow(10, 2);
-
-    try {
-      new PpmImportExporter().saveImage(new FileOutputStream("image.ppm"), image);
-    } catch (IOException e) {
-      System.out.println("Error saving image");
-    }
   }
 }

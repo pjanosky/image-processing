@@ -19,16 +19,20 @@ import org.junit.Test;
  */
 public class PpmImportExporterTest {
 
-  ImageImportExporter ie;
+  private final ImageImportExporter ie;
 
+  /**
+   * Creates a new PpmImportExporterTest object initializing all example data used for testing.
+   */
   public PpmImportExporterTest() {
     this.ie = new PpmImportExporter();
   }
 
+  // Tests parsing a checkerboard image from an image data input stream.
   @Test
   public void testParseCheckerBoardImage() {
     Image expectedImage = ImageExamples.checkerboard(2, 4,
-        1,1,
+        1, 1,
         new RgbPixel(0, 0, 0),
         new RgbPixel(255, 0, 0));
 
@@ -131,8 +135,8 @@ public class PpmImportExporterTest {
   }
 
   /**
-   * A InputStream implementation that throws an exception whenever data is read.
-   * Intended to be used for testing how error handling.
+   * A InputStream implementation that throws an exception whenever data is read. Intended to be
+   * used for testing how error handling.
    */
   private static class FailInputStream extends InputStream {
 
@@ -143,8 +147,8 @@ public class PpmImportExporterTest {
   }
 
   /**
-   * An OutputStream implementation the throws an exception whenever data is written.
-   * Intended to be used for testing error handling.
+   * An OutputStream implementation the throws an exception whenever data is written. Intended to be
+   * used for testing error handling.
    */
   private static class FailOutputStream extends OutputStream {
 
