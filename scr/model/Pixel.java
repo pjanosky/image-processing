@@ -11,8 +11,6 @@ public class Pixel {
   private final int green;
   private final int blue;
 
-  public static final int MAX_VALUE = 255;
-
   /**
    * Constructs a new Pixel from red, green, and blue color values. Any color value outside the
    * allowed range of [0, MAX_VALUE] are clamped. Clamping sets values higher than MAX_VALUE
@@ -23,9 +21,9 @@ public class Pixel {
    * @param blue  the blue value for the pixel
    */
   public Pixel(int red, int green, int blue) {
-    this.red = clamp(red);
-    this.green = clamp(green);
-    this.blue = clamp(blue);
+    this.red = red;
+    this.green = green;
+    this.blue = blue;
   }
 
   public int getRedValue() {
@@ -47,15 +45,19 @@ public class Pixel {
         (double) getBlueValue()};
   }
 
-  /**
-   * Camps the given value to the range [0, MAX_VALUE] allowed for color values in this
-   * pixel. Values higher than MAX_VALUE are set to MAX_VALUE, values less than 0 are set to 0.
-   *
-   * @param value the value to check
-   * @return whether the value is valid
-   */
-  private static int clamp(int value) {
-    return Math.min(MAX_VALUE, Math.max(0, value));
+  public Pixel clamp(int min, int max) {
+    int red = Math.max(min, Math.min(max, getRedValue()));
+    int green = Math.max(min, Math.min(max, getRedValue()));
+    int blue = Math.max(min, Math.min(max, getRedValue()));
+    return new Pixel(red, green, blue);
+  }
+
+  public int maxValue() {
+    return Math.max(getRedValue(), Math.max(getGreenValue(), getBlueValue()));
+  }
+
+  public int minValue() {
+    return Math.min(getRedValue(), Math.min(getGreenValue(), getBlueValue()));
   }
 
   @Override

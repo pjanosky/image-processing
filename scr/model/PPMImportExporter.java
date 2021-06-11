@@ -45,9 +45,6 @@ public class PPMImportExporter implements ImageImportExporter {
     } catch (NoSuchElementException e) {
       throw new IOException("Failed to parse image data.");
     }
-    if (maxValue != 255) {
-      throw new IOException("Unsupported bit number");
-    }
 
     // Parse pixel data
     Pixel[][] pixels = new Pixel[height][width];
@@ -62,11 +59,16 @@ public class PPMImportExporter implements ImageImportExporter {
     }
 
     // Create image
-    return new Image24Bit(pixels);
+    switch (maxValue) {
+      case 255:
+        return new Image24Bit(pixels, false);
+      default:
+        throw new IOException("Invalid bit number.");
+    }
   }
 
   @Override
-  public void exportImage(OutputStream output, Image image) throws IOException {
+  public void saveImage(OutputStream output, Image image) throws IOException {
     StringBuilder content = new StringBuilder();
 
     content.append("P3").append(System.lineSeparator());

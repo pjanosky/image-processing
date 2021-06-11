@@ -25,6 +25,6 @@ public interface ImageImportExporter {
    * @param image
    * @throws IOException
    */
-  void exportImage(OutputStream output, Image image) throws IOException;
+  void saveImage(OutputStream output, Image image) throws IOException;
 
 }

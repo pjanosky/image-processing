@@ -48,7 +48,7 @@ public class FilterOperation implements ImageOperation {
       }
     }
 
-    return image.fromPixels(pixels);
+    return image.fromPixels(pixels, true);
   }
 
   /**

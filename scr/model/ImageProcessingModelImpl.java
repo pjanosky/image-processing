@@ -35,7 +35,7 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
       file.createNewFile();
 
       OutputStream output = new FileOutputStream(file);
-      importExporter.exportImage(output, getCurrentImage());
+      importExporter.saveImage(output, getCurrentImage());
     } catch(IOException e) {
       throw new IllegalArgumentException("Could not create a new file.");
     }

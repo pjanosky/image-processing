@@ -85,5 +85,5 @@ public interface Image {
    * @param pixels the pixels of the image
    * @return the new {@code Image}
    */
-  Image fromPixels(Pixel[][] pixels);
+  Image fromPixels(Pixel[][] pixels, boolean clamp);
 }
