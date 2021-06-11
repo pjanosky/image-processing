@@ -1,5 +1,8 @@
 package model;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 public abstract class AbstractImage implements Image {
   private final Pixel[][] pixels;
 
@@ -154,4 +157,33 @@ public abstract class AbstractImage implements Image {
    * @return the maximum allowed color value
    */
   protected abstract int maxValue();
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof AbstractImage)) {
+      return false;
+    }
+    AbstractImage other = (AbstractImage) o;
+
+    if (this.getHeight() != other.getHeight() || this.getWidth() != other.getWidth()) {
+      return false;
+    }
+
+    for (int row = 0; row < getHeight(); row += 1) {
+      for (int col = 0; col < getWidth(); col += 1) {
+        if (!this.getPixelAt(row, col).equals(other.getPixelAt(row, col))) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    return Arrays.deepHashCode(pixels);
+  }
 }

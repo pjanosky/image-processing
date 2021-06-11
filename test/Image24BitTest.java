@@ -1,5 +1,7 @@
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
+import java.util.Arrays;
 import model.ColorChannel;
 import model.Image;
 import model.Image24Bit;
@@ -143,5 +145,65 @@ public class Image24BitTest {
 
   }
 
+  @Test
+  public void testEqualsSameImage() {
+    Image image = new Image24Bit(new Pixel[][] {
+        {new Pixel(28, 199, 201), new Pixel(91, 49, 120)},
+        {new Pixel(122, 255, 213), new Pixel(12, 1, 233)}});
+
+    assertEquals(image, image);
+  }
+
+  @Test
+  public void testEqualsEqualImages() {
+    Image image1 = new Image24Bit(new Pixel[][] {
+        {new Pixel(28, 199, 201), new Pixel(91, 49, 120)},
+        {new Pixel(122, 255, 213), new Pixel(12, 1, 233)}});
+    Image image2 = new Image24Bit(new Pixel[][] {
+        {new Pixel(28, 199, 201), new Pixel(91, 49, 120)},
+        {new Pixel(122, 255, 213), new Pixel(12, 1, 233)}});
+
+    assertEquals(image1, image2);
+    assertEquals(image2, image1);
+  }
+
+  @Test public void testEqualsDifferentImages() {
+    Image image1 = new Image24Bit(new Pixel[][] {
+        {new Pixel(28, 199, 201), new Pixel(91, 49, 120)},
+        {new Pixel(122, 255, 0), new Pixel(12, 1, 233)}});
+    Image image2 = new Image24Bit(new Pixel[][] {
+        {new Pixel(28, 199, 201), new Pixel(91, 49, 120)},
+        {new Pixel(122, 255, 213), new Pixel(12, 1, 233)}});
+
+    assertNotEquals(image1, image2);
+    assertNotEquals(image2, image1);
+  }
+
+  @Test public void testEqualsDifferentSizedImages() {
+    Image image1 = new Image24Bit(new Pixel[][] {
+        {new Pixel(28, 199, 201), new Pixel(91, 49, 120)},
+        {new Pixel(122, 255, 0), new Pixel(12, 1, 233)}});
+    Image image2 = new Image24Bit(new Pixel[][] {
+        {new Pixel(28, 199, 201)},
+        {new Pixel(122, 255, 213)}});
+
+    assertNotEquals(image1, image2);
+    assertNotEquals(image2, image1);
+  }
+
+  @Test
+  public void testHashCode() {
+    Pixel[][] pixels1 = {
+        {new Pixel(28, 199, 201), new Pixel(91, 49, 120)},
+        {new Pixel(122, 255, 0), new Pixel(12, 1, 233)}};
+    Pixel[][] pixels2 = {
+        {new Pixel(28, 199, 201)},
+        {new Pixel(122, 255, 213)}};
+    Image image1 = new Image24Bit(pixels1);
+    Image image2 = new Image24Bit(pixels2);
+
+    assertEquals(Arrays.deepHashCode(pixels1), image1.hashCode());
+    assertEquals(Arrays.deepHashCode(pixels2), image2.hashCode());
+  }
 }
 

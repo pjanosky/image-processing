@@ -13,7 +13,7 @@ public class Image24Bit extends AbstractImage {
   }
 
 
-  protected Image24Bit(Pixel[][] pixels) throws IllegalArgumentException {
+  public Image24Bit(Pixel[][] pixels) throws IllegalArgumentException {
     this(pixels, false);
   }
 
