@@ -22,6 +22,10 @@ public class ColorTransformation implements ImageOperation {
 
   @Override
   public Image apply(Image image) {
+    if (image == null) {
+      throw new IllegalArgumentException("Image must not be null.");
+    }
+
     Pixel[][] pixels = new Pixel[image.getHeight()][image.getWidth()];
 
     for (int row = 0; row < image.getHeight(); row += 1) {
