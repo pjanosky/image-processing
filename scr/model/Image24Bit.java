@@ -2,6 +2,7 @@ package model;
 
 /**
  * Represents a 24-bit image consisting of 3 8-bit red, green, and blue, color channels.
+ * Image24Bits are immutable.
  */
 public class Image24Bit extends AbstractImage {
 

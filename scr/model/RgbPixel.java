@@ -4,6 +4,7 @@ import java.util.Objects;
 
 /**
  * Represents the color of one pixel in an image composed of 3 8-bit color channels.
+ * RgbPixels are immutable.
  */
 public class RgbPixel implements Pixel {
 

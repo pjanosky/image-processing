@@ -91,11 +91,13 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
 
   @Override
   public Image getCurrentImage() {
+    // Images are immutable so it's ok to just return the field.
     return currentImage;
   }
 
   @Override
   public Image getOriginalImage() {
+    // Images are immutable so it's ok to just return the field.
     return originalImage;
   }
 }

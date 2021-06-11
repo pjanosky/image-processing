@@ -2,6 +2,8 @@ package model;
 
 /**
  * Represents a picture as a collection of pixels.
+ *
+ * <p>Different Images should be immutable from a client's perspective.
  */
 public interface Image {
 
