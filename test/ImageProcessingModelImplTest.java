@@ -192,6 +192,8 @@ public class ImageProcessingModelImplTest {
         exampleModel.getCurrentImage().getPixelAt(5, 0));
   }
 
+  //tests if an illegal argument exception is thrown when a filepath for a directory has been
+  // passed
   @Test(expected = IllegalArgumentException.class)
   public void testExportCurrentImageWithADirectoryAsFilePath() {
     ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
@@ -199,6 +201,7 @@ public class ImageProcessingModelImplTest {
     exampleModel.importImage(new PpmImportExporter(), "/res");
   }
 
+  //tests if an exception is thrown when a null value is passed in the place of import-exporter
   @Test(expected = IllegalArgumentException.class)
   public void testExportCurrentImageWithNullValueAsImportExporter() {
     ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
@@ -206,6 +209,7 @@ public class ImageProcessingModelImplTest {
     exampleModel.importImage(null, "image.ppm");
   }
 
+  //tests if an exception is thrown when a null value is passed in the place of file path
   @Test(expected = IllegalArgumentException.class)
   public void testExportCurrentImageWithNullValueAsFilePath() {
     ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
@@ -213,6 +217,7 @@ public class ImageProcessingModelImplTest {
     exampleModel.importImage(new PpmImportExporter(), null);
   }
 
+  //tests if the model properly exports the current image as an ppm file
   @Test
   public void testExportCurrentImage() {
     ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
@@ -222,6 +227,7 @@ public class ImageProcessingModelImplTest {
     exampleModel.exportCurrentImage(new PpmImportExporter(), "image.ppm");
   }
 
+  //tests if an exception is thrown when a null value is passed in the place of import-exporter
   @Test(expected = IllegalArgumentException.class)
   public void testImportImageWithANullImportExporter() {
     ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
@@ -229,6 +235,7 @@ public class ImageProcessingModelImplTest {
     exampleModel.importImage(null, "image.ppm");
   }
 
+  //tests if an exception is thrown when a null value is passed in the place of file path
   @Test(expected = IllegalArgumentException.class)
   public void testImportImageWithANullFilePath() {
     ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
@@ -236,6 +243,7 @@ public class ImageProcessingModelImplTest {
     exampleModel.importImage(new PpmImportExporter(), null);
   }
 
+  //tests if an exception is thrown when given a file path to a file that doesn't exist
   @Test(expected = IllegalArgumentException.class)
   public void testImportImageWithANonexistentFilePath() {
     ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
@@ -243,6 +251,7 @@ public class ImageProcessingModelImplTest {
     exampleModel.importImage(new PpmImportExporter(), "image1.ppm");
   }
 
+  //tests importing an image
   @Test
   public void testImportImage() {
     ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
@@ -252,6 +261,7 @@ public class ImageProcessingModelImplTest {
     assertEquals(exampleImage, exampleModel.getCurrentImage());
   }
 
+  //tests getting the current image of the model
   @Test
   public void testGetCurrentImage() {
     ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
@@ -261,6 +271,7 @@ public class ImageProcessingModelImplTest {
     assertEquals(exampleImage, exampleModel.getCurrentImage());
   }
 
+  //tests getting the original image
   @Test
   public void testGetOriginalImage() {
     ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
@@ -273,6 +284,7 @@ public class ImageProcessingModelImplTest {
     assertEquals(exampleImage, exampleModel.getOriginalImage());
   }
 
+  //tests reverting back to the original image
   @Test
   public void testRevert() {
     ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
