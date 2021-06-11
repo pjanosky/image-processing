@@ -1,6 +1,4 @@
-import java.util.Locale;
 import model.ImageImportExporter;
-import model.ImageOperation;
 import model.ImageOperationCreator;
 import model.ImageOperationCreator.IMGOperationType;
 import model.ImageProcessingModel;
