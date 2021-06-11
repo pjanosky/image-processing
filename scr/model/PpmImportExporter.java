@@ -10,7 +10,7 @@ import java.util.Scanner;
  * Represents an image importer and exporter for PPM formatted files. This object will be called
  * when the scanned file is in PPM format.
  */
-public class PPMImportExporter implements ImageImportExporter {
+public class PpmImportExporter implements ImageImportExporter {
 
   @Override
   public Image parseImage(InputStream input) throws IOException {
@@ -29,7 +29,12 @@ public class PPMImportExporter implements ImageImportExporter {
     scanner = new Scanner(builder.toString());
 
     // Parse file type
-    String token = scanner.next();
+    String token;
+    try {
+       token = scanner.next();
+    } catch (NoSuchElementException e) {
+      throw new IOException("Failed to read ppm image token.");
+    }
     if (!token.equals("P3")) {
       throw new IOException("Invalid PPM file: plain RAW file should begin with P3");
     }

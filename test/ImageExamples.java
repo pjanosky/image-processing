@@ -2,7 +2,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import model.Image;
 import model.Image24Bit;
-import model.PPMImportExporter;
+import model.PpmImportExporter;
 import model.Pixel;
 
 /**
@@ -70,7 +70,7 @@ public class ImageExamples {
     Image image = rainbow(10, 2);
 
     try {
-      new PPMImportExporter().saveImage(new FileOutputStream("image.ppm"), image);
+      new PpmImportExporter().saveImage(new FileOutputStream("image.ppm"), image);
     } catch (IOException e) {
       System.out.println("Error saving image");
     }
