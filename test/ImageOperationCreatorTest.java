@@ -12,7 +12,7 @@ import org.junit.Test;
  */
 public class ImageOperationCreatorTest {
 
-  Image image;
+  private final Image image;
 
   /**
    * Constructs a new ImageOperationCreateTest initializing all example data for testing.

@@ -16,6 +16,9 @@ public class Image24BitTest {
 
   private final Image exampleImage;
 
+  /**
+   * Construct a new Image24BitTest object initializing all example data for testing.
+   */
   public Image24BitTest() {
     Pixel[][] examplePixelMatrix = new Pixel[][]{
         {new RgbPixel(10, 10, 10)},
@@ -205,6 +208,17 @@ public class Image24BitTest {
     assertEquals(12, exampleImage.getValueAt(1, 0,
         ColorChannel.BLUE));
 
+  }
+
+  // Tests the getPixelAt method
+  @Test
+  public void testGetPixelAt() {
+    assertEquals(new RgbPixel(10, 10, 10),
+        exampleImage.getPixelAt(0, 0));
+    assertEquals(new RgbPixel(12, 12, 12),
+        exampleImage.getPixelAt(1, 0));
+    assertEquals(new RgbPixel(13, 12, 13),
+        exampleImage.getPixelAt(2, 0));
   }
 
   // Test the equals method with the same image object.
