@@ -14,6 +14,7 @@ import java.io.OutputStream;
  */
 public class ImageProcessingModelImpl implements ImageProcessingModel {
 
+  private Image originalImage;
   private Image currentImage;
 
   /**
@@ -21,14 +22,21 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
    * value.
    */
   public ImageProcessingModelImpl() {
+    this.originalImage = null;
     this.currentImage = null;
   }
 
   @Override
   public void setCurrentImage(Image image) {
+
+  }
+
+  @Override
+  public void setImage(Image image) {
     if (image == null) {
       throw new IllegalArgumentException("An image cannot be null!");
     }
+    this.originalImage = image;
     this.currentImage = image;
   }
 
@@ -37,7 +45,7 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
     if (operation == null) {
       throw new IllegalArgumentException("An operation object cannot be null!");
     }
-    setCurrentImage(operation.apply(getCurrentImage()));
+    currentImage = operation.apply(getCurrentImage());
   }
 
   @Override
@@ -70,14 +78,24 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
     }
     try {
       InputStream input = new FileInputStream(file);
-      setCurrentImage(importExporter.parseImage(input));
+      setImage(importExporter.parseImage(input));
     } catch (IOException e) {
       throw new IllegalArgumentException("Failed to read file.");
     }
   }
 
   @Override
+  public void revert() {
+    currentImage = originalImage;
+  }
+
+  @Override
   public Image getCurrentImage() {
     return currentImage;
+  }
+
+  @Override
+  public Image getOriginalImage() {
+    return originalImage;
   }
 }

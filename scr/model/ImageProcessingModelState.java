@@ -13,4 +13,6 @@ public interface ImageProcessingModelState {
    * @return the current image
    */
   Image getCurrentImage();
+
+  Image getOriginalImage();
 }

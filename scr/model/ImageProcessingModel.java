@@ -7,12 +7,16 @@ package model;
  */
 public interface ImageProcessingModel extends ImageProcessingModelState {
 
+
   /**
    * Sets the given image as the current image of the model.
    *
    * @param image the image to set as the current image as
    */
   void setCurrentImage(Image image);
+
+  void setImage(Image image);
+
 
   /**
    * Applies the given operation to the current image and sets the changed image as the current
@@ -37,4 +41,6 @@ public interface ImageProcessingModel extends ImageProcessingModelState {
    * @param filePath       the file path to the to-be-imported file
    */
   void importImage(ImageImportExporter importExporter, String filePath);
+
+  void revert();
 }
