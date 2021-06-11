@@ -5,7 +5,7 @@ import model.Image;
 import model.Image24Bit;
 import model.ImageOperation;
 import model.ImageOperationCreator;
-import model.ImageOperationCreator.IMGOperationType;
+import model.ImageOperationCreator.OperationType;
 import model.Pixel;
 import model.RgbPixel;
 import org.junit.Test;
@@ -67,7 +67,7 @@ public class FilterOperationTest {
     Image original = ImageExamples.checkerboard(2, 2, 2, 2,
         new RgbPixel(255, 0, 0),
         new RgbPixel(0, 0, 255));
-    Image filtered = ImageOperationCreator.create(IMGOperationType.BLUR).apply(original);
+    Image filtered = ImageOperationCreator.create(OperationType.BLUR).apply(original);
 
     assertEquals(new RgbPixel(143, 0, 0), filtered.getPixelAt(0, 0));
     assertEquals(new RgbPixel(143, 0, 47), filtered.getPixelAt(0, 1));
@@ -83,7 +83,7 @@ public class FilterOperationTest {
   @Test
   public void testApplySharpenRainbow() {
     Image original = ImageExamples.rainbow(10, 2);
-    Image filtered = ImageOperationCreator.create(IMGOperationType.SHARPEN).apply(original);
+    Image filtered = ImageOperationCreator.create(OperationType.SHARPEN).apply(original);
 
     assertEquals(new RgbPixel(225, 0, 0), filtered.getPixelAt(0, 0));
     assertEquals(new RgbPixel(225, 0, 0), filtered.getPixelAt(0, 9));
@@ -125,10 +125,10 @@ public class FilterOperationTest {
   // behavior for pixel color values
   @Test
   public void testApplyMultiOperation() {
-    ImageOperation op1 = ImageOperationCreator.create(IMGOperationType.SHARPEN);
+    ImageOperation op1 = ImageOperationCreator.create(OperationType.SHARPEN);
     ImageOperation op2 = new FilterOperation(new double[][]{{1.5}});
     ImageOperation op3 = new FilterOperation(new double[][]{{1.1}});
-    ImageOperation op4 = ImageOperationCreator.create(IMGOperationType.BLUR);
+    ImageOperation op4 = ImageOperationCreator.create(OperationType.BLUR);
 
     Image image1 = op1.apply(exampleImage2);
     Image image2 = op2.apply(image1);
@@ -175,6 +175,6 @@ public class FilterOperationTest {
   // Tests applying a FilterOperation to a null image
   @Test(expected = IllegalArgumentException.class)
   public void testApplyNullImage() {
-    ImageOperationCreator.create(IMGOperationType.BLUR).apply(null);
+    ImageOperationCreator.create(OperationType.BLUR).apply(null);
   }
 }

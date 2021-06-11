@@ -1,6 +1,6 @@
 import model.ImageImportExporter;
 import model.ImageOperationCreator;
-import model.ImageOperationCreator.IMGOperationType;
+import model.ImageOperationCreator.OperationType;
 import model.ImageProcessingModel;
 import model.ImageProcessingModelImpl;
 import model.PpmImportExporter;
@@ -26,16 +26,16 @@ public class TestController {
         "res/panda.ppm"
     };
 
-    IMGOperationType[] operations = {
-        IMGOperationType.BLUR,
-        IMGOperationType.SHARPEN,
-        IMGOperationType.GREYSCALE,
-        IMGOperationType.SEPIA
+    OperationType[] operations = {
+        OperationType.BLUR,
+        OperationType.SHARPEN,
+        OperationType.GREYSCALE,
+        OperationType.SEPIA
     };
 
     for (String filePath : imageFilePaths) {
       model.importImage(importExporter, filePath);
-      for (IMGOperationType opType : operations) {
+      for (OperationType opType : operations) {
         model.applyOperation(ImageOperationCreator.create(opType));
         String newPath = filePath.replace(".ppm",
             "_" + opType.name().toLowerCase() + ".ppm");

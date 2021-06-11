@@ -6,7 +6,7 @@ import model.Image;
 import model.Image24Bit;
 import model.ImageOperation;
 import model.ImageOperationCreator;
-import model.ImageOperationCreator.IMGOperationType;
+import model.ImageOperationCreator.OperationType;
 import model.Pixel;
 import model.RgbPixel;
 import org.junit.Test;
@@ -72,14 +72,14 @@ public class ColorTransformationTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void applyColorTransformationNullImage() {
-    ImageOperationCreator.create(IMGOperationType.GREYSCALE).apply(null);
+    ImageOperationCreator.create(OperationType.GREYSCALE).apply(null);
   }
 
   // Tests applying a greyscale transformation to a rainbow image
   @Test
   public void testApplyGreyscaleToRainbow() {
     Image original = ImageExamples.rainbow(1, 1);
-    Image transformed = ImageOperationCreator.create(IMGOperationType.GREYSCALE).apply(original);
+    Image transformed = ImageOperationCreator.create(OperationType.GREYSCALE).apply(original);
 
     assertEquals(new RgbPixel(42, 42, 42),
         transformed.getPixelAt(0, 0));
@@ -99,7 +99,7 @@ public class ColorTransformationTest {
   @Test
   public void testApplySepiaToRainbow() {
     Image original = ImageExamples.rainbow(1, 1);
-    Image transformed = ImageOperationCreator.create(IMGOperationType.SEPIA).apply(original);
+    Image transformed = ImageOperationCreator.create(OperationType.SEPIA).apply(original);
 
     assertEquals(new RgbPixel(78, 69, 54),
         transformed.getPixelAt(0, 0));
@@ -147,7 +147,7 @@ public class ColorTransformationTest {
   // clamping behavior for pixel color values
   @Test
   public void testApplyMultiOperation() {
-    ImageOperation op1 = ImageOperationCreator.create(IMGOperationType.SEPIA);
+    ImageOperation op1 = ImageOperationCreator.create(OperationType.SEPIA);
     ImageOperation op2 = new ColorTransformation(new double[][]{
         {1.2, 0.1, 0.1},
         {0.1, 1.2, 0.1},
@@ -156,7 +156,7 @@ public class ColorTransformationTest {
         {1.1, 0.1, 0.1},
         {0.1, 1.1, 0.1},
         {0.1, 0.1, 1.1}});
-    ImageOperation op4 = ImageOperationCreator.create(IMGOperationType.GREYSCALE);
+    ImageOperation op4 = ImageOperationCreator.create(OperationType.GREYSCALE);
 
     Image image1 = op1.apply(exampleImage2);
     Image image2 = op2.apply(image1);

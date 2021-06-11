@@ -13,7 +13,7 @@ public class ImageOperationCreator {
    * @return the ImageOperationObject
    * @throws IllegalArgumentException if the image operation type is null or invalid.
    */
-  public static ImageOperation create(IMGOperationType type) throws IllegalArgumentException {
+  public static ImageOperation create(OperationType type) throws IllegalArgumentException {
     if (type == null) {
       throw new IllegalArgumentException("Image operation type must not be null");
     }
@@ -50,7 +50,7 @@ public class ImageOperationCreator {
    * Represents the different types of default ImageOperation that can be created with the {@link
    * ImageOperationCreator} class.
    */
-  public enum IMGOperationType {
+  public enum OperationType {
     BLUR, SHARPEN, GREYSCALE, SEPIA;
   }
 }

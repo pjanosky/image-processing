@@ -3,7 +3,7 @@ import static org.junit.Assert.assertEquals;
 import model.Image;
 import model.ImageOperation;
 import model.ImageOperationCreator;
-import model.ImageOperationCreator.IMGOperationType;
+import model.ImageOperationCreator.OperationType;
 import model.RgbPixel;
 import org.junit.Test;
 
@@ -32,7 +32,7 @@ public class ImageOperationCreatorTest {
   // Test the create method with a blur type.
   @Test
   public void testCreateBlur() {
-    ImageOperation op = ImageOperationCreator.create(IMGOperationType.BLUR);
+    ImageOperation op = ImageOperationCreator.create(OperationType.BLUR);
     Image applied = op.apply(image);
 
     assertEquals(new RgbPixel(136, 75, 76), applied.getPixelAt(0, 0));
@@ -44,7 +44,7 @@ public class ImageOperationCreatorTest {
   // Test the create method with a sharpen type.
   @Test
   public void testCreateSharpen() {
-    ImageOperation op = ImageOperationCreator.create(IMGOperationType.SHARPEN);
+    ImageOperation op = ImageOperationCreator.create(OperationType.SHARPEN);
     Image image = ImageExamples.checkerboard(2, 2, 1, 1,
         new RgbPixel(245, 160, 60),
         new RgbPixel(240, 100, 230));
@@ -59,7 +59,7 @@ public class ImageOperationCreatorTest {
   // Test the create method with a greyscale type.
   @Test
   public void testCreateGreyscale() {
-    ImageOperation op = ImageOperationCreator.create(IMGOperationType.GREYSCALE);
+    ImageOperation op = ImageOperationCreator.create(OperationType.GREYSCALE);
     Image applied = op.apply(image);
 
     assertEquals(new RgbPixel(170, 170, 170), applied.getPixelAt(0, 0));
@@ -71,7 +71,7 @@ public class ImageOperationCreatorTest {
   // Test the create method with a sepia type.
   @Test
   public void testCreateSepia() {
-    ImageOperation op = ImageOperationCreator.create(IMGOperationType.SEPIA);
+    ImageOperation op = ImageOperationCreator.create(OperationType.SEPIA);
     Image applied = op.apply(image);
 
     assertEquals(new RgbPixel(230, 205, 159), applied.getPixelAt(0, 0));

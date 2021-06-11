@@ -6,7 +6,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import model.Image;
 import model.ImageOperationCreator;
-import model.ImageOperationCreator.IMGOperationType;
+import model.ImageOperationCreator.OperationType;
 import model.ImageProcessingModel;
 import model.ImageProcessingModelImpl;
 import model.PpmImportExporter;
@@ -56,7 +56,7 @@ public class ImageProcessingModelImplTest {
 
     ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
     exampleModel.setImage(exampleImage);
-    exampleModel.applyOperation(ImageOperationCreator.create(IMGOperationType.SHARPEN));
+    exampleModel.applyOperation(ImageOperationCreator.create(OperationType.SHARPEN));
 
     assertEquals(new RgbPixel(225, 0, 0),
         exampleModel.getCurrentImage().getPixelAt(0, 0));
@@ -94,7 +94,7 @@ public class ImageProcessingModelImplTest {
 
     ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
     exampleModel.setImage(exampleImage);
-    exampleModel.applyOperation(ImageOperationCreator.create(IMGOperationType.BLUR));
+    exampleModel.applyOperation(ImageOperationCreator.create(OperationType.BLUR));
 
     assertEquals(new RgbPixel(143, 0, 0),
         exampleModel.getCurrentImage().getPixelAt(0, 0));
@@ -121,7 +121,7 @@ public class ImageProcessingModelImplTest {
 
     ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
     exampleModel.setImage(exampleImage);
-    exampleModel.applyOperation(ImageOperationCreator.create(IMGOperationType.GREYSCALE));
+    exampleModel.applyOperation(ImageOperationCreator.create(OperationType.GREYSCALE));
 
     assertEquals(new RgbPixel(42, 42, 42),
         exampleModel.getCurrentImage().getPixelAt(0, 0));
@@ -144,7 +144,7 @@ public class ImageProcessingModelImplTest {
 
     ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
     exampleModel.setImage(exampleImage);
-    exampleModel.applyOperation(ImageOperationCreator.create(IMGOperationType.SEPIA));
+    exampleModel.applyOperation(ImageOperationCreator.create(OperationType.SEPIA));
 
     assertEquals(new RgbPixel(78, 69, 54),
         exampleModel.getCurrentImage().getPixelAt(0, 0));
@@ -168,8 +168,8 @@ public class ImageProcessingModelImplTest {
 
     ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
     exampleModel.setImage(exampleImage);
-    exampleModel.applyOperation(ImageOperationCreator.create(IMGOperationType.SEPIA));
-    exampleModel.applyOperation(ImageOperationCreator.create(IMGOperationType.GREYSCALE));
+    exampleModel.applyOperation(ImageOperationCreator.create(OperationType.SEPIA));
+    exampleModel.applyOperation(ImageOperationCreator.create(OperationType.GREYSCALE));
 
     assertEquals(new RgbPixel(69, 69, 69),
         exampleModel.getCurrentImage().getPixelAt(0, 0));
@@ -284,8 +284,8 @@ public class ImageProcessingModelImplTest {
     assertEquals(exampleImage, exampleModel.getOriginalImage());
     assertEquals(exampleImage, exampleModel.getCurrentImage());
 
-    exampleModel.applyOperation(ImageOperationCreator.create(IMGOperationType.BLUR));
-    exampleModel.applyOperation(ImageOperationCreator.create(IMGOperationType.SEPIA));
+    exampleModel.applyOperation(ImageOperationCreator.create(OperationType.BLUR));
+    exampleModel.applyOperation(ImageOperationCreator.create(OperationType.SEPIA));
 
     assertEquals(exampleImage, exampleModel.getOriginalImage());
   }
@@ -297,8 +297,8 @@ public class ImageProcessingModelImplTest {
     Image exampleImage = ImageExamples.rainbow(10, 2);
     exampleModel.setImage(exampleImage);
 
-    exampleModel.applyOperation(ImageOperationCreator.create(IMGOperationType.BLUR));
-    exampleModel.applyOperation(ImageOperationCreator.create(IMGOperationType.SEPIA));
+    exampleModel.applyOperation(ImageOperationCreator.create(OperationType.BLUR));
+    exampleModel.applyOperation(ImageOperationCreator.create(OperationType.SEPIA));
 
     exampleModel.revert();
     assertEquals(exampleModel.getOriginalImage(), exampleModel.getCurrentImage());
