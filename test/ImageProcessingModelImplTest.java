@@ -14,11 +14,11 @@ import model.RgbPixel;
 import org.junit.Test;
 
 /**
- * Tests the ImageProcessingModelImp class.
+ * Tests all the methods from ImageProcessingModelImpl class.
  */
 public class ImageProcessingModelImplTest {
 
-  // Tests the setImageMethod with a null Image.
+  // Tests if an illegal argument exception is thrown a null value as the image has been passed.
   @Test(expected = IllegalArgumentException.class)
   public void testSetImageWithNullValue() {
     ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
@@ -26,7 +26,7 @@ public class ImageProcessingModelImplTest {
     exampleModel.setImage(null);
   }
 
-  // Tests the setImageMethod with a valid Image.
+  // Tests if the model sets the given image as the current image within th model.
   @Test
   public void testSetCurrentImage() {
     ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
@@ -38,7 +38,8 @@ public class ImageProcessingModelImplTest {
     assertEquals(exampleImage, exampleModel.getOriginalImage());
   }
 
-  // Tests the applyOperation method with a null ImageOperation.
+  // Tests if an illegal argument exception is thrown when a null value was passed as the operation
+  // parameter.
   @Test(expected = IllegalArgumentException.class)
   public void testApplyOperationWithNullValues() {
     ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
@@ -48,7 +49,7 @@ public class ImageProcessingModelImplTest {
     exampleModel.applyOperation(null);
   }
 
-  // Tests the applyOperation method with a sharpen operation.
+  // Tests the sharpen operation on the image.
   @Test
   public void testApplyOperationSharpen() {
     Image exampleImage = ImageExamples.rainbow(10, 2);
@@ -84,7 +85,7 @@ public class ImageProcessingModelImplTest {
 
   }
 
-  // Tests the applyOperation method with a blur operation.
+  // Tests the blur operation on the image.
   @Test
   public void testApplyOperationBlur() {
     Image exampleImage = ImageExamples.checkerboard(2, 2, 2, 2,
@@ -113,7 +114,7 @@ public class ImageProcessingModelImplTest {
         exampleModel.getCurrentImage().getPixelAt(1, 3));
   }
 
-  // Tests the applyOperation method with a greyscale operation.
+  // Tests the greyscale operation on the image.
   @Test
   public void testApplyOperationGreyscale() {
     Image exampleImage = ImageExamples.rainbow(1, 1);
@@ -136,7 +137,7 @@ public class ImageProcessingModelImplTest {
         exampleModel.getCurrentImage().getPixelAt(5, 0));
   }
 
-  // Tests the applyOperation method with a sepia operation.
+  // Tests the sepia operation on the image.
   @Test
   public void testApplyOperationSepia() {
     Image exampleImage = ImageExamples.rainbow(1, 1);
@@ -160,7 +161,7 @@ public class ImageProcessingModelImplTest {
 
   }
 
-  // Tests the applyOperation method with a sepia operation followed by a greyscale operation.
+  // Tests the greyscale operation on the image.
   @Test
   public void testApplyOperationSepiaThenGreyscale() {
     Image exampleImage = ImageExamples.rainbow(1, 1);
@@ -184,7 +185,8 @@ public class ImageProcessingModelImplTest {
         exampleModel.getCurrentImage().getPixelAt(5, 0));
   }
 
-  // Tests the exportImage method with a directory as a filepath.
+  // Tests if an illegal argument exception is thrown when a filepath for a directory has been
+  // passed.
   @Test(expected = IllegalArgumentException.class)
   public void testExportCurrentImageWithADirectoryAsFilePath() {
     ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
@@ -192,7 +194,7 @@ public class ImageProcessingModelImplTest {
     exampleModel.importImage(new PpmImportExporter(), "/res");
   }
 
-  // Tests the exportImage method with a invalid null ImageImportExporter.
+  // Tests if an exception is thrown when a null value is passed in the place of import-exporter.
   @Test(expected = IllegalArgumentException.class)
   public void testExportCurrentImageWithNullValueAsImportExporter() {
     ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
@@ -200,7 +202,7 @@ public class ImageProcessingModelImplTest {
     exampleModel.importImage(null, "test/images/image.ppm");
   }
 
-  // Tests the exportImage method with a invalid null filePath.
+  // Tests if an exception is thrown when a null value is passed in the place of file path.
   @Test(expected = IllegalArgumentException.class)
   public void testExportCurrentImageWithNullValueAsFilePath() {
     ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
@@ -208,7 +210,7 @@ public class ImageProcessingModelImplTest {
     exampleModel.importImage(new PpmImportExporter(), null);
   }
 
-  // Tests the exportImage method with a valid filePath.
+  // Tests if the model properly exports the current image as an ppm file.
   @Test
   public void testExportCurrentImage() {
     ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
@@ -227,7 +229,7 @@ public class ImageProcessingModelImplTest {
     assertEquals(exampleImage, savedImage);
   }
 
-  // Tests the importImage method with a null ImageImportExporter.
+  // Tests if an exception is thrown when a null value is passed in the place of import-exporter.
   @Test(expected = IllegalArgumentException.class)
   public void testImportImageWithANullImportExporter() {
     ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
@@ -235,7 +237,7 @@ public class ImageProcessingModelImplTest {
     exampleModel.importImage(null, "test/images/image.ppm");
   }
 
-  // Tests the importImage method with a null filePath.
+  // Tests if an exception is thrown when a null value is passed in the place of file path.
   @Test(expected = IllegalArgumentException.class)
   public void testImportImageWithANullFilePath() {
     ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
@@ -243,7 +245,7 @@ public class ImageProcessingModelImplTest {
     exampleModel.importImage(new PpmImportExporter(), null);
   }
 
-  // Tests the importImage method with a invalid filePath.
+  // Tests if an exception is thrown when given a file path to a file that doesn't exist.
   @Test(expected = IllegalArgumentException.class)
   public void testImportImageWithANonexistentFilePath() {
     ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
@@ -251,7 +253,7 @@ public class ImageProcessingModelImplTest {
     exampleModel.importImage(new PpmImportExporter(), "image1.ppm");
   }
 
-  // Tests the importImage method with a valid filePath and image.
+  // Tests importing an image.
   @Test
   public void testImportImage() {
     ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
@@ -261,7 +263,7 @@ public class ImageProcessingModelImplTest {
     assertEquals(exampleImage, exampleModel.getCurrentImage());
   }
 
-  // Tests the getCurrentImage method.
+  // Tests getting the current image of the model.
   @Test
   public void testGetCurrentImage() {
     ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
@@ -271,7 +273,7 @@ public class ImageProcessingModelImplTest {
     assertEquals(exampleImage, exampleModel.getCurrentImage());
   }
 
-  // Tests the getOriginalImage method.
+  // Tests getting the original image.
   @Test
   public void testGetOriginalImage() {
     ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
@@ -288,7 +290,7 @@ public class ImageProcessingModelImplTest {
     assertEquals(exampleImage, exampleModel.getOriginalImage());
   }
 
-  // Tests the revert method.
+  // Tests reverting back to the original image.
   @Test
   public void testRevert() {
     ImageProcessingModel exampleModel = new ImageProcessingModelImpl();

@@ -7,14 +7,28 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+/**
+ * A implementation of the image processing model interface. The model object stores an image as a
+ * field for the current image. When first constructed, the {@code currentImage} field is initiated
+ * as null until it is set to a legitimate image.
+ */
 public class ImageProcessingModelImpl implements ImageProcessingModel {
 
   private Image originalImage;
   private Image currentImage;
 
+  /**
+   * Constructs a {@code ImageProcessingModelImpl} object. The current image is initiated as a null
+   * value.
+   */
   public ImageProcessingModelImpl() {
     this.originalImage = null;
     this.currentImage = null;
+  }
+
+  @Override
+  public void setCurrentImage(Image image) {
+
   }
 
   @Override
