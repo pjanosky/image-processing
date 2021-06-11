@@ -1,8 +1,13 @@
-package model;
-
 import static org.junit.Assert.*;
 
+import model.Image;
+import model.Image24Bit;
+import model.ImageOperationCreator;
 import model.ImageOperationCreator.IMGOperationType;
+import model.ImageProcessingModel;
+import model.ImageProcessingModelImpl;
+import model.Pixel;
+import model.RgbPixel;
 import org.junit.Test;
 
 public class ImageProcessingModelImplTest {
