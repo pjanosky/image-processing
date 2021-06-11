@@ -1,7 +1,5 @@
 package model;
 
-import java.util.Arrays;
-
 /**
  * Represents a image processing algorithm that applies a 2D kernel to an Image to change its
  * appearance.
@@ -44,7 +42,7 @@ public class FilterOperation implements ImageOperation {
         int red = filteredPixelValue(image, ColorChannel.RED, row, col);
         int green = filteredPixelValue(image, ColorChannel.GREEN, row, col);
         int blue = filteredPixelValue(image, ColorChannel.BLUE, row, col);
-        pixels[row][col] = new Pixel(red, green, blue);
+        pixels[row][col] = image.getPixelAt(row, col).fromRGB(red, green, blue);
       }
     }
 

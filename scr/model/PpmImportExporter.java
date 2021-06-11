@@ -56,7 +56,7 @@ public class PpmImportExporter implements ImageImportExporter {
     for (int row = 0; row < height; row += 1) {
       for (int col = 0; col < width; col += 1) {
         try {
-          pixels[row][col] = new Pixel(scanner.nextInt(), scanner.nextInt(), scanner.nextInt());
+          pixels[row][col] = new RgbPixel(scanner.nextInt(), scanner.nextInt(), scanner.nextInt());
         } catch (NoSuchElementException e) {
           throw new IOException("Failed to parse pixel data.");
         }

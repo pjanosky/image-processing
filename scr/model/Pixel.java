@@ -1,87 +1,61 @@
 package model;
 
-import java.util.Objects;
-
 /**
- * Represents the color of one pixel in an image composed of 3 8-bit color channels.
+ * Represents the color of one pixel in an image.
+ *
+ * Different Implementation of Pixel should work together by using {@code getRedValue()},
+ * {@code getGreenValue()}, and {@code getBlueValue()} for the equals and hashCode methods.
  */
-public class Pixel {
-
-  private final int red;
-  private final int green;
-  private final int blue;
+public interface Pixel {
 
   /**
-   * Constructs a new Pixel from red, green, and blue color values. Any color value outside the
-   * allowed range of [0, MAX_VALUE] are clamped. Clamping sets values higher than MAX_VALUE
-   * to MAX_VALUE and sets values below 0 to 0;
+   * Gets the red color channel value for this pixel.
    *
-   * @param red   the red value for the pixel
-   * @param green the green value for the pixel
-   * @param blue  the blue value for the pixel
+   * @return the red color channel value.
    */
-  public Pixel(int red, int green, int blue) {
-    this.red = red;
-    this.green = green;
-    this.blue = blue;
-  }
+  int getRedValue();
 
-  public int getRedValue() {
-    return red;
-  }
+  /**
+   * Gets the green color channel value for this pixel.
+   *
+   * @return the green color channel value.
+   */
+  int getGreenValue();
 
-  public int getGreenValue() {
-    return green;
-  }
+  /**
+   * Gets the blue color channel value for this pixel.
+   *
+   * @return the blue color channel value;
+   */
+  int getBlueValue();
 
-  public int getBlueValue() {
-    return blue;
-  }
+  /**
+   * Generates a vector (represented as an array) containing the red, green, and blue
+   * color values for this pixel in their respective order.
+   * The color channel values are stored as doubles.
+   *
+   * @return the vector containing red, green, and blue values for this pixel.
+   */
+  double[] getRgbVector();
 
-  public double[] getRgbVector() {
-    return new double[]{
-        (double) getRedValue(),
-        (double) getGreenValue(),
-        (double) getBlueValue()};
-  }
+  /**
+   * Generates a new pixel equivalent to this one except with its color values clamped to
+   * the given range [min, max]. Values greater than max are set to max, and values
+   * less than min are set to min.
+   *
+   * @param min the minimum color value for the new pixel
+   * @param max the maximum color value for the new pixel
+   * @return the generated pixel with values clamped to the given range
+   */
+  Pixel clamp(int min, int max);
 
-  public Pixel clamp(int min, int max) {
-    int red = Math.max(min, Math.min(max, getRedValue()));
-    int green = Math.max(min, Math.min(max, getRedValue()));
-    int blue = Math.max(min, Math.min(max, getRedValue()));
-    return new Pixel(red, green, blue);
-  }
-
-  public int maxValue() {
-    return Math.max(getRedValue(), Math.max(getGreenValue(), getBlueValue()));
-  }
-
-  public int minValue() {
-    return Math.min(getRedValue(), Math.min(getGreenValue(), getBlueValue()));
-  }
-
-  @Override
-  public String toString() {
-    return String.format("%d %d %d", getRedValue(), getGreenValue(), getBlueValue());
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (o == this) {
-      return true;
-    }
-    if (!(o instanceof Pixel)) {
-      return false;
-    }
-    Pixel other = (Pixel) o;
-
-    return this.getRedValue() == other.getRedValue()
-        && this.getGreenValue() == other.getGreenValue()
-        && this.getBlueValue() == other.getBlueValue();
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(getRedValue(), getGreenValue(), getBlueValue());
-  }
+  /**
+   * Generates a Pixel object as determined by concrete implementations.
+   *
+   * @param red the red color value of the pixel
+   * @param green the green color value of the pixel
+   * @param blue the blue color value so the pixel
+   * @return the new Pixel
+   */
+  Pixel fromRGB(int red, int green, int blue);
 }

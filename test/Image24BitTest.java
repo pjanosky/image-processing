@@ -6,12 +6,13 @@ import model.ColorChannel;
 import model.Image;
 import model.Image24Bit;
 import model.Pixel;
+import model.RgbPixel;
 import org.junit.Test;
 
 public class Image24BitTest {
 
-  Pixel[][] examplePixelMatrix = {{new Pixel(10, 10, 10)},
-      {new Pixel(12, 12, 12)}, {new Pixel(13, 12, 13)}};
+  Pixel[][] examplePixelMatrix = {{new RgbPixel(10, 10, 10)},
+      {new RgbPixel(12, 12, 12)}, {new RgbPixel(13, 12, 13)}};
   Image exampleImage = new Image24Bit(examplePixelMatrix);
 
   @Test(expected = IllegalArgumentException.class)
@@ -30,8 +31,8 @@ public class Image24BitTest {
     new Image24Bit(emptySubMatrix);
 
     //each submatrix has unequal length
-    Pixel[][] unequalSubMatrix = {{new Pixel(10, 10, 10)},
-        {new Pixel(12, 12, 12), new Pixel(13, 12, 13)}, {}};
+    Pixel[][] unequalSubMatrix = {{new RgbPixel(10, 10, 10)},
+        {new RgbPixel(12, 12, 12), new RgbPixel(13, 12, 13)}, {}};
     new Image24Bit(unequalSubMatrix);
   }
 
@@ -148,8 +149,8 @@ public class Image24BitTest {
   @Test
   public void testEqualsSameImage() {
     Image image = new Image24Bit(new Pixel[][] {
-        {new Pixel(28, 199, 201), new Pixel(91, 49, 120)},
-        {new Pixel(122, 255, 213), new Pixel(12, 1, 233)}});
+        {new RgbPixel(28, 199, 201), new RgbPixel(91, 49, 120)},
+        {new RgbPixel(122, 255, 213), new RgbPixel(12, 1, 233)}});
 
     assertEquals(image, image);
   }
@@ -157,11 +158,11 @@ public class Image24BitTest {
   @Test
   public void testEqualsEqualImages() {
     Image image1 = new Image24Bit(new Pixel[][] {
-        {new Pixel(28, 199, 201), new Pixel(91, 49, 120)},
-        {new Pixel(122, 255, 213), new Pixel(12, 1, 233)}});
+        {new RgbPixel(28, 199, 201), new RgbPixel(91, 49, 120)},
+        {new RgbPixel(122, 255, 213), new RgbPixel(12, 1, 233)}});
     Image image2 = new Image24Bit(new Pixel[][] {
-        {new Pixel(28, 199, 201), new Pixel(91, 49, 120)},
-        {new Pixel(122, 255, 213), new Pixel(12, 1, 233)}});
+        {new RgbPixel(28, 199, 201), new RgbPixel(91, 49, 120)},
+        {new RgbPixel(122, 255, 213), new RgbPixel(12, 1, 233)}});
 
     assertEquals(image1, image2);
     assertEquals(image2, image1);
@@ -169,11 +170,11 @@ public class Image24BitTest {
 
   @Test public void testEqualsDifferentImages() {
     Image image1 = new Image24Bit(new Pixel[][] {
-        {new Pixel(28, 199, 201), new Pixel(91, 49, 120)},
-        {new Pixel(122, 255, 0), new Pixel(12, 1, 233)}});
+        {new RgbPixel(28, 199, 201), new RgbPixel(91, 49, 120)},
+        {new RgbPixel(122, 255, 0), new RgbPixel(12, 1, 233)}});
     Image image2 = new Image24Bit(new Pixel[][] {
-        {new Pixel(28, 199, 201), new Pixel(91, 49, 120)},
-        {new Pixel(122, 255, 213), new Pixel(12, 1, 233)}});
+        {new RgbPixel(28, 199, 201), new RgbPixel(91, 49, 120)},
+        {new RgbPixel(122, 255, 213), new RgbPixel(12, 1, 233)}});
 
     assertNotEquals(image1, image2);
     assertNotEquals(image2, image1);
@@ -181,11 +182,11 @@ public class Image24BitTest {
 
   @Test public void testEqualsDifferentSizedImages() {
     Image image1 = new Image24Bit(new Pixel[][] {
-        {new Pixel(28, 199, 201), new Pixel(91, 49, 120)},
-        {new Pixel(122, 255, 0), new Pixel(12, 1, 233)}});
+        {new RgbPixel(28, 199, 201), new RgbPixel(91, 49, 120)},
+        {new RgbPixel(122, 255, 0), new RgbPixel(12, 1, 233)}});
     Image image2 = new Image24Bit(new Pixel[][] {
-        {new Pixel(28, 199, 201)},
-        {new Pixel(122, 255, 213)}});
+        {new RgbPixel(28, 199, 201)},
+        {new RgbPixel(122, 255, 213)}});
 
     assertNotEquals(image1, image2);
     assertNotEquals(image2, image1);
@@ -194,11 +195,11 @@ public class Image24BitTest {
   @Test
   public void testHashCode() {
     Pixel[][] pixels1 = {
-        {new Pixel(28, 199, 201), new Pixel(91, 49, 120)},
-        {new Pixel(122, 255, 0), new Pixel(12, 1, 233)}};
+        {new RgbPixel(28, 199, 201), new RgbPixel(91, 49, 120)},
+        {new RgbPixel(122, 255, 0), new RgbPixel(12, 1, 233)}};
     Pixel[][] pixels2 = {
-        {new Pixel(28, 199, 201)},
-        {new Pixel(122, 255, 213)}};
+        {new RgbPixel(28, 199, 201)},
+        {new RgbPixel(122, 255, 213)}};
     Image image1 = new Image24Bit(pixels1);
     Image image2 = new Image24Bit(pixels2);
 

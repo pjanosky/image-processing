@@ -1,5 +1,4 @@
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.fail;
 
 import java.io.ByteArrayInputStream;
@@ -11,6 +10,7 @@ import model.Image;
 import model.Image24Bit;
 import model.ImageImportExporter;
 import model.Pixel;
+import model.RgbPixel;
 import model.PpmImportExporter;
 import org.junit.Test;
 
@@ -29,8 +29,8 @@ public class PpmImportExporterTest {
   public void testParseCheckerBoardImage() {
     Image expectedImage = ImageExamples.checkerboard(2, 4,
         1,1,
-        new Pixel(0, 0, 0),
-        new Pixel(255, 0, 0));
+        new RgbPixel(0, 0, 0),
+        new RgbPixel(255, 0, 0));
 
     StringBuilder inputData = new StringBuilder();
     inputData.append("P3").append(System.lineSeparator());
@@ -89,7 +89,7 @@ public class PpmImportExporterTest {
   // Test saving an image where writing to the OutputStream throws an exception
   @Test(expected = IOException.class)
   public void testSaveImageFailWriteOutput() throws IOException {
-    Image image = new Image24Bit(new Pixel[][]{{new Pixel(0, 0, 0)}});
+    Image image = new Image24Bit(new Pixel[][]{{new RgbPixel(0, 0, 0)}});
     OutputStream output = new FailOutputStream();
     ie.saveImage(output, image);
   }

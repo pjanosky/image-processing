@@ -1,7 +1,6 @@
 package model;
 
 import java.util.Arrays;
-import java.util.Objects;
 
 public abstract class AbstractImage implements Image {
   private final Pixel[][] pixels;
@@ -113,11 +112,9 @@ public abstract class AbstractImage implements Image {
   private Pixel[][] checkPixels(Pixel[][] pixels) {
     for (Pixel[] row : pixels) {
       for (Pixel pixel : row) {
-        if (pixel.minValue() < this.minValue() || pixel.maxValue() > this.maxValue()) {
-          throw new IllegalArgumentException(
-              String.format("Color values must be in the range [%d, %d]",
-                  minValue(), maxValue()));
-        }
+        ensureInRange(pixel.getRedValue());
+        ensureInRange(pixel.getGreenValue());
+        ensureInRange(pixel.getBlueValue());
       }
     }
     return pixels;
@@ -185,5 +182,18 @@ public abstract class AbstractImage implements Image {
   @Override
   public int hashCode() {
     return Arrays.deepHashCode(pixels);
+  }
+
+  /**
+   * Checks whether color value is in the valid range for this image.
+   * @param value the value to check
+   * @throws IllegalArgumentException if the value is outside the range.
+   */
+  private void ensureInRange(double value) throws IllegalArgumentException {
+     if (value < minValue() || value > maxValue()) {
+       throw new IllegalArgumentException(
+           String.format("Color values must be in the range [%d, %d]",
+               minValue(), maxValue()));
+     }
   }
 }

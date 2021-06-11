@@ -2,8 +2,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import model.Image;
 import model.Image24Bit;
-import model.PpmImportExporter;
 import model.Pixel;
+import model.PpmImportExporter;
+import model.RgbPixel;
 
 /**
  * A class for generating different types of example images for testing.
@@ -45,12 +46,12 @@ public class ImageExamples {
    */
   public static Image rainbow(int width, int stripeHeight) {
     Pixel[] colors = {
-        new Pixel(200, 0, 0),
-        new Pixel(200, 75, 0),
-        new Pixel(200, 200, 0),
-        new Pixel(0, 200, 0),
-        new Pixel(0, 0, 200),
-        new Pixel(160, 0, 200),
+        new RgbPixel(200, 0, 0),
+        new RgbPixel(200, 75, 0),
+        new RgbPixel(200, 200, 0),
+        new RgbPixel(0, 200, 0),
+        new RgbPixel(0, 0, 200),
+        new RgbPixel(160, 0, 200),
     };
 
     Pixel[][] pixels = new Pixel[stripeHeight * colors.length][width];

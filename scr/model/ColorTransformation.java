@@ -1,7 +1,5 @@
 package model;
 
-import java.util.Arrays;
-
 public class ColorTransformation implements ImageOperation {
 
   private final double[][] matrix;
@@ -32,7 +30,7 @@ public class ColorTransformation implements ImageOperation {
         int red = (int) dotProduct(rgbVector, matrix[0]);
         int green = (int) dotProduct(rgbVector, matrix[1]);
         int blue = (int) dotProduct(rgbVector, matrix[2]);
-        pixels[row][col] = new Pixel(red, green, blue);
+        pixels[row][col] = image.getPixelAt(row, col).fromRGB(red, green, blue);
       }
     }
     return image.fromPixels(pixels, true);
