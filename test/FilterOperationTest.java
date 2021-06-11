@@ -15,6 +15,23 @@ import org.junit.Test;
  */
 public class FilterOperationTest {
 
+  private final Image exampleImage1;
+  private final Image exampleImage2;
+
+  /**
+   * Constructs a new FilterOperationTest object initializing all example data for testing.
+   */
+  public FilterOperationTest() {
+    this.exampleImage1 = new Image24Bit(new Pixel[][]{
+        {new RgbPixel(100, 30, 10)},
+        {new RgbPixel(45, 1, 244)}});
+
+    this.exampleImage2 = new Image24Bit(new Pixel[][]{
+        {new RgbPixel(100, 30, 10), new RgbPixel(34, 255, 200)},
+        {new RgbPixel(45, 1, 244), new RgbPixel(2, 245, 199)}});
+  }
+
+
   // Tests constructing a FilterOperation object with a null kernel
   @Test(expected = IllegalArgumentException.class)
   public void testConstructorNullKernel() {
@@ -86,13 +103,8 @@ public class FilterOperationTest {
   // allowed value
   @Test
   public void testApplyHighClamping() {
-    Pixel[][] pixels = {
-        {new RgbPixel(100, 30, 10)},
-        {new RgbPixel(45, 1, 244)}};
     ImageOperation whiten = new FilterOperation(new double[][]{{10000}});
-
-    Image original = new Image24Bit(pixels);
-    Image filtered = whiten.apply(original);
+    Image filtered = whiten.apply(exampleImage1);
 
     assertEquals(new RgbPixel(255, 255, 255), filtered.getPixelAt(0, 0));
     assertEquals(new RgbPixel(255, 255, 255), filtered.getPixelAt(1, 0));
@@ -102,16 +114,61 @@ public class FilterOperationTest {
   // allowed value
   @Test
   public void testApplyLowClamping() {
-    Pixel[][] pixels = {
-        {new RgbPixel(100, 30, 10)},
-        {new RgbPixel(45, 1, 244)}};
     ImageOperation whiten = new FilterOperation(new double[][]{{-10000}});
-
-    Image original = new Image24Bit(pixels);
-    Image filtered = whiten.apply(original);
+    Image filtered = whiten.apply(exampleImage1);
 
     assertEquals(new RgbPixel(0, 0, 0), filtered.getPixelAt(0, 0));
     assertEquals(new RgbPixel(0, 0, 0), filtered.getPixelAt(1, 0));
+  }
+
+  // Test applying multiple operations to an image, in part to test the post-filter clamping
+  // behavior for pixel color values
+  @Test
+  public void testApplyMultiOperation() {
+    ImageOperation op1 = ImageOperationCreator.create(IMGOperationType.SHARPEN);
+    ImageOperation op2 = new FilterOperation(new double[][]{{1.5}});
+    ImageOperation op3 = new FilterOperation(new double[][]{{1.1}});
+    ImageOperation op4 = ImageOperationCreator.create(IMGOperationType.BLUR);
+
+    Image image1 = op1.apply(exampleImage2);
+    Image image2 = op2.apply(image1);
+    Image image3 = op3.apply(image2);
+    Image image4 = op4.apply(image3);
+
+    assertEquals(new RgbPixel(120, 155, 170), image1.getPixelAt(0, 0));
+    assertEquals(new RgbPixel(70, 255, 255), image1.getPixelAt(0, 1));
+    assertEquals(new RgbPixel(79, 133, 255), image1.getPixelAt(1, 0));
+    assertEquals(new RgbPixel(46, 255, 255), image1.getPixelAt(1, 1));
+
+    assertEquals(new RgbPixel(180, 232, 255), image2.getPixelAt(0, 0));
+    assertEquals(new RgbPixel(105, 255, 255), image2.getPixelAt(0, 1));
+    assertEquals(new RgbPixel(118, 199, 255), image2.getPixelAt(1, 0));
+    assertEquals(new RgbPixel(69, 255, 255), image2.getPixelAt(1, 1));
+
+    assertEquals(new RgbPixel(198, 255, 255), image3.getPixelAt(0, 0));
+    assertEquals(new RgbPixel(115, 255, 255), image3.getPixelAt(0, 1));
+    assertEquals(new RgbPixel(129, 218, 255), image3.getPixelAt(1, 0));
+    assertEquals(new RgbPixel(75, 255, 255), image3.getPixelAt(1, 1));
+
+    assertEquals(new RgbPixel(84, 138, 143), image4.getPixelAt(0, 0));
+    assertEquals(new RgbPixel(70, 141, 143), image4.getPixelAt(0, 1));
+    assertEquals(new RgbPixel(73, 134, 143), image4.getPixelAt(1, 0));
+    assertEquals(new RgbPixel(61, 138, 143), image4.getPixelAt(1, 1));
+  }
+
+  // Test applying a filter that doesn't change an image with a large kernel matrix
+  @Test
+  public void testApplyIdentityOperation() {
+    ImageOperation identity = new FilterOperation(new double[][]{
+        {0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 1, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0}});
+    Image filtered = identity.apply(exampleImage2);
+    assertEquals(exampleImage2, filtered);
   }
 
 
