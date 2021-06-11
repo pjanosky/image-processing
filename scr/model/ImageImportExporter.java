@@ -13,16 +13,17 @@ public interface ImageImportExporter {
   /**
    * Reads the file path from the user and imports the image as a {@code Image} format.
    *
-   * @param input the file path scanned from the user
+   * @param input an InputStream from which the image data is read
    * @return an imported image
    * @throws IOException if the to-be-imported image file fails to be parsed.
    */
   Image parseImage(InputStream input) throws IOException;
 
   /**
+   * Writes the contents of an image to a given output.
    *
-   * @param output
-   * @param image
+   * @param output the OutputStream to write the image data to
+   * @param image  the image to save
    * @throws IOException
    */
   void saveImage(OutputStream output, Image image) throws IOException;

@@ -14,24 +14,12 @@ public class PpmImportExporter implements ImageImportExporter {
 
   @Override
   public Image parseImage(InputStream input) throws IOException {
-    Scanner scanner = new Scanner(input);
-    StringBuilder builder = new StringBuilder();
+    Scanner scanner = new Scanner(removeComments(input));
 
-    // Remove comment lines
-    while (scanner.hasNextLine()) {
-      String line = scanner.nextLine();
-      if (line.charAt(0) != '#') {
-        builder.append(line).append(System.lineSeparator());
-      }
-    }
-
-    // Read file content
-    scanner = new Scanner(builder.toString());
-
-    // Parse file type
+    // Parse file token
     String token;
     try {
-       token = scanner.next();
+      token = scanner.next();
     } catch (NoSuchElementException e) {
       throw new IOException("Failed to read ppm image token.");
     }
@@ -63,7 +51,40 @@ public class PpmImportExporter implements ImageImportExporter {
       }
     }
 
-    // Create image
+    return createImage(pixels, maxValue);
+  }
+
+  /**
+   * Removes all of the comments lines from an InputStream. A comment line is denoted with a '#' as
+   * the first character on the line.
+   *
+   * @param input the input to remove comments from
+   * @return the contents of the input as a String with all of the comment lines removed
+   */
+  private static String removeComments(InputStream input) {
+    Scanner scanner = new Scanner(input);
+    StringBuilder builder = new StringBuilder();
+
+    // Remove comment lines
+    while (scanner.hasNextLine()) {
+      String line = scanner.nextLine();
+      if (line.charAt(0) != '#') {
+        builder.append(line).append(System.lineSeparator());
+      }
+    }
+    return builder.toString();
+  }
+
+  /**
+   * Creates a new image from a collection of pixels based on the max value specified in the image
+   * file.
+   *
+   * @param pixels   the pixels to create the image with
+   * @param maxValue the maximum value for colors in the image
+   * @return the created image object
+   * @throws IOException if the maximum value for colors is not supported
+   */
+  private static Image createImage(Pixel[][] pixels, int maxValue) throws IOException {
     switch (maxValue) {
       case 255:
         return new Image24Bit(pixels, false);
