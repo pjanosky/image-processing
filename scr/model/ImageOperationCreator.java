@@ -1,9 +1,21 @@
 package model;
 
 
+/**
+ * A factory class for creating different default ImageOperation objects.
+ */
 public class ImageOperationCreator {
 
+  /**
+   * Constructs a ImageOperation object based on a given type.
+   * @param type the type of Image Operation to Create
+   * @return the ImageOperationObject
+   */
   public static ImageOperation create(IMGOperationType type) {
+    if (type == null) {
+      throw new IllegalArgumentException("Image operation type must not be null");
+    }
+
     switch (type) {
       case BLUR:
         return new FilterOperation(new double[][]{
@@ -32,6 +44,10 @@ public class ImageOperationCreator {
     }
   }
 
+  /**
+   * Represents the different types of default ImageOperation that can be created
+   * with the {@link ImageOperationCreator} class.
+   */
   public enum IMGOperationType {
     BLUR, SHARPEN, GREYSCALE, SEPIA;
   }
