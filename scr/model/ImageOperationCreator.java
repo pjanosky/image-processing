@@ -3,7 +3,7 @@ package model;
 
 public class ImageOperationCreator {
 
-  public ImageOperation create(IMGOperationType type) {
+  public static ImageOperation create(IMGOperationType type) {
     switch (type) {
       case BLUR:
         return new FilterOperation(new double[][]{

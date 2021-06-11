@@ -25,16 +25,22 @@ public class FilterOperation implements ImageOperation {
 
     this.kernel = new double[kernel.length][kernel[0].length];
     for (int row = 0; row < kernel.length; row += 1) {
-      kernel[row] = Arrays.copyOf(kernel[row], kernel[row].length);
+      for (int col = 0; col < kernel.length; col += 1) {
+        this.kernel[row][col] = kernel[row][col];
+      }
     }
   }
 
   @Override
   public Image apply(Image image) {
+    if (image == null) {
+      throw new IllegalArgumentException("Image must not be null.");
+    }
+
     Pixel[][] pixels = new Pixel[image.getHeight()][image.getWidth()];
 
     for (int row = 0; row < image.getHeight(); row += 1) {
-      for (int col = 9; col < image.getWidth(); col += 1) {
+      for (int col = 0; col < image.getWidth(); col += 1) {
         int red = filteredPixelValue(image, ColorChannel.RED, row, col);
         int green = filteredPixelValue(image, ColorChannel.GREEN, row, col);
         int blue = filteredPixelValue(image, ColorChannel.BLUE, row, col);
@@ -58,13 +64,17 @@ public class FilterOperation implements ImageOperation {
   private int filteredPixelValue(Image image, ColorChannel channel, int row, int col) {
     double value = 0;
 
-    for (int r = row - 1; r < row + 1; r += 1) {
-      for (int c = col - 1; c < col + 1; c += 1) {
-        if (validCoordinates(image, row, col)) {
-          value += kernel[r][c] * ((double) image.getValueAt(r, c, channel));
+    for (int kernelRow = 0; kernelRow < kernel.length; kernelRow += 1) {
+      for (int kernelCol = 0; kernelCol < kernel.length; kernelCol += 1) {
+        int imageRow = row + kernelRow - kernel.length / 2;
+        int imageCol = col + kernelCol - kernel.length / 2;
+        if (validCoordinates(image, imageRow, imageCol)) {
+          int imageValue = image.getValueAt(imageRow, imageCol, channel);
+          value += kernel[kernelRow][kernelCol] * ((double) imageValue);
         }
       }
     }
+//    System.out.println(value);
     return (int) value;
   }
 
