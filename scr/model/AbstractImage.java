@@ -2,6 +2,12 @@ package model;
 
 import java.util.Arrays;
 
+/**
+ * An abstract class representing an image as a 2-dimensional array of pixels.
+ *
+ * <p>Different AbstractImage implementations should work together by using all of the pixels in the
+ * image for the equals method and the hashCode method.
+ */
 public abstract class AbstractImage implements Image {
 
   private final Pixel[][] pixels;
@@ -11,8 +17,8 @@ public abstract class AbstractImage implements Image {
    * Constructs a new image from a 2-dimensional array of pixels.
    *
    * @param pixels a two-dimensional array of the pixels in the image where each inner array
-   *               represents a row of pixel valuesRows are from top to bottom, and pixels *
-   *               in a row are from left to right.
+   *               represents a row of pixel valuesRows are from top to bottom, and pixels * in a
+   *               row are from left to right.
    * @param clamp  whether to clamp the pixel values to the allowed range. Values above the maximum
    *               value will be set to the maximum, values below the minimum value will be set to
    *               the minimum.
@@ -39,8 +45,8 @@ public abstract class AbstractImage implements Image {
    * from a 2-dimensional array of pixels.
    *
    * @param pixels a two-dimensional array of the pixels in the image where each inner array *
-   *                       represents a row of pixel values. Rows are from top to bottom, and pixels
-   *               in a row are from left to right.
+   *               represents a row of pixel values. Rows are from top to bottom, and pixels in a
+   *               row are from left to right.
    * @throws IllegalArgumentException if the pixel color values are outside the allowed range for
    *                                  this image.
    */

@@ -1,8 +1,11 @@
 package model;
 
 /**
- * Represents a image processing algorithm that applies a 2D kernel to an Image to change its
- * appearance.
+ * Represents a image processing operation that applies a 2D kernel to pixel values in
+ * each color channel to alter the appearance of an image. Color values of surrounding
+ * Pixels are multiplied by their corresponding value in the kernel to produce the new
+ * color value for a given pixel in the image. This is repeated for each color channel
+ * in the image.
  */
 public class FilterOperation implements ImageOperation {
 
@@ -12,8 +15,9 @@ public class FilterOperation implements ImageOperation {
    * Constructs a new FilterOperation from the given kernel.
    *
    * @param kernel the kernel of the filter
-   * @throws IllegalArgumentException if the kernel is invalid. A valid kernel is a non-empty,
-   *                                  odd-dimensioned, square 2d array.
+   * @throws IllegalArgumentException if any of the arguments are null or the kernel is invalid. A
+   *                                  valid kernel is a non-empty, odd-dimensioned, square 2d
+   *                                  array.
    */
   public FilterOperation(double[][] kernel) throws IllegalArgumentException {
     if (kernel == null) {
@@ -72,7 +76,6 @@ public class FilterOperation implements ImageOperation {
         }
       }
     }
-//    System.out.println(value);
     return (int) value;
   }
 

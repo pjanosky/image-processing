@@ -1,9 +1,20 @@
 package model;
 
+/**
+ * Represents an image processing operation that applies a linear transformation to the color values
+ * in an image to alter the appearance of an image. For every pixel in the image, the RGB value is
+ * transformed by the given matrix.
+ */
 public class ColorTransformation implements ImageOperation {
 
   private final double[][] matrix;
 
+  /**
+   * Constructs a new ColorTransformation from the given matrix.
+   *
+   * @param matrix the linear transformation to apply to pixel color values in the image.
+   * @throws IllegalArgumentException if the matrix is null or is not 3x3 in size.
+   */
   public ColorTransformation(double[][] matrix) throws IllegalArgumentException {
     if (matrix == null) {
       throw new IllegalArgumentException("The matrix cannot be null!");
