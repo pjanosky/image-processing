@@ -64,7 +64,7 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
     }
     try {
       InputStream input = new FileInputStream(file);
-      currentImage = importExporter.parseImage(input);
+      setImage(importExporter.parseImage(input));
     } catch (IOException e) {
       throw new IllegalArgumentException("Failed to read file.");
     }

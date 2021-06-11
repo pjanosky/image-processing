@@ -36,12 +36,13 @@ public class TestController {
     };
 
     for (String filePath : imageFilePaths) {
+      model.importImage(importExporter, filePath);
       for (IMGOperationType opType : operations) {
-        model.importImage(importExporter, filePath);
         model.applyOperation(ImageOperationCreator.create(opType));
         String newPath = filePath.replace(".ppm",
             "_" + opType.name().toLowerCase() + ".ppm");
         model.exportCurrentImage(importExporter, newPath);
+        model.revert();
       }
     }
   }
