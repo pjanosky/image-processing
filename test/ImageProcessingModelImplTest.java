@@ -1,12 +1,13 @@
 import static org.junit.Assert.*;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import model.Image;
-import model.Image24Bit;
+import model.ImageImportExporter;
 import model.ImageOperationCreator;
 import model.ImageOperationCreator.IMGOperationType;
 import model.ImageProcessingModel;
 import model.ImageProcessingModelImpl;
-import model.Pixel;
 import model.PpmImportExporter;
 import model.RgbPixel;
 import org.junit.Test;
@@ -17,7 +18,7 @@ public class ImageProcessingModelImplTest {
   public void testSetCurrentImageWithNullValue() {
     ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
 
-    exampleModel.setCurrentImage(null);
+    exampleModel.setImage(null);
   }
 
   @Test
@@ -26,15 +27,16 @@ public class ImageProcessingModelImplTest {
     Image exampleImage = ImageExamples.rainbow(1, 1);
 
     assertEquals(null, exampleModel.getCurrentImage());
-    exampleModel.setCurrentImage(exampleImage);
+    exampleModel.setImage(exampleImage);
     assertEquals(exampleImage, exampleModel.getCurrentImage());
+    assertEquals(exampleImage, exampleModel.getOriginalImage());
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testApplyOperationWithNullValues() {
     ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
     Image exampleImage = ImageExamples.rainbow(1, 1);
-    exampleModel.setCurrentImage(exampleImage);
+    exampleModel.setImage(exampleImage);
 
     exampleModel.applyOperation(null);
   }
@@ -44,7 +46,7 @@ public class ImageProcessingModelImplTest {
     Image exampleImage = ImageExamples.rainbow(10, 2);
 
     ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
-    exampleModel.setCurrentImage(exampleImage);
+    exampleModel.setImage(exampleImage);
     exampleModel.applyOperation(
         new ImageOperationCreator().create(IMGOperationType.SHARPEN));
 
@@ -83,7 +85,7 @@ public class ImageProcessingModelImplTest {
         new RgbPixel(0, 0, 255));
 
     ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
-    exampleModel.setCurrentImage(exampleImage);
+    exampleModel.setImage(exampleImage);
     exampleModel.applyOperation(
         new ImageOperationCreator().create(IMGOperationType.BLUR));
 
@@ -111,7 +113,7 @@ public class ImageProcessingModelImplTest {
     Image exampleImage = ImageExamples.rainbow(1, 1);
 
     ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
-    exampleModel.setCurrentImage(exampleImage);
+    exampleModel.setImage(exampleImage);
     exampleModel.applyOperation(
         new ImageOperationCreator().create(IMGOperationType.GREYSCALE));
 
@@ -134,7 +136,7 @@ public class ImageProcessingModelImplTest {
     Image exampleImage = ImageExamples.rainbow(1, 1);
 
     ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
-    exampleModel.setCurrentImage(exampleImage);
+    exampleModel.setImage(exampleImage);
     exampleModel.applyOperation(
         new ImageOperationCreator().create(IMGOperationType.SEPIA));
 
@@ -158,7 +160,7 @@ public class ImageProcessingModelImplTest {
     Image exampleImage = ImageExamples.rainbow(1, 1);
 
     ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
-    exampleModel.setCurrentImage(exampleImage);
+    exampleModel.setImage(exampleImage);
     exampleModel.applyOperation(
         new ImageOperationCreator().create(IMGOperationType.SEPIA));
     exampleModel.applyOperation(
@@ -203,7 +205,7 @@ public class ImageProcessingModelImplTest {
   public void testExportCurrentImage() {
     ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
     Image exampleImage = ImageExamples.rainbow(10,2);
-    exampleModel.setCurrentImage(exampleImage);
+    exampleModel.setImage(exampleImage);
 
     exampleModel.exportCurrentImage(new PpmImportExporter(), "image.ppm");
   }
@@ -242,9 +244,37 @@ public class ImageProcessingModelImplTest {
   public void testGetCurrentImage() {
     ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
     Image exampleImage = ImageExamples.rainbow(10,2);
-    exampleModel.setCurrentImage(exampleImage);
+    exampleModel.setImage(exampleImage);
 
     assertEquals(exampleImage, exampleModel.getCurrentImage());
+  }
+
+  @Test
+  public void testGetOriginalImage() {
+    ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
+    Image exampleImage = ImageExamples.rainbow(10, 2);
+    exampleModel.setImage(exampleImage);
+
+    exampleModel.applyOperation(ImageOperationCreator.create(IMGOperationType.BLUR));
+    exampleModel.applyOperation(ImageOperationCreator.create(IMGOperationType.SEPIA));
+
+    assertEquals(exampleImage, exampleModel.getOriginalImage());
+  }
+
+  @Test
+  public void testRevert() {
+    ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
+    Image exampleImage = ImageExamples.rainbow(10, 2);
+    exampleModel.setImage(exampleImage);
+
+    exampleModel.applyOperation(ImageOperationCreator.create(IMGOperationType.BLUR));
+    exampleModel.applyOperation(ImageOperationCreator.create(IMGOperationType.SEPIA));
+
+    exampleModel.revert();
+    assertEquals(exampleModel.getOriginalImage(), exampleModel.getCurrentImage());
+    assertEquals(exampleImage, exampleModel.getOriginalImage());
+    assertEquals(exampleImage, exampleModel.getCurrentImage());
+
   }
 
 }
