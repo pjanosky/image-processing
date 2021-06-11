@@ -15,12 +15,9 @@ public class ColorTransformationTest {
 
   // Test constructing a ColorTransformation object with null matrix
   @Test(expected = IllegalArgumentException.class)
-  public void testConstructorWithInvalidMatrix() {
+  public void testConstructorWithNullMatrix() {
     //null value for matrix
     new ColorTransformation(null);
-
-    //non 3 by 3 matrix in size:
-    new ColorTransformation(new double[3][1]);
   }
 
   // Test constructing a ColorTransformation object with matrix with an invalid number of columns

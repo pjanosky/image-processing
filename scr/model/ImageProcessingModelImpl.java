@@ -36,7 +36,7 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
 
       OutputStream output = new FileOutputStream(file);
       importExporter.saveImage(output, getCurrentImage());
-    } catch(IOException e) {
+    } catch (IOException e) {
       throw new IllegalArgumentException("Could not create a new file.");
     }
   }
@@ -50,7 +50,7 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
     try {
       InputStream input = new FileInputStream(file);
       setCurrentImage(importExporter.parseImage(input));
-    } catch(IOException e) {
+    } catch (IOException e) {
       throw new IllegalArgumentException("Failed to read file.");
     }
   }
