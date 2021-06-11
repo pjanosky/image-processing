@@ -1,7 +1,9 @@
-package model;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
+import model.Image;
+import model.Image24Bit;
+import model.PPMImportExporter;
+import model.Pixel;
 
 /**
  * A class for generating different types of example images for testing.

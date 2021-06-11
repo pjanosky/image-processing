@@ -1,7 +1,9 @@
-package model;
-
 import static org.junit.Assert.*;
 
+import model.ColorChannel;
+import model.Image;
+import model.Image24Bit;
+import model.Pixel;
 import org.junit.Test;
 
 public class Image24BitTest {
@@ -108,7 +110,7 @@ public class Image24BitTest {
   @Test(expected = IllegalArgumentException.class)
   public void testGetValueAtWithInvalidRowsAndCols() {
     //negative row index:
-    exampleImage.getValueAt(-1,0,ColorChannel.RED);
+    exampleImage.getValueAt(-1,0, ColorChannel.RED);
 
     //row index out of bounds:
     exampleImage.getValueAt(3,0, ColorChannel.RED);

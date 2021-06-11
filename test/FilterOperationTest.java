@@ -1,8 +1,12 @@
-package model;
-
 import static org.junit.Assert.assertEquals;
 
+import model.FilterOperation;
+import model.Image;
+import model.Image24Bit;
+import model.ImageOperation;
+import model.ImageOperationCreator;
 import model.ImageOperationCreator.IMGOperationType;
+import model.Pixel;
 import org.junit.Test;
 
 /**

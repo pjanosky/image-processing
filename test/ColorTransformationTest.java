@@ -1,7 +1,6 @@
-package model;
-
 import static org.junit.Assert.*;
 
+import model.ColorTransformation;
 import model.ImageOperationCreator.IMGOperationType;
 import org.junit.Test;
 
