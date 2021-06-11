@@ -7,10 +7,18 @@ import model.ImageOperationCreator.IMGOperationType;
 import model.ImageProcessingModel;
 import model.ImageProcessingModelImpl;
 import model.Pixel;
+import model.PpmImportExporter;
 import model.RgbPixel;
 import org.junit.Test;
 
 public class ImageProcessingModelImplTest {
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testSetCurrentImageWithNullValue() {
+    ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
+
+    exampleModel.setCurrentImage(null);
+  }
 
   @Test
   public void testSetCurrentImage() {
@@ -20,6 +28,15 @@ public class ImageProcessingModelImplTest {
     assertEquals(null, exampleModel.getCurrentImage());
     exampleModel.setCurrentImage(exampleImage);
     assertEquals(exampleImage, exampleModel.getCurrentImage());
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testApplyOperationWithNullValues() {
+    ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
+    Image exampleImage = ImageExamples.rainbow(1, 1);
+    exampleModel.setCurrentImage(exampleImage);
+
+    exampleModel.applyOperation(null);
   }
 
   @Test
@@ -135,4 +152,99 @@ public class ImageProcessingModelImplTest {
         exampleModel.getCurrentImage().getPixelAt(5, 0));
 
   }
+
+  @Test
+  public void testApplyOperationSepiaThenGreyscale() {
+    Image exampleImage = ImageExamples.rainbow(1, 1);
+
+    ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
+    exampleModel.setCurrentImage(exampleImage);
+    exampleModel.applyOperation(
+        new ImageOperationCreator().create(IMGOperationType.SEPIA));
+    exampleModel.applyOperation(
+        new ImageOperationCreator().create(IMGOperationType.GREYSCALE));
+
+    assertEquals(new RgbPixel(69, 69, 69),
+        exampleModel.getCurrentImage().getPixelAt(0, 0));
+    assertEquals(new RgbPixel(122, 122, 122),
+        exampleModel.getCurrentImage().getPixelAt(1, 0));
+    assertEquals(new RgbPixel(208, 208, 208),
+        exampleModel.getCurrentImage().getPixelAt(2, 0));
+    assertEquals(new RgbPixel(138, 138, 138),
+        exampleModel.getCurrentImage().getPixelAt(3, 0));
+    assertEquals(new RgbPixel(33, 33, 33),
+        exampleModel.getCurrentImage().getPixelAt(4, 0));
+    assertEquals(new RgbPixel(89, 89, 89),
+        exampleModel.getCurrentImage().getPixelAt(5, 0));
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testExportCurrentImageWithADirectoryAsFilePath() {
+    ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
+
+    exampleModel.importImage(new PpmImportExporter(), "/res");
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testExportCurrentImageWithNullValueAsImportExporter() {
+    ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
+
+    exampleModel.importImage(null, "image.ppm");
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testExportCurrentImageWithNullValueAsFilePath() {
+    ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
+
+    exampleModel.importImage(new PpmImportExporter(), null);
+  }
+
+  @Test
+  public void testExportCurrentImage() {
+    ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
+    Image exampleImage = ImageExamples.rainbow(10,2);
+    exampleModel.setCurrentImage(exampleImage);
+
+    exampleModel.exportCurrentImage(new PpmImportExporter(), "image.ppm");
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testImportImageWithANullImportExporter() {
+    ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
+
+    exampleModel.importImage(null, "image.ppm");
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testImportImageWithANullFilePath() {
+    ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
+
+    exampleModel.importImage(new PpmImportExporter(), null);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testImportImageWithANonexistentFilePath() {
+    ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
+
+    exampleModel.importImage(new PpmImportExporter(), "image1.ppm");
+  }
+
+  @Test
+  public void testImportImage() {
+    ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
+    Image exampleImage = ImageExamples.rainbow(10,2);
+    exampleModel.importImage(new PpmImportExporter(), "image.ppm");
+
+    assertEquals(exampleImage, exampleModel.getCurrentImage());
+  }
+
+  @Test
+  public void testGetCurrentImage() {
+    ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
+    Image exampleImage = ImageExamples.rainbow(10,2);
+    exampleModel.setCurrentImage(exampleImage);
+
+    assertEquals(exampleImage, exampleModel.getCurrentImage());
+  }
+
 }

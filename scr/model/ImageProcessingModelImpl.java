@@ -17,17 +17,25 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
 
   @Override
   public void setCurrentImage(Image image) {
+    if (image == null) {
+      throw new IllegalArgumentException("An image cannot be null!");
+    }
     this.currentImage = image;
   }
 
   @Override
   public void applyOperation(ImageOperation operation) {
+    if (operation == null) {
+      throw new IllegalArgumentException("An operation object cannot be null!");
+    }
     setCurrentImage(operation.apply(getCurrentImage()));
-
   }
 
   @Override
   public void exportCurrentImage(ImageImportExporter importExporter, String filePath) {
+    if (importExporter == null || filePath == null) {
+      throw new IllegalArgumentException("The import-exporter or file path is null!");
+    }
     File file = new File(filePath);
     try {
       if (file.exists()) {
@@ -44,6 +52,9 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
 
   @Override
   public void importImage(ImageImportExporter importExporter, String filePath) {
+    if (importExporter == null || filePath == null) {
+      throw new IllegalArgumentException("The import-exporter or file path is null!");
+    }
     File file = new File(filePath);
     if (!file.exists()) {
       throw new IllegalArgumentException("File does not exist.");
