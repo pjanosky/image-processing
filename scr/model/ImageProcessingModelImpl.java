@@ -22,7 +22,8 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
 
   @Override
   public void applyOperation(ImageOperation operation) {
-    operation.apply(getCurrentImage());
+    setCurrentImage(operation.apply(getCurrentImage()));
+
   }
 
   @Override
