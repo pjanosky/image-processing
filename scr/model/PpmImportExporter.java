@@ -85,11 +85,10 @@ public class PpmImportExporter implements ImageImportExporter {
    * @throws IOException if the maximum value for colors is not supported
    */
   private static Image createImage(Pixel[][] pixels, int maxValue) throws IOException {
-    switch (maxValue) {
-      case 255:
-        return new Image24Bit(pixels, false);
-      default:
-        throw new IOException("Invalid bit number.");
+    if (maxValue == 255) {
+      return new Image24Bit(pixels, false);
+    } else {
+      throw new IOException("Invalid bit number.");
     }
   }
 

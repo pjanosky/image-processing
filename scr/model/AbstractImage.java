@@ -108,14 +108,14 @@ public abstract class AbstractImage implements Image {
   }
 
   /**
-   * Returns the minimum allowed value for color values in this image
+   * Returns the minimum allowed value for color values in this image.
    *
    * @return the minimum allowed color value
    */
   protected abstract int minValue();
 
   /**
-   * Returns the maximum allowed value for color values in this image
+   * Returns the maximum allowed value for color values in this image.
    *
    * @return the maximum allowed color value
    */

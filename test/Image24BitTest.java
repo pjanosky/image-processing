@@ -10,7 +10,7 @@ import model.RgbPixel;
 import org.junit.Test;
 
 /**
- * Tests for the Image24Bit class
+ * Tests the Image24Bit class.
  */
 public class Image24BitTest {
 

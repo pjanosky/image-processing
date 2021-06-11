@@ -37,7 +37,7 @@ public class ImageExamples {
   }
 
   /**
-   * Generates a rainbow image
+   * Generates a rainbow image.
    *
    * @param width        the width of the image in pixels
    * @param stripeHeight the height of each color stripe in the rainbow

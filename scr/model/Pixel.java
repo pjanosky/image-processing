@@ -2,6 +2,7 @@ package model;
 
 /**
  * Represents one pixel in an image.
+ *
  * <p>Different pixel implementations should be immutable from a client's perspective.
  *
  * <p>Different Implementation of Pixel should work together by using {@code getRedValue()}, {@code

@@ -27,11 +27,6 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
   }
 
   @Override
-  public void setCurrentImage(Image image) {
-
-  }
-
-  @Override
   public void setImage(Image image) {
     if (image == null) {
       throw new IllegalArgumentException("An image cannot be null!");

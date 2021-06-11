@@ -9,12 +9,10 @@ public interface ImageProcessingModel extends ImageProcessingModelState {
 
 
   /**
-   * Sets the given image as the current image of the model.
+   * Sets the given image as the current image to be edited in the model.
    *
    * @param image the image to set as the current image as
    */
-  void setCurrentImage(Image image);
-
   void setImage(Image image);
 
 

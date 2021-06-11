@@ -28,7 +28,7 @@ public class ImageProcessingModelImplTest {
 
   // Tests if the model sets the given image as the current image within th model.
   @Test
-  public void testSetCurrentImage() {
+  public void testSettImage() {
     ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
     Image exampleImage = ImageExamples.rainbow(1, 1);
 
