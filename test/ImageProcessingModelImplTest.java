@@ -11,8 +11,12 @@ import model.PpmImportExporter;
 import model.RgbPixel;
 import org.junit.Test;
 
+/**
+ * Tests all the methods from ImageProcessingModelImpl class
+ */
 public class ImageProcessingModelImplTest {
 
+  //tests if an illegal argument exception is thrown a null value as the image has been passed
   @Test(expected = IllegalArgumentException.class)
   public void testSetCurrentImageWithNullValue() {
     ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
@@ -20,6 +24,7 @@ public class ImageProcessingModelImplTest {
     exampleModel.setCurrentImage(null);
   }
 
+  //tests if the model sets the given image as the current image within th model
   @Test
   public void testSetCurrentImage() {
     ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
@@ -30,6 +35,8 @@ public class ImageProcessingModelImplTest {
     assertEquals(exampleImage, exampleModel.getCurrentImage());
   }
 
+  //tests if an illegal argument exception is thrown when a null value was passed as the operation
+  // parameter
   @Test(expected = IllegalArgumentException.class)
   public void testApplyOperationWithNullValues() {
     ImageProcessingModel exampleModel = new ImageProcessingModelImpl();
@@ -39,6 +46,7 @@ public class ImageProcessingModelImplTest {
     exampleModel.applyOperation(null);
   }
 
+  //tests the sharpen operation on the image
   @Test
   public void testApplyOperationSharpen() {
     Image exampleImage = ImageExamples.rainbow(10, 2);
@@ -76,6 +84,7 @@ public class ImageProcessingModelImplTest {
 
   }
 
+  //tests the blur operation on the image
   @Test
   public void testApplyOperationBlur() {
     Image exampleImage = ImageExamples.checkerboard(2, 2, 2, 2,
@@ -106,6 +115,7 @@ public class ImageProcessingModelImplTest {
         exampleModel.getCurrentImage().getPixelAt(1, 3));
   }
 
+  //tests the greyscale operation on the image
   @Test
   public void testApplyOperationGreyscale() {
     Image exampleImage = ImageExamples.rainbow(1, 1);
@@ -129,6 +139,7 @@ public class ImageProcessingModelImplTest {
         exampleModel.getCurrentImage().getPixelAt(5, 0));
   }
 
+  //tests the sepia operation on the image
   @Test
   public void testApplyOperationSepia() {
     Image exampleImage = ImageExamples.rainbow(1, 1);
@@ -153,6 +164,7 @@ public class ImageProcessingModelImplTest {
 
   }
 
+  //tests the greyscale operation on the image
   @Test
   public void testApplyOperationSepiaThenGreyscale() {
     Image exampleImage = ImageExamples.rainbow(1, 1);

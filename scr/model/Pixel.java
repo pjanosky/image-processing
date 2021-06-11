@@ -1,7 +1,7 @@
 package model;
 
 /**
- * Represents the color of one pixel in an image.
+ * Represents one pixel in an image.
  *
  * Different Implementation of Pixel should work together by using {@code getRedValue()},
  * {@code getGreenValue()}, and {@code getBlueValue()} for the equals and hashCode methods.
