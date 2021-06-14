@@ -19,6 +19,8 @@ public interface ImageProcessingModel extends ImageProcessingModelState {
 
   void setCurrentLayer(String name);
 
+  void showLayer(String name, boolean isVisible);
+
 //   add back if we need it
 //   void setLayerName(String layerName, String newName);
 
@@ -29,25 +31,7 @@ public interface ImageProcessingModel extends ImageProcessingModelState {
    *
    * @param operation the operation to be done on the current image
    */
-  void applyOperation(ImageOperation operation);
-
-  /**
-   * Exports the current image of the model as a file.
-   *
-   * @param importExporter the appropriate import-exporter for the wanted file format
-   * @param filePath       the file path for the to-be-exported file
-   */
-  void exportCurrentImage(ImageImportExporter importExporter, String filePath);
-
-  /**
-   * Imports the given file as an Image object and set as the current image of the model.
-   *
-   * @param importExporter the appropriate import-exporter for the given file
-   * @param filePath       the file path to the to-be-imported file
-   */
-  void importImage(ImageImportExporter importExporter, String filePath);
-
-  void revert();
+  void applyOperation(String name, ImageOperation operation);
 }
 
 

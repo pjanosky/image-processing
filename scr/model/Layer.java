@@ -8,6 +8,10 @@ public interface Layer {
   Image getImage();
 
   void apply(ImageOperation operation);
+  
+  void show(boolean isVisible);
+  
+  boolean isVisible();
 }
 
 /*

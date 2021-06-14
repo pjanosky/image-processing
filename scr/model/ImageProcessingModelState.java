@@ -14,5 +14,46 @@ public interface ImageProcessingModelState {
    */
   Image getCurrentImage();
 
-  Image getOriginalImage();
+
+
+  // Option 1
+  boolean isLayerVisible(String name);
+
+  // gets an image from a specific layer
+  Image getImage(String layerName);
+
+  String layerName(int index);
+
+  int getNumLayers();
+
+
+  // get the combination of blending all the visible layers (for assignment 7)
+//   Image ...();
+
+
+
+
+
+  // Option 2
+//  Layer getLayer(String name);
 }
+
+/*
+
+Blur applied to layer first
+
+
+1. first "manhattan.png" (visible) <-- we can change if we figure out a way to represent visibility
+2. second
+3. thrid
+
+
+
+Controller
+get of number of layers
+for i = 0; i < num of layers; i ++ {
+  get the name of layer i
+  get the file name of layer i
+  get the visibility of layer i
+}
+*/
