@@ -3,7 +3,7 @@ package model;
 public interface Layer {
   String getName();
 
-  void setImage();
+  void setImage(Image image);
 
   Image getImage();
 
@@ -12,6 +12,8 @@ public interface Layer {
   void show(boolean isVisible);
   
   boolean isVisible();
+
+  void setName(String name);
 }
 
 /*
