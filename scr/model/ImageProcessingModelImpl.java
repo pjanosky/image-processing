@@ -36,6 +36,26 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
   }
 
   @Override
+  public void addLayer(String name) {
+
+  }
+
+  @Override
+  public void setCurrentLayer(String name) {
+
+  }
+
+  @Override
+  public void showLayer(String name, boolean isVisible) {
+
+  }
+
+  @Override
+  public void applyOperation(String name, ImageOperation operation) {
+
+  }
+
+  @Override
   public void applyOperation(ImageOperation operation) {
     if (operation == null) {
       throw new IllegalArgumentException("An operation object cannot be null!");
@@ -79,15 +99,35 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
     }
   }
 
-  @Override
-  public void revert() {
-    currentImage = originalImage;
-  }
+//  @Override
+//  public void revert() {
+//    currentImage = originalImage;
+//  }
 
   @Override
   public Image getCurrentImage() {
     // Images are immutable so it's ok to just return the field.
     return currentImage;
+  }
+
+  @Override
+  public boolean isLayerVisible(String name) {
+    return false;
+  }
+
+  @Override
+  public Image getImage(String layerName) {
+    return null;
+  }
+
+  @Override
+  public String layerName(int index) {
+    return null;
+  }
+
+  @Override
+  public int getNumLayers() {
+    return 0;
   }
 
   @Override
