@@ -1,21 +1,20 @@
 package view;
 
-import java.io.OutputStream;
-import java.io.PrintStream;
+import java.io.IOException;
 import model.ImageProcessingModelState;
 
 public class ImageProcessingTextView implements ImageProcessingView {
 
   private final ImageProcessingModelState model;
-  private final PrintStream out;
+  private final Appendable output;
 
-  public ImageProcessingTextView(ImageProcessingModelState model, OutputStream output) {
+  public ImageProcessingTextView(ImageProcessingModelState model, Appendable output) {
     this.model = model;
-    this.out = new PrintStream(output);
+    this.output = output;
   }
 
   @Override
-  public void renderLayers() {
+  public void renderLayers() throws IOException {
     StringBuilder result = new StringBuilder();
     for (int index = 0; index < model.numLayers(); index += 1) {
       String name = model.getLayerNameAt(index);
@@ -33,12 +32,12 @@ public class ImageProcessingTextView implements ImageProcessingView {
       result.append(')').append(System.lineSeparator());
     }
     result.deleteCharAt(result.length() - 1);
-    out.print(result.toString());
+    output.append(result.toString());
   }
 
   @Override
-  public void renderMessage(String message) {
-    out.print(message);
+  public void renderMessage(String message) throws IOException {
+    output.append(message);
   }
 }
 
