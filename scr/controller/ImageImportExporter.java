@@ -1,8 +1,9 @@
-package model;
+package controller;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import model.Image;
 
 /**
  * Represents and encapsulates different types of image import/exporters. Each class which

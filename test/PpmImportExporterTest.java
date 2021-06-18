@@ -8,10 +8,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import model.Image;
 import model.Image24Bit;
-import model.ImageImportExporter;
+import controller.ImageImportExporter;
 import model.Pixel;
 import model.RgbPixel;
-import model.PpmImportExporter;
+import controller.PpmImportExporter;
 import org.junit.Test;
 
 /**
@@ -131,30 +131,6 @@ public class PpmImportExporterTest {
     } catch (IOException e) {
       fail("Failed to read image from input stream.");
       return null;
-    }
-  }
-
-  /**
-   * A InputStream implementation that throws an exception whenever data is read. Intended to be
-   * used for testing how error handling.
-   */
-  private static class FailInputStream extends InputStream {
-
-    @Override
-    public int read() throws IOException {
-      throw new IOException();
-    }
-  }
-
-  /**
-   * An OutputStream implementation the throws an exception whenever data is written. Intended to be
-   * used for testing error handling.
-   */
-  private static class FailOutputStream extends OutputStream {
-
-    @Override
-    public void write(int b) throws IOException {
-      throw new IOException();
     }
   }
 }

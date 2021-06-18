@@ -1,10 +1,14 @@
-package model;
+package controller;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+import model.Image;
+import model.Image24Bit;
+import model.Pixel;
+import model.RgbPixel;
 
 /**
  * Represents an image importer and exporter for PPM formatted files. This object will be called
