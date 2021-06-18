@@ -37,6 +37,6 @@ public class LoadCommand implements ControllerCommand {
       throw new IllegalArgumentException("Failed to save the image.");
     }
 
-    model.setCurrentLayerImage(parsedImage);
+    model.setCurrentImage(parsedImage);
   }
 }

@@ -7,25 +7,26 @@ package model;
  */
 public interface ImageProcessingModel extends ImageProcessingModelState {
 
-  void addLayer(String name);
+  void addLayer(String name) throws IllegalArgumentException;
 
-  void setCurrentLayer(String name);
+  void setCurrentLayer(String name) throws IllegalArgumentException;
 
-  void setCurrentLayerImage(Image imageToSet);
+  void setCurrentImage(Image image) throws IllegalArgumentException, IllegalStateException;
 
-  void setLayerImage(String layerName, Image imageToSet);
+  void setLayerImage(String layerName, Image image) throws IllegalArgumentException;
 
   //shows or hides the current layer
-  void showCurrent(boolean isVisible);
+  void showCurrent(boolean isVisible) throws IllegalArgumentException, IllegalStateException;
 
-  //shows or hides the given layer
-  void show(String layerName, boolean isVisible);
+  void showLayer(String layerName, boolean isVisible) throws IllegalArgumentException;
 
-  void applyOperationCurrent(ImageOperation operation);
+  void applyOperationCurrent(ImageOperation operation) throws IllegalArgumentException, IllegalStateException;
 
-  void applyOperation(String layerName, ImageOperation operation);
+  void applyOperationLayer(String layerName, ImageOperation operation) throws IllegalArgumentException;
 
-  void removeLayer(String name);
+  void removeCurrent() throws IllegalArgumentException, IllegalStateException;
+
+  void removeLayer(String layerName) throws IllegalArgumentException;
 
 
 //   add back if we need it

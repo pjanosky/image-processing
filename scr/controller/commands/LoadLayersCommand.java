@@ -50,7 +50,7 @@ public class LoadLayersCommand implements ControllerCommand {
       String layerName = args[0];
       boolean isVisible = Boolean.parseBoolean(args[1]);
       model.addLayer(layerName);
-      model.show(layerName, isVisible);
+      model.showCurrent(isVisible);
       if (args.length == 3) {
         model.setLayerImage(layerName, loadImage(args[2]));
       }

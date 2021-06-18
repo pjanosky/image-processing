@@ -11,6 +11,6 @@ public class RemoveCommand implements ControllerCommand {
       throw new IllegalArgumentException("Model cannot be null");
     }
 
-    model.removeLayer(model.getCurrentName());
+    model.removeCurrent();
   }
 }

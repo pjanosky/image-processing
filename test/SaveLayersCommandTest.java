@@ -1,5 +1,3 @@
-import static org.junit.Assert.*;
-
 import controller.commands.SaveLayersCommand;
 import model.ImageProcessingModel;
 import model.ImageProcessingModelImpl;
@@ -14,7 +12,7 @@ public class SaveLayersCommandTest {
     model.addLayer("rainbow");
     model.setLayerImage("rainbow", ImageExamples.rainbow(30, 2));
     model.addLayer("checkerboard");
-    model.show("checkerboard", false);
+    model.showLayer("checkerboard", false);
     model.setLayerImage("checkerboard",
         ImageExamples.checkerboard(5, 5, 5, 5,
             new RgbPixel(255, 0, 0),

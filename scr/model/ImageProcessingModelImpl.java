@@ -2,7 +2,6 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * A implementation of the image processing model interface. The model manages the different layers
@@ -11,7 +10,7 @@ import java.util.Objects;
 public class ImageProcessingModelImpl implements ImageProcessingModel {
 
   private final List<Layer> layers;
-  private Layer current;
+  private String current;
 
   private static int layerIndexNum = 0;
 
@@ -39,70 +38,67 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
       layerIndexNum += 1;
     }
     Layer layer = new Layer24Bit(name);
-    layers.add(layer);
-    current = layer;
+    layers.add(0, layer);
+    current = name;
   }
 
   @Override
   public void setCurrentLayer(String name) {
-    current = getLayer(name);
+    if (!hasLayer(name)) {
+      throw new IllegalArgumentException("No layer named " + name + ".");
+    }
+    current = name;
   }
 
   @Override
-  public void setCurrentLayerImage(Image imageToSet) {
-    if (imageToSet == null) {
-      throw new IllegalArgumentException("The parameters cannot be null!");
-    }
-    current.setImage(imageToSet);
+  public void setCurrentImage(Image image) throws IllegalStateException {
+    setLayerImage(getCurrent(), image);
   }
 
   @Override
-  public void setLayerImage(String layerName, Image imageToSet) {
-    if (layerName == null || imageToSet == null) {
-      throw new IllegalArgumentException("The parameters cannot be null!");
+  public void setLayerImage(String layerName, Image image) {
+    if (layerName == null || image == null) {
+      throw new IllegalArgumentException("Arguments cannot be null.");
     }
-    getLayer(layerName).setImage(imageToSet);
+    getLayer(layerName).setImage(image);
   }
 
   @Override
   public void showCurrent(boolean isVisible) {
-    checkCurrent();
-    current.show(isVisible);
+    showLayer(current, isVisible);
   }
 
   @Override
-  public void show(String layerName, boolean isVisible) {
-    if (layerName == null) {
-      throw new IllegalArgumentException("The layer name cannot be null!");
-    }
+  public void showLayer(String layerName, boolean isVisible) {
     getLayer(layerName).show(isVisible);
   }
 
   @Override
   public void applyOperationCurrent(ImageOperation operation) {
-    checkCurrent();
-    current.apply(operation);
+    applyOperationLayer(current, operation);
   }
 
   @Override
-  public void applyOperation(String layerName, ImageOperation operation) {
-    if (layerName == null || operation == null) {
-      throw new IllegalArgumentException("The parameters cannot be null!");
-    }
-
+  public void applyOperationLayer(String layerName, ImageOperation operation) {
     getLayer(layerName).apply(operation);
-
   }
 
   @Override
-  public void removeLayer(String name) {
-    layers.remove(getLayer(name));
+  public void removeCurrent() {
+    removeLayer(current);
+  }
+
+  @Override
+  public void removeLayer(String layerName) {
+    layers.remove(getLayer(layerName));
+    if (layerName.equals(current)) {
+      current = null;
+    }
   }
 
   @Override
   public String getCurrentName() {
-    checkCurrent();
-    return current.getName();
+    return current;
   }
 
   @Override
@@ -154,12 +150,13 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
   }
 
   /**
-   * Checks whether there is a layer is stored as the current layer of the model.
+   * Returns the current layer is there is a current layer set.
    * @throws IllegalStateException if there is no layer (i.e., there is a null value).
    */
-  private void checkCurrent() throws IllegalStateException {
+  private String getCurrent() throws IllegalStateException {
     if (current == null) {
       throw new IllegalStateException("No current layer.");
     }
+    return current;
   }
 }
