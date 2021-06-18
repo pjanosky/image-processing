@@ -63,7 +63,7 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
         OperationType.SEPIA)));
     commands.put("greyscale", s -> new ImageProcessCommand(s.next(), ImageOperationCreator.create(
         OperationType.GREYSCALE)));
-    commands.put("script", s->new ScriptCommand(s.next()))
+    commands.put("script", s->new ScriptCommand(s.next()));
   }
 
   @Override
