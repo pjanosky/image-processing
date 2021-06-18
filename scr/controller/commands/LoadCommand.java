@@ -2,6 +2,7 @@ package controller.commands;
 
 import controller.ControllerCommand;
 import controller.ImageImportExporter;
+import controller.ImportExporterCreator;
 import controller.JpegImportExporter;
 import controller.PngImportExporter;
 import controller.PpmImportExporter;
@@ -24,19 +25,7 @@ public class LoadCommand implements ControllerCommand {
 
     this.layerName = layerName;
 
-    switch (format.toLowerCase()) {
-      case "ppm":
-        ie = new PpmImportExporter();
-        break;
-      case "jpeg":
-        ie = new JpegImportExporter();
-        break;
-      case "png":
-        ie = new PngImportExporter();
-        break;
-      default:
-        throw new IllegalArgumentException("Unsupported image file format.");
-    }
+    ie = ImportExporterCreator.create(format);
 
     try {
       input = new FileInputStream(filepath);

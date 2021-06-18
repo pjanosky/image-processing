@@ -2,6 +2,7 @@ package controller.commands;
 
 import controller.ControllerCommand;
 import controller.ImageImportExporter;
+import controller.ImportExporterCreator;
 import controller.JpegImportExporter;
 import controller.PngImportExporter;
 import controller.PpmImportExporter;
@@ -34,19 +35,8 @@ public class SaveCommand implements ControllerCommand {
     if (format == null || filePath == null) {
       throw new IllegalArgumentException("Arguments must not be null");
     }
-    switch (format.toLowerCase()) {
-      case "ppm":
-        ie = new PpmImportExporter();
-        break;
-      case "jpeg":
-        ie = new JpegImportExporter();
-        break;
-      case "png":
-        ie = new PngImportExporter();
-        break;
-      default:
-        throw new IllegalArgumentException("Unsupported image file format.");
-    }
+
+    ie = ImportExporterCreator.create(format);
 
     try {
       output = new FileOutputStream(filePath);
