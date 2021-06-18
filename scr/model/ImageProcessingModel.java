@@ -7,31 +7,19 @@ package model;
  */
 public interface ImageProcessingModel extends ImageProcessingModelState {
 
-
-  /**
-   * Sets the given image as the current image to be edited in the model.
-   *
-   * @param image the image to set as the current image as
-   */
-  void setImage(Image image);
-
   void addLayer(String name);
 
   void setCurrentLayer(String name);
 
-  void showLayer(String name, boolean isVisible);
+  void showCurrent(boolean isVisible);
+
+  void applyOperationCurrent(ImageOperation operation);
+
+  void removeLayer(String name);
+
 
 //   add back if we need it
 //   void setLayerName(String layerName, String newName);
-
-
-  /**
-   * Applies the given operation to the current image and sets the changed image as the current
-   * image. One can blur, sharpen, change the image to greyscale or sepia, etc.
-   *
-   * @param operation the operation to be done on the current image
-   */
-  void applyOperation(String name, ImageOperation operation);
 }
 
 

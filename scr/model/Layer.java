@@ -1,19 +1,20 @@
 package model;
 
 public interface Layer {
-  String getName();
+
+  void setName(String name);
 
   void setImage(Image image);
 
-  Image getImage();
+  void show(boolean isVisible);
 
   void apply(ImageOperation operation);
-  
-  void show(boolean isVisible);
+
+  String getName();
+
+  Image getImage();
   
   boolean isVisible();
-
-  void setName(String name);
 }
 
 /*

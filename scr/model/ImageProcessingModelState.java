@@ -7,35 +7,15 @@ package model;
  */
 public interface ImageProcessingModelState {
 
-  /**
-   * Gets the current image saved in the model.
-   *
-   * @return the current image
-   */
-  Image getCurrentImage();
+  String getCurrentName();
 
+  boolean isVisible(String layerName);
 
+  Image getImageIn(String layerName);
 
-  // Option 1
-  boolean isLayerVisible(String name);
+  String getLayerNameAt(int index);
 
-  // gets an image from a specific layer
-  Image getImage(String layerName);
-
-  String layerName(int index);
-
-  int getNumLayers();
-
-
-  // get the combination of blending all the visible layers (for assignment 7)
-//   Image ...();
-
-
-
-
-
-  // Option 2
-//  Layer getLayer(String name);
+  int numLayers();
 }
 
 /*

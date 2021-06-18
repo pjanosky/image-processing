@@ -11,6 +11,11 @@ For the flexibility to support importing and export different image file formats
 Lastly, we defined a factory class, ImageOperationCreator, to allow us to easily create some default ImageTransformation objects such as blur, sharpen, greyscale, and sepia as required by the assignment.
 
 
+Modifications:
+ - Changed ImageProcessingModelState and ImageProcessingModel interfaces to work with Layers instead of individual Images. Updated ImageProcessingModelImpl to match.
+ - Moved import and export methods from ImageProcessingModel to the controller as they deal with IO
+ -
+
 Sample Image Citations:
 “Angiosperms.” British Broadcasting Corporation, 14 Jan. 2018,
   ichef.bbci.co.uk/news/976/cpsprodpb/9110/production/_99563173_gettyimages-479233691.jpg.

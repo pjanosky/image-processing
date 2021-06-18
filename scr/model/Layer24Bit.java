@@ -27,6 +27,17 @@ public class Layer24Bit implements Layer {
     this.isVisible = true;
   }
 
+  /**
+   * Constructs and {@code Layer24Bit} object with a specific name.
+   *
+   * @param name the name of the layer.
+   */
+  public Layer24Bit(String name) {
+    this.name = name;
+    this.image = null;
+    this.isVisible = true;
+  }
+
   @Override
   public String getName() {
     return name;

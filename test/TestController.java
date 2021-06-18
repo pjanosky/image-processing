@@ -1,9 +1,8 @@
-import model.ImageImportExporter;
-import model.ImageOperationCreator;
+import controller.ImageImportExporter;
 import model.ImageOperationCreator.OperationType;
 import model.ImageProcessingModel;
 import model.ImageProcessingModelImpl;
-import model.PpmImportExporter;
+import controller.PpmImportExporter;
 
 /**
  * A simple controller for the sole purpose of producing images for testing. Produces sample images
@@ -33,15 +32,15 @@ public class TestController {
         OperationType.SEPIA
     };
 
-    for (String filePath : imageFilePaths) {
-      model.importImage(importExporter, filePath);
-      for (OperationType opType : operations) {
-        model.applyOperation(ImageOperationCreator.create(opType));
-        String newPath = filePath.replace(".ppm",
-            "_" + opType.name().toLowerCase() + ".ppm");
-        model.exportCurrentImage(importExporter, newPath);
-        model.revert();
-      }
-    }
+//    for (String filePath : imageFilePaths) {
+//      model.importImage(importExporter, filePath);
+//      for (OperationType opType : operations) {
+//        model.applyOperation(ImageOperationCreator.create(opType));
+//        String newPath = filePath.replace(".ppm",
+//            "_" + opType.name().toLowerCase() + ".ppm");
+//        model.exportCurrentImage(importExporter, newPath);
+//        model.revert();
+//      }
+//    }
   }
 }
