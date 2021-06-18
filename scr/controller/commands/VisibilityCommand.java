@@ -3,15 +3,17 @@ package controller.commands;
 import controller.ControllerCommand;
 import model.ImageProcessingModel;
 
-public class HideCommand implements ControllerCommand {
+public class VisibilityCommand implements ControllerCommand {
 
   String layerName;
+  boolean isVisible;
 
-  public HideCommand(String layerName) {
+  public VisibilityCommand(String layerName, boolean isVisible) {
     if (layerName == null) {
       throw new IllegalArgumentException("The layer name cannot be null!");
     }
     this.layerName = layerName;
+    this.isVisible = isVisible;
   }
 
   @Override
@@ -21,9 +23,9 @@ public class HideCommand implements ControllerCommand {
     }
 
     if (layerName == "current") {
-      model.showCurrent(false);
+      model.showCurrent(isVisible);
     } else {
-      model.show(layerName, false);
+      model.show(layerName, isVisible);
     }
   }
 }

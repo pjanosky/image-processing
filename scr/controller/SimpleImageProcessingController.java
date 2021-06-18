@@ -1,14 +1,13 @@
 package controller;
 
 import controller.commands.AddCommand;
-import controller.commands.HideCommand;
 import controller.commands.ImageProcessCommand;
 import controller.commands.LoadCommand;
 import controller.commands.LoadLayersCommand;
 import controller.commands.RemoveCommand;
 import controller.commands.SaveCommand;
 import controller.commands.SaveLayersCommand;
-import controller.commands.ShowCommand;
+import controller.commands.VisibilityCommand;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,8 +50,8 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
     commands = new HashMap<>();
     commands.put("save", s->new SaveCommand(s.next(), s.next()));
     commands.put("load", s->new LoadCommand(s.next(), s.next(), s.next()));
-    commands.put("show", s->new ShowCommand(s.next()));
-    commands.put("hide", s->new HideCommand(s.next()));
+    commands.put("show", s->new VisibilityCommand(s.next(), true));
+    commands.put("hide", s->new VisibilityCommand(s.next(), false));
     commands.put("saveall", s->new SaveLayersCommand(s.next(), s.next(), s.next()));
     commands.put("loadall", s->new LoadLayersCommand(s.next()));
     commands.put("add", s->new AddCommand(s.next()));
