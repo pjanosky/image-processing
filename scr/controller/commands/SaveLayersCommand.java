@@ -37,12 +37,7 @@ public class SaveLayersCommand implements ControllerCommand {
 
   @Override
   public void go(ImageProcessingModel model) throws IllegalArgumentException {
-    // Create directory
-    File directory = new File(path);
-    if (!directory.exists() && !directory.mkdir()) {
-      throw new IllegalArgumentException("Could not create directory at " + path + ".");
-    }
-
+    createDirectory();
     ImageImportExporter ie = ImportExporterCreator.create(format);
     StringBuilder text = new StringBuilder();
 
@@ -75,6 +70,21 @@ public class SaveLayersCommand implements ControllerCommand {
       output.write(text.toString().getBytes());
     } catch (IOException e) {
       throw new IllegalArgumentException("Failed to save text info file.");
+    }
+  }
+
+  /**
+   * Creates a directory to house the image layers, deleting any files
+   * in the directory.
+   */
+  private void createDirectory() {
+    File directory = new File(path);
+    if (directory.exists()) {
+      for (File file : directory.listFiles()) {
+        file.delete();
+      }
+    } else if (!directory.mkdir()) {
+      throw new IllegalArgumentException("Could not create directory at " + path + ".");
     }
   }
 }
