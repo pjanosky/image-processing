@@ -8,6 +8,7 @@ import controller.commands.RemoveCommand;
 import controller.commands.SaveCommand;
 import controller.commands.SaveLayersCommand;
 import controller.commands.VisibilityCommand;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +29,7 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
 
   private final ImageProcessingModel model;
   private final ImageProcessingView view;
-  private final Scanner scan;
+  private final Readable input;
   private final Map<String, Function<Scanner, ControllerCommand>> commands;
 
 
@@ -42,7 +43,7 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
     // Initialize fields
     this.model = model;
     this.view = new ImageProcessingTextView(new ImageProcessingViewModel(model), output);
-    this.scan = new Scanner(input);
+    this.input = input;
 
     // Add all of the supported commands
     commands = new HashMap<>();
@@ -62,25 +63,30 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
         OperationType.SEPIA)));
     commands.put("greyscale", s -> new ImageProcessCommand(s.next(), ImageOperationCreator.create(
         OperationType.GREYSCALE)));
+    commands.put("script", s->new ScriptCommand(s.next()))
   }
 
   @Override
   public void run() {
     renderMessage("Enter a command");
+    runCommands(input);
+  }
 
+  private void runCommands(Readable in) {
+    Scanner scan = new Scanner(in);
     while (scan.hasNext()) {
-      String input = scan.next();
-      if (input.toLowerCase().equals("q")) {
+      String commandName = scan.next();
+      if (commandName.toLowerCase().equals("q")) {
         return;
       }
-      Function<Scanner, ControllerCommand> command = commands.get(input);
+      Function<Scanner, ControllerCommand> command = commands.get(commandName);
       if (command == null) {
         renderMessage("Unknown Command");
       }
       try {
         command.apply(scan).go(model);
       } catch (NoSuchElementException e) {
-        renderMessage("Invalid number of arguments for " + input + ".");
+        renderMessage("Invalid number of arguments for " + commandName + ".");
       } catch (IllegalArgumentException e) {
         renderMessage(e.getMessage());
       }
@@ -120,6 +126,37 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
       view.renderMessage(System.lineSeparator());
     } catch (IOException e) {
       throw new IllegalArgumentException("Failed to render image layers to output.");
+    }
+  }
+
+  /**
+   * A command that runs a scrip of other commands.
+   */
+  public class ScriptCommand implements ControllerCommand {
+
+    private final Readable input;
+
+    /**
+     * Creates a new script controller with
+     *
+     * @param filePath the path to the script file to execute.
+     * @throws IllegalArgumentException if the filePath is null or is not a path to a valid script
+     *                                  file.
+     */
+    public ScriptCommand(String filePath) throws IllegalArgumentException {
+      if (filePath == null) {
+        throw new IllegalArgumentException("Arguments must not be null");
+      }
+      try {
+        this.input = new FileReader(filePath);
+      } catch (IOException e) {
+        throw new IllegalArgumentException("Failed to read from scrip at " + filePath + ".");
+      }
+    }
+
+    @Override
+    public void go(ImageProcessingModel model) throws IllegalArgumentException {
+      runCommands(input);
     }
   }
 }
