@@ -2,6 +2,7 @@ package controller;
 
 import controller.commands.HideCommand;
 import controller.commands.LoadCommand;
+import controller.commands.LoadLayersCommand;
 import controller.commands.SaveCommand;
 import controller.commands.SaveLayersCommand;
 import controller.commands.ShowCommand;
@@ -46,6 +47,7 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
     commands.put("show", s->new ShowCommand(s.next()));
     commands.put("hide", s->new HideCommand(s.next()));
     commands.put("saveall", s->new SaveLayersCommand(s.next(), s.next(), s.next()));
+    commands.put("loadall", s->new LoadLayersCommand(s.next()));
   }
 
   @Override
