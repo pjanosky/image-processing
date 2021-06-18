@@ -19,22 +19,23 @@ public class ImageProcessingTextView implements ImageProcessingView {
   @Override
   public void renderLayers() throws IOException {
     StringBuilder result = new StringBuilder();
+    result.append("Layers:").append(System.lineSeparator());
     for (int index = 0; index < model.numLayers(); index += 1) {
       String name = model.getLayerNameAt(index);
-      if (model.getCurrentName().equals(name)) {
-        result.append("-> ");
-      } else {
-        result.append("   ");
-      }
-      result.append(index).append(". ").append(name).append('(');
+      result.append(index + 1).append(". ").append(name).append('(');
       if (model.isVisible(name)) {
         result.append('V');
       } else {
         result.append(' ');
       }
-      result.append(')').append(System.lineSeparator());
+      result.append(')');
+      if (model.getCurrentName().equals(name)) {
+        result.append(" (current)");
+      }
+      if (index < model.numLayers() - 1) {
+        result.append(System.lineSeparator());
+      }
     }
-    result.deleteCharAt(result.length() - 1);
     output.append(result.toString());
   }
 

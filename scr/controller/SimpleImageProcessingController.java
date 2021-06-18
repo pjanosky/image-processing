@@ -35,7 +35,8 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
   should we add a int type token to make the command process easier
    */
 
-  SimpleImageProcessingController(ImageProcessingModel model, Readable input, Appendable output) {
+  public SimpleImageProcessingController(ImageProcessingModel model, Readable input,
+      Appendable output) {
     // Check validity of arguments
     if (model == null || input == null || output == null) {
       throw new IllegalArgumentException("Arguments must not be null.");
@@ -68,6 +69,8 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
 
   @Override
   public void run() {
+    renderMessage("Enter a command");
+
     while (scan.hasNext()) {
       String input = scan.next();
       if (input.toLowerCase().equals("q")) {
@@ -84,6 +87,7 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
       } catch (IllegalArgumentException e) {
         renderMessage(e.getMessage());
       }
+      renderLayers();
     }
   }
 
@@ -102,7 +106,7 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
    */
   private void renderMessage(String message) throws IllegalArgumentException {
     try {
-      view.renderMessage(message);
+      view.renderMessage(message + System.lineSeparator());
     } catch (IOException e) {
       throw new IllegalArgumentException("Failed to render message to output.");
     }
@@ -116,6 +120,7 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
   private void renderLayers() throws IllegalArgumentException {
     try {
       view.renderLayers();
+      view.renderMessage(System.lineSeparator());
     } catch (IOException e) {
       throw new IllegalArgumentException("Failed to render image layers to output.");
     }
