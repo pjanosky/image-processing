@@ -51,6 +51,11 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
     }
   }
 
+  /*
+  controller should be able to support the following commands:
+  load/save images, add/remove layer, blur, sharpen, make the layer greyscale or sepia
+   */
+
   /**
    * Renders a message to the view.
    *
