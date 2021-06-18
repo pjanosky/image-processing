@@ -16,7 +16,7 @@ public class LoadLayersCommandTest {
   @Test
   public void santiyCheck() {
     ImageProcessingModel model = new ImageProcessingModelImpl();
-    new LoadLayersCommand("layers_test").go(model);
+    new LoadLayersCommand("layers_test", "ppm").go(model);
     assertEquals(3, model.numLayers());
     assertEquals("rainbow", model.getLayerNameAt(0));
     assertEquals("checkerboard", model.getLayerNameAt(1));

@@ -1,4 +1,4 @@
-package controller;
+package controller.commands;
 
 import model.ImageProcessingModel;
 
@@ -12,7 +12,9 @@ public interface ControllerCommand {
    *
    * @param model the model representing the state of the image processing program.
    *              The command may query the state of the model or mutate it.
-   * @throws IllegalArgumentException if the command fails for any reason.
+   * @throws IllegalStateException if the command tries to access the current layer when no
+   * current layer has been set.
+   * @throws IllegalArgumentException if the command fails for any other reason.
    */
-  void go(ImageProcessingModel model) throws IllegalArgumentException;
+  void go(ImageProcessingModel model) throws IllegalStateException, IllegalArgumentException;
 }

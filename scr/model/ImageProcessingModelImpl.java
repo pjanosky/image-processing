@@ -101,6 +101,7 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
 
   @Override
   public String getCurrentName() {
+    checkCurrent();
     return current.getName();
   }
 

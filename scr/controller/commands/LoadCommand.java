@@ -1,11 +1,7 @@
 package controller.commands;
 
-import controller.ControllerCommand;
 import controller.ImageImportExporter;
 import controller.ImportExporterCreator;
-import controller.JpegImportExporter;
-import controller.PngImportExporter;
-import controller.PpmImportExporter;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,16 +10,13 @@ import model.ImageProcessingModel;
 
 public class LoadCommand implements ControllerCommand {
 
-  String layerName;
-  ImageImportExporter ie;
-  InputStream input;
+  private final ImageImportExporter ie;
+  private final InputStream input;
 
-  public LoadCommand(String layerName, String format, String filepath) {
-    if (layerName == null || format == null || filepath == null) {
+  public LoadCommand(String filepath, String format) {
+    if (filepath == null || format == null) {
       throw new IllegalArgumentException("The parameters cannot be null!");
     }
-
-    this.layerName = layerName;
 
     ie = ImportExporterCreator.create(format);
 
@@ -35,7 +28,8 @@ public class LoadCommand implements ControllerCommand {
   }
 
   @Override
-  public void go(ImageProcessingModel model) throws IllegalArgumentException {
+  public void go(ImageProcessingModel model)
+      throws IllegalStateException, IllegalArgumentException {
     Image parsedImage;
     try {
       parsedImage = ie.parseImage(input);
@@ -43,10 +37,6 @@ public class LoadCommand implements ControllerCommand {
       throw new IllegalArgumentException("Failed to save the image.");
     }
 
-    if (layerName == "current") {
-      model.setCurrentLayerImage(parsedImage);
-    } else {
-      model.setLayerImage(layerName, parsedImage);
-    }
+    model.setCurrentLayerImage(parsedImage);
   }
 }

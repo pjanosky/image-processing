@@ -1,47 +1,44 @@
 package controller.commands;
 
-import controller.ControllerCommand;
 import controller.ImageImportExporter;
 import controller.ImportExporterCreator;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 import model.Image;
 import model.ImageProcessingModel;
 
 public class LoadLayersCommand implements ControllerCommand {
 
-  private final String path;
-  private final String name;
   private final Scanner scan;
+  private final ImageImportExporter ie;
 
 
-  public LoadLayersCommand(String path) {
+  public LoadLayersCommand(String path, String format) {
     if (path == null) {
       throw new IllegalArgumentException("Arguments must not be null.");
     }
 
     File directory = new File(path);
-    if (directory.isDirectory()) {
-      this.path = path;
-      this.name = directory.getName();
-    } else {
+    if (!directory.isDirectory()) {
       throw new IllegalArgumentException("Path must be a path to a directory.");
     }
 
     try {
-      InputStream input = new FileInputStream(path + "/" + name + ".txt");
+      InputStream input = new FileInputStream(path + "/" + directory.getName() + ".txt");
       this.scan = new Scanner(input);
     } catch (IOException e) {
       throw new IllegalArgumentException("Failed to read text info file.");
     }
+
+    ie = ImportExporterCreator.create(format);
   }
 
   @Override
-  public void go(ImageProcessingModel model) throws IllegalArgumentException {
+  public void go(ImageProcessingModel model)
+      throws IllegalStateException, IllegalArgumentException {
     resetModel(model);
 
     while (scan.hasNextLine()) {
@@ -81,12 +78,6 @@ public class LoadLayersCommand implements ControllerCommand {
    *                                  supported.
    */
   private Image loadImage(String filePath) throws IllegalArgumentException {
-    int dotIndex = filePath.lastIndexOf('.');
-    if (dotIndex >= filePath.length() + 1) {
-      throw new IllegalArgumentException("Failed to load image " + filePath + ".");
-    }
-    String format = filePath.substring(dotIndex + 1);
-    ImageImportExporter ie = ImportExporterCreator.create(format);
     try {
       return ie.parseImage(new FileInputStream(filePath));
     } catch (IOException e) {

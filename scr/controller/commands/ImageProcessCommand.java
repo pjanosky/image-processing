@@ -1,6 +1,5 @@
 package controller.commands;
 
-import controller.ControllerCommand;
 import model.ImageOperation;
 import model.ImageProcessingModel;
 
@@ -17,16 +16,13 @@ public class ImageProcessCommand implements ControllerCommand {
   }
 
   @Override
-  public void go(ImageProcessingModel model) throws IllegalArgumentException {
+  public void go(ImageProcessingModel model)
+      throws IllegalStateException, IllegalArgumentException {
     if (model == null) {
       throw new IllegalArgumentException("The model cannot be null!");
     }
 
-    if (layerName == "current") {
-      model.applyOperationCurrent(operation);
-    } else {
-      model.applyOperation(layerName, operation);
-    }
+    model.applyOperationCurrent(operation);
 
   }
 }

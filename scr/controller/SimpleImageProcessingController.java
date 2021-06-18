@@ -1,6 +1,7 @@
 package controller;
 
 import controller.commands.AddCommand;
+import controller.commands.ControllerCommand;
 import controller.commands.ImageProcessCommand;
 import controller.commands.LoadCommand;
 import controller.commands.LoadLayersCommand;
@@ -48,13 +49,13 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
     // Add all of the supported commands
     commands = new HashMap<>();
     commands.put("save", s -> new SaveCommand(s.next(), s.next()));
-    commands.put("load", s -> new LoadCommand(s.next(), s.next(), s.next()));
-    commands.put("show", s -> new VisibilityCommand(s.next(), true));
-    commands.put("hide", s -> new VisibilityCommand(s.next(), false));
+    commands.put("load", s -> new LoadCommand(s.next(), s.next()));
+    commands.put("show", s -> new VisibilityCommand(true));
+    commands.put("hide", s -> new VisibilityCommand(false));
     commands.put("saveall", s -> new SaveLayersCommand(s.next(), s.next(), s.next()));
-    commands.put("loadall", s -> new LoadLayersCommand(s.next()));
+    commands.put("loadall", s -> new LoadLayersCommand(s.next(), s.next()));
     commands.put("add", s -> new AddCommand(s.next()));
-    commands.put("remove", s -> new RemoveCommand(s.next()));
+    commands.put("remove", s -> new RemoveCommand());
     commands.put("sharpen", s -> new ImageProcessCommand(s.next(), ImageOperationCreator.create(
         OperationType.SHARPEN)));
     commands.put("blur", s -> new ImageProcessCommand(s.next(), ImageOperationCreator.create(

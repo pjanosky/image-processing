@@ -1,6 +1,5 @@
 package controller.commands;
 
-import controller.ControllerCommand;
 import controller.ImageImportExporter;
 import controller.ImportExporterCreator;
 import java.io.File;
@@ -9,7 +8,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import model.Image;
 import model.ImageProcessingModel;
-import model.ImageProcessingModelImpl;
 
 public class SaveLayersCommand implements ControllerCommand {
 
@@ -36,7 +34,8 @@ public class SaveLayersCommand implements ControllerCommand {
   }
 
   @Override
-  public void go(ImageProcessingModel model) throws IllegalArgumentException {
+  public void go(ImageProcessingModel model)
+      throws IllegalStateException, IllegalArgumentException {
     createDirectory();
     ImageImportExporter ie = ImportExporterCreator.create(format);
     StringBuilder text = new StringBuilder();

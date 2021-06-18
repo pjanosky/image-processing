@@ -1,6 +1,5 @@
 package controller.commands;
 
-import controller.ControllerCommand;
 import model.ImageProcessingModel;
 
 public class AddCommand implements ControllerCommand {
@@ -19,7 +18,8 @@ public class AddCommand implements ControllerCommand {
   }
 
   @Override
-  public void go(ImageProcessingModel model) throws IllegalArgumentException {
+  public void go(ImageProcessingModel model)
+      throws IllegalStateException, IllegalArgumentException {
     model.addLayer(name);
   }
 
