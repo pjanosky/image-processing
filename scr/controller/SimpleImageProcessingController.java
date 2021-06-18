@@ -25,16 +25,15 @@ import view.ImageProcessingView;
  * Runs a simple image processing program.
  */
 public class SimpleImageProcessingController implements ImageProcessingController {
+
   private final ImageProcessingModel model;
   private final ImageProcessingView view;
   private final Scanner scan;
   private final Map<String, Function<Scanner, ControllerCommand>> commands;
 
-  /*
-  should we add a int type token to make the command process easier
-   */
 
-  SimpleImageProcessingController(ImageProcessingModel model, Readable input, Appendable output) {
+  public SimpleImageProcessingController(ImageProcessingModel model, Readable input,
+      Appendable output) {
     // Check validity of arguments
     if (model == null || input == null || output == null) {
       throw new IllegalArgumentException("Arguments must not be null.");
@@ -47,21 +46,21 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
 
     // Add all of the supported commands
     commands = new HashMap<>();
-    commands.put("save", s->new SaveCommand(s.next(), s.next()));
-    commands.put("load", s->new LoadCommand(s.next(), s.next(), s.next()));
-    commands.put("show", s->new VisibilityCommand(s.next(), true));
-    commands.put("hide", s->new VisibilityCommand(s.next(), false));
-    commands.put("saveall", s->new SaveLayersCommand(s.next(), s.next(), s.next()));
-    commands.put("loadall", s->new LoadLayersCommand(s.next()));
-    commands.put("add", s->new AddCommand(s.next()));
-    commands.put("remove", s->new RemoveCommand(s.next()));
-    commands.put("sharpen", s->new ImageProcessCommand(s.next(), ImageOperationCreator.create(
+    commands.put("save", s -> new SaveCommand(s.next(), s.next()));
+    commands.put("load", s -> new LoadCommand(s.next(), s.next(), s.next()));
+    commands.put("show", s -> new VisibilityCommand(s.next(), true));
+    commands.put("hide", s -> new VisibilityCommand(s.next(), false));
+    commands.put("saveall", s -> new SaveLayersCommand(s.next(), s.next(), s.next()));
+    commands.put("loadall", s -> new LoadLayersCommand(s.next()));
+    commands.put("add", s -> new AddCommand(s.next()));
+    commands.put("remove", s -> new RemoveCommand(s.next()));
+    commands.put("sharpen", s -> new ImageProcessCommand(s.next(), ImageOperationCreator.create(
         OperationType.SHARPEN)));
-    commands.put("blur", s->new ImageProcessCommand(s.next(), ImageOperationCreator.create(
+    commands.put("blur", s -> new ImageProcessCommand(s.next(), ImageOperationCreator.create(
         OperationType.BLUR)));
-    commands.put("sepia", s->new ImageProcessCommand(s.next(), ImageOperationCreator.create(
+    commands.put("sepia", s -> new ImageProcessCommand(s.next(), ImageOperationCreator.create(
         OperationType.SEPIA)));
-    commands.put("greyscale", s->new ImageProcessCommand(s.next(), ImageOperationCreator.create(
+    commands.put("greyscale", s -> new ImageProcessCommand(s.next(), ImageOperationCreator.create(
         OperationType.GREYSCALE)));
   }
 
