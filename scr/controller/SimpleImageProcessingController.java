@@ -1,5 +1,6 @@
 package controller;
 
+import controller.commands.LoadCommand;
 import controller.commands.SaveCommand;
 import java.io.IOException;
 import java.util.HashMap;
@@ -38,6 +39,7 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
     // Add all of the supported commands
     commands = new HashMap<>();
     commands.put("save", s->new SaveCommand(s.next(), s.next()));
+    commands.put("load", s->new LoadCommand(s.next(), s.next(), s.next()));
   }
 
   @Override

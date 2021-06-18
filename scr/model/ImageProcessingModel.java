@@ -11,6 +11,10 @@ public interface ImageProcessingModel extends ImageProcessingModelState {
 
   void setCurrentLayer(String name);
 
+  void setCurrentLayerImage(Image imageToSet);
+
+  void setLayerImage(String layerName, Image imageToSet);
+
   //shows or hides the current layer
   void showCurrent(boolean isVisible);
 

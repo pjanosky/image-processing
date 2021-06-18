@@ -49,6 +49,22 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
   }
 
   @Override
+  public void setCurrentLayerImage(Image imageToSet) {
+    if (imageToSet == null) {
+      throw new IllegalArgumentException("The parameters cannot be null!");
+    }
+    current.setImage(imageToSet);
+  }
+
+  @Override
+  public void setLayerImage(String layerName, Image imageToSet) {
+    if (layerName == null || imageToSet == null) {
+      throw new IllegalArgumentException("The parameters cannot be null!");
+    }
+    getLayer(layerName).setImage(imageToSet);
+  }
+
+  @Override
   public void showCurrent(boolean isVisible) {
     checkCurrent();
     current.show(isVisible);
