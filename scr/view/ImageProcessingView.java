@@ -4,9 +4,9 @@ import java.io.IOException;
 
 public interface ImageProcessingView {
 
-  void renderLayers() throws IOException;
+  void renderLayers();
 
-  void renderMessage(String message) throws IOException;
+  void renderMessage(String message);
 
   String toString();
 }
