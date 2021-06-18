@@ -1,14 +1,17 @@
 package controller;
 
+import controller.commands.AddCommand;
 import controller.commands.HideCommand;
 import controller.commands.LoadCommand;
 import controller.commands.LoadLayersCommand;
+import controller.commands.RemoveCommand;
 import controller.commands.SaveCommand;
 import controller.commands.SaveLayersCommand;
 import controller.commands.ShowCommand;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.function.Function;
 import model.ImageProcessingModel;
@@ -48,6 +51,8 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
     commands.put("hide", s->new HideCommand(s.next()));
     commands.put("saveall", s->new SaveLayersCommand(s.next(), s.next(), s.next()));
     commands.put("loadall", s->new LoadLayersCommand(s.next()));
+    commands.put("add", s->new AddCommand(s.next()));
+    commands.put("remove", s->new RemoveCommand(s.next()));
   }
 
   @Override
@@ -61,7 +66,13 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
       if (command == null) {
         renderMessage("Unknown Command");
       }
-      command.apply(scan).go(model);
+      try {
+        command.apply(scan).go(model);
+      } catch (NoSuchElementException e) {
+        renderMessage("Invalid number of arguments for " + input + ".");
+      } catch (IllegalArgumentException e) {
+        renderMessage(e.getMessage());
+      }
     }
   }
 
