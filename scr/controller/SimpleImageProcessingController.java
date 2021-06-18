@@ -20,6 +20,10 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
   private final Scanner scan;
   private final Map<String, Function<Scanner, ControllerCommand>> commands;
 
+  /*
+  should we add a int type token to make the command process easier
+   */
+
   SimpleImageProcessingController(ImageProcessingModel model, Readable input, Appendable output) {
     // Check validity of arguments
     if (model == null || input == null || output == null) {
@@ -53,7 +57,9 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
 
   /*
   controller should be able to support the following commands:
-  load/save images, add/remove layer, blur, sharpen, make the layer greyscale or sepia
+  load/save images, add/remove layer, blur, sharpen, make the layer greyscale or sepia,
+  saving all the layers, run a batch script file
+
    */
 
   /**

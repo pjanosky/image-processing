@@ -3,6 +3,9 @@ package view;
 import java.io.IOException;
 import model.ImageProcessingModelState;
 
+/**
+ * Renders
+ */
 public class ImageProcessingTextView implements ImageProcessingView {
 
   private final ImageProcessingModelState model;
@@ -45,7 +48,7 @@ public class ImageProcessingTextView implements ImageProcessingView {
 // Current Style Guide:
 
 /*
--> 1. Background (V)
-   2. Foreground ( )
-   3. Subject (V)
+1. Background (V) Current
+2. Foreground ( )
+3. Subject (V)
  */

@@ -1,12 +1,12 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 /**
- * A implementation of the image processing model interface. The model manages the different
- * layers and associated images.
+ * A implementation of the image processing model interface. The model manages the different layers
+ * and associated images.
  */
 public class ImageProcessingModelImpl implements ImageProcessingModel {
 
@@ -15,6 +15,11 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
 
   private static int layerIndexNum = 0;
 
+  /**
+   * Constructs a {@code ImageProcessingModelImpl} object.<br> The current image is initialized as
+   * null because when the model is first constructed, no image is passed to be set as the current
+   * image. Due to the same reason, the list of layers is empty until the client creates a layer.
+   */
   public ImageProcessingModelImpl() {
     this.layers = new ArrayList<>();
     this.current = null;
@@ -50,9 +55,27 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
   }
 
   @Override
+  public void show(String layerName, boolean isVisible) {
+    if (layerName == null) {
+      throw new IllegalArgumentException("The layer name cannot be null!");
+    }
+    getLayer(layerName).show(isVisible);
+  }
+
+  @Override
   public void applyOperationCurrent(ImageOperation operation) {
     checkCurrent();
     current.apply(operation);
+  }
+
+  @Override
+  public void applyOperation(String layerName, ImageOperation operation) {
+    if (layerName == null || operation == null) {
+      throw new IllegalArgumentException("The parameters cannot be null!");
+    }
+
+    getLayer(layerName).apply(operation);
+
   }
 
   @Override
@@ -97,6 +120,13 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
     return false;
   }
 
+  /**
+   * Finds and returns the layer with the given name.
+   *
+   * @param name the name of the layer to be returned.
+   * @return the layer with the given name.
+   * @throws IllegalArgumentException if there is no layer that has the given name.
+   */
   private Layer getLayer(String name) {
     for (Layer layer : layers) {
       if (layer.getName().equals(name)) {
@@ -106,6 +136,10 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
     throw new IllegalArgumentException("No layer named " + name + ".");
   }
 
+  /**
+   * Checks whether there is a layer is stored as the current layer of the model.
+   * @throws IllegalStateException if there is no layer (i.e., there is a null value).
+   */
   private void checkCurrent() throws IllegalStateException {
     if (current == null) {
       throw new IllegalStateException("No current layer.");
