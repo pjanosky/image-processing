@@ -73,9 +73,9 @@ public abstract class ArbitraryImportExporter implements ImageImportExporter {
    * @return the pixel representing the equivalent color the the given RGB value;
    */
   private Pixel getPixel(int rgb) {
-    int blue = rgb & ((1 << 8)); // first 8 bits
-    int green = (rgb / 8) & ((1 << 8)); // second 8 bits
-    int red = (rgb / 16) & ((1 << 8)); // third 8 bits;
+    int blue = rgb & 0xFF; // first 8 bits
+    int green = (rgb & 0xFF00) >> 8; // second 8 bits
+    int red = (rgb & 0xFF0000) >> 16; // third 8 bits;
     return new RgbPixel(red, green, blue);
   }
 }
