@@ -12,7 +12,7 @@ public class AddCommand implements ControllerCommand {
       throw new IllegalArgumentException("Arguments must not be null");
     }
     if (!validName(name)) {
-      throw new IllegalArgumentException("Invalid layer name."
+      throw new IllegalArgumentException("Invalid layer name. "
           + "Valid names are are non-empty alpha numeric strings without whitespace");
     }
     this.name = name;

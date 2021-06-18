@@ -1,4 +1,7 @@
 import controller.ImageImportExporter;
+import controller.ImageProcessingController;
+import controller.SimpleImageProcessingController;
+import java.io.InputStreamReader;
 import model.ImageOperationCreator.OperationType;
 import model.ImageProcessingModel;
 import model.ImageProcessingModelImpl;
@@ -10,37 +13,12 @@ import controller.PpmImportExporter;
  */
 public class TestController {
 
-  /**
-   * Runs the TestController applying a list of operations to a list of images specified by file
-   * paths.
-   *
-   * @param args the arguments for the program which are ignored.
-   */
   public static void main(String[] args) {
     ImageProcessingModel model = new ImageProcessingModelImpl();
-    ImageImportExporter importExporter = new PpmImportExporter();
-
-    String[] imageFilePaths = {
-        "res/flowers.ppm",
-        "res/panda.ppm"
-    };
-
-    OperationType[] operations = {
-        OperationType.BLUR,
-        OperationType.SHARPEN,
-        OperationType.GREYSCALE,
-        OperationType.SEPIA
-    };
-
-//    for (String filePath : imageFilePaths) {
-//      model.importImage(importExporter, filePath);
-//      for (OperationType opType : operations) {
-//        model.applyOperation(ImageOperationCreator.create(opType));
-//        String newPath = filePath.replace(".ppm",
-//            "_" + opType.name().toLowerCase() + ".ppm");
-//        model.exportCurrentImage(importExporter, newPath);
-//        model.revert();
-//      }
-//    }
+    Readable input = new InputStreamReader(System.in);
+    Appendable output = System.out;
+    ImageProcessingController controller =
+        new SimpleImageProcessingController(model, input, output);
+    controller.run();
   }
 }
