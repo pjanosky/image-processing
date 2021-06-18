@@ -50,9 +50,6 @@ public class Layer24Bit implements Layer {
 
   @Override
   public Image getImage() {
-    if (image == null) {
-      throw new IllegalStateException("The image right now is null!");
-    }
     return image;
   }
 
