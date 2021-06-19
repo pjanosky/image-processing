@@ -1,0 +1,59 @@
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import controller.ImageImportExporter;
+import controller.PngImportExporter;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import model.Image;
+import org.junit.Test;
+
+/**
+ * Tests the PngImportExporter class.
+ */
+public class PngImportExporterTest {
+  
+  private ImageImportExporter ie;
+
+  /**
+   * Constructs a new PngImportExporterTest initializing the example test data.
+   */
+  public PngImportExporterTest() {
+    ie = new PngImportExporter();
+  }
+
+  @Test
+  public void testSaveImage() {
+    String path = "test/images/image.png";
+    Image image = ImageExamples.rainbow(10, 2);
+    try {
+      ie.saveImage(new FileOutputStream(path), image);
+    } catch (IOException e) {
+      fail(e.getMessage());
+    }
+    
+    File file = new File(path);
+    assertTrue(file.exists());
+    assertTrue(file.isFile());
+    assertEquals("image.png", file.getName());
+  }
+  
+  @Test
+  public void testParseImage() {
+    String path = "test/images/image.png";
+    Image image = ImageExamples.rainbow(10, 2);
+    ByteArrayOutputStream output = new ByteArrayOutputStream();
+    Image parsedImage = null;
+    try {
+      ie.saveImage(output, image);
+      parsedImage = ie.parseImage(new ByteArrayInputStream(output.toByteArray()));
+    } catch (IOException e) {
+      fail(e.getMessage());
+    }
+    assertEquals(image, parsedImage);
+  }
+}

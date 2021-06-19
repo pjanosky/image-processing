@@ -16,7 +16,7 @@ import model.RgbPixel;
  */
 public abstract class ArbitraryImportExporter implements ImageImportExporter {
 
-  String format;
+  private final String format;
 
   /**
    * Constructs a new ArbitraryImportExporter that imports and export files of a single format.
