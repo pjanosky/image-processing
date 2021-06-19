@@ -32,7 +32,7 @@ public class ColorTransformation implements ImageOperation {
   }
 
   @Override
-  public Image apply(Image image) {
+  public Image apply(Image image) throws IllegalArgumentException {
     if (image == null) {
       throw new IllegalArgumentException("Image must not be null.");
     }

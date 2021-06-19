@@ -11,6 +11,7 @@ public interface ImageOperation {
    *
    * @param image the image to apply the operation to
    * @return the new image that results from applying the operation
+   * @throws IllegalArgumentException if the given image is null
    */
-  Image apply(Image image);
+  Image apply(Image image) throws IllegalArgumentException;
 }

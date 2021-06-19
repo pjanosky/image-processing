@@ -58,6 +58,9 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
     if (layerName == null || image == null) {
       throw new IllegalArgumentException("Arguments cannot be null.");
     }
+    if (!hasLayer(layerName)) {
+      throw new IllegalArgumentException("No layer named " + layerName + ".");
+    }
     ensureImageSize(image);
     getLayer(layerName).setImage(image);
   }
@@ -67,16 +70,29 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
     if (layerName == null) {
       throw new IllegalArgumentException("Name cannot be null.");
     }
+    if (!hasLayer(layerName)) {
+      throw new IllegalArgumentException("No layer named " + layerName + ".");
+    }
     getLayer(layerName).show(isVisible);
   }
 
   @Override
   public void applyOperation(String layerName, ImageOperation operation) {
+    if (layerName == null || operation == null) {
+      throw new IllegalArgumentException("Parameters cannot be null.");
+    }
+    if (!hasLayer(layerName)) {
+      throw new IllegalArgumentException("No layer named " + layerName + ".");
+    }
     getLayer(layerName).apply(operation);
   }
 
   @Override
   public void removeLayer(String layerName) {
+    if (layerName == null || !hasLayer(layerName)) {
+      throw new IllegalArgumentException("Invalid layer name! The layer either does not exist or"
+          + "the parameter is null");
+    }
     layers.remove(getLayer(layerName));
     if (layerName.equals(current)) {
       current = null;
@@ -85,7 +101,7 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
 
   @Override
   public void reorderLayer(String layerName, int index) {
-    if (layerName == null) {
+    if (layerName == null ) {
       throw new IllegalArgumentException("Layer name cannot be null.");
     }
     if (index < 0 || index >= numLayers()) {
@@ -111,16 +127,18 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
 
   @Override
   public boolean isVisible(String layerName) {
-    if (layerName == null) {
-      throw new IllegalArgumentException("Layer name cannot be null.");
+    if (layerName == null || !hasLayer(layerName)) {
+      throw new IllegalArgumentException("Invalid layer name! The layer either does not exist or"
+          + "the parameter is null");
     }
     return getLayer(layerName).isVisible();
   }
 
   @Override
   public Image getImageIn(String layerName) {
-    if (layerName == null) {
-      throw new IllegalArgumentException("Layer name cannot be null.");
+    if (layerName == null || !hasLayer(layerName)) {
+      throw new IllegalArgumentException("Invalid layer name! The layer either does not exist or"
+          + "the parameter is null");
     }
     return getLayer(layerName).getImage();
   }
@@ -174,8 +192,8 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
    * the other layers.
    *
    * @param image the image to check the dimensions of.
-   * @throws IllegalArgumentException if the image does match the dimension of the images in other
-   *                                  layers.
+   * @throws IllegalArgumentException if the image does not match the dimension of the images in
+   *                                  other layers.
    */
   private void ensureImageSize(Image image) throws IllegalArgumentException {
     for (Layer layer : layers) {

@@ -32,6 +32,9 @@ public class Layer24Bit implements Layer {
 
   @Override
   public void setImage(Image image) {
+    if (image == null) {
+      throw new IllegalArgumentException("The image cannot be null!");
+    }
     this.image = image;
   }
 
