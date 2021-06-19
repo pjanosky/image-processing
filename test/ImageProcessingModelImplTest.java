@@ -8,6 +8,7 @@ import model.ImageOperationCreator;
 import model.ImageOperationCreator.OperationType;
 import model.ImageProcessingModel;
 import model.ImageProcessingModelImpl;
+import model.ImageProcessingModelState;
 import model.RgbPixel;
 import org.junit.Before;
 import org.junit.Test;
@@ -316,7 +317,7 @@ public class ImageProcessingModelImplTest {
   }
 
   @Test(expected = IllegalArgumentException.class)
-  public void testGetImageInInvalidlName() {
+  public void testGetImageInInvalidName() {
     model.getImageIn("not a real name");
   }
 
