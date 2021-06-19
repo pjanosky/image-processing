@@ -5,6 +5,7 @@ import controller.commands.ControllerCommand;
 import controller.commands.ImageProcessCommand;
 import controller.commands.LoadCommand;
 import controller.commands.LoadLayersCommand;
+import controller.commands.MoveCommand;
 import controller.commands.RemoveCommand;
 import controller.commands.SaveCommand;
 import controller.commands.SaveLayersCommand;
@@ -16,6 +17,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.function.Function;
+import controller.commands.CurrentCommand;
 import model.ImageOperationCreator;
 import model.ImageOperationCreator.OperationType;
 import model.ImageProcessingModel;
@@ -52,19 +54,21 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
     commands.put("load", s -> new LoadCommand(s.next(), s.next()));
     commands.put("show", s -> new VisibilityCommand(true));
     commands.put("hide", s -> new VisibilityCommand(false));
-    commands.put("saveall", s -> new SaveLayersCommand(s.next(), s.next(), s.next()));
-    commands.put("loadall", s -> new LoadLayersCommand(s.next(), s.next()));
+    commands.put("saveall", s -> new SaveLayersCommand(s.next(), s.next()));
+    commands.put("loadall", s -> new LoadLayersCommand(s.next()));
     commands.put("add", s -> new AddCommand(s.next()));
     commands.put("remove", s -> new RemoveCommand());
-    commands.put("sharpen", s -> new ImageProcessCommand(s.next(), ImageOperationCreator.create(
-        OperationType.SHARPEN)));
-    commands.put("blur", s -> new ImageProcessCommand(s.next(), ImageOperationCreator.create(
-        OperationType.BLUR)));
-    commands.put("sepia", s -> new ImageProcessCommand(s.next(), ImageOperationCreator.create(
-        OperationType.SEPIA)));
-    commands.put("greyscale", s -> new ImageProcessCommand(s.next(), ImageOperationCreator.create(
-        OperationType.GREYSCALE)));
+    commands.put("sharpen", s -> new ImageProcessCommand(
+        ImageOperationCreator.create(OperationType.SHARPEN)));
+    commands.put("blur", s -> new ImageProcessCommand(
+        ImageOperationCreator.create(OperationType.BLUR)));
+    commands.put("sepia", s -> new ImageProcessCommand(
+        ImageOperationCreator.create(OperationType.SEPIA)));
+    commands.put("greyscale", s -> new ImageProcessCommand(
+        ImageOperationCreator.create(OperationType.GREYSCALE)));
     commands.put("script", s->new ScriptCommand(s.next()));
+    commands.put("current", s-> new CurrentCommand(s.next()));
+    commands.put("move", s->new MoveCommand(s.nextInt()));
   }
 
   @Override
@@ -78,17 +82,20 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
     while (scan.hasNext()) {
       String commandName = scan.next();
       if (commandName.toLowerCase().equals("q")) {
+        renderMessage("Quitting.");
         return;
       }
       Function<Scanner, ControllerCommand> command = commands.get(commandName);
       if (command == null) {
         renderMessage("Unknown Command");
+        continue;
       }
       try {
         command.apply(scan).go(model);
       } catch (NoSuchElementException e) {
-        renderMessage("Invalid number of arguments for " + commandName + ".");
-      } catch (IllegalArgumentException e) {
+        renderMessage("Ran out of commands.");
+        return;
+      } catch (IllegalArgumentException | IllegalStateException e) {
         renderMessage(e.getMessage());
       }
       renderLayers();
@@ -151,12 +158,13 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
       try {
         this.input = new FileReader(filePath);
       } catch (IOException e) {
-        throw new IllegalArgumentException("Failed to read from scrip at " + filePath + ".");
+        throw new IllegalArgumentException("Failed to read from scrip:" + filePath + ".");
       }
     }
 
     @Override
-    public void go(ImageProcessingModel model) throws IllegalArgumentException {
+    public void go(ImageProcessingModel model)
+        throws IllegalStateException, IllegalArgumentException {
       runCommands(input);
     }
   }

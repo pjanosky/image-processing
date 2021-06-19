@@ -19,7 +19,7 @@ public class SaveLayersCommandTest {
             new RgbPixel(0, 0, 255)));
     model.addLayer("no_image");
 
-    new SaveLayersCommand("", "layers_test", "png").go(model);
+    new SaveLayersCommand("", "layers_test").go(model);
 
   }
 }

@@ -22,14 +22,14 @@ public class ImageProcessingTextView implements ImageProcessingView {
     result.append("Layers:").append(System.lineSeparator());
     for (int index = 0; index < model.numLayers(); index += 1) {
       String name = model.getLayerNameAt(index);
-      result.append(index + 1).append(". ").append(name).append('(');
+      result.append(index + 1).append(". ").append(name).append(" (");
       if (model.isVisible(name)) {
         result.append('V');
       } else {
         result.append(' ');
       }
       result.append(')');
-      if (model.getCurrentName().equals(name)) {
+      if (name.equals(model.getCurrentName())) {
         result.append(" (current)");
       }
       if (index < model.numLayers() - 1) {

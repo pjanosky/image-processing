@@ -2,21 +2,23 @@ package controller.commands;
 
 import controller.ImageImportExporter;
 import controller.ImportExporterCreator;
+import controller.PngImportExporter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import model.Image;
 import model.ImageProcessingModel;
+import view.ImageProcessingView;
 
 public class SaveLayersCommand implements ControllerCommand {
 
   private final String path;
   private final String name;
-  private final String format;
+  private final ImageImportExporter ie;
 
-  public SaveLayersCommand(String path, String name, String format) {
-    if (path == null || name == null || format == null) {
+  public SaveLayersCommand(String path, String name) {
+    if (path == null || name == null) {
       throw new IllegalArgumentException("Arguments must not be null");
     }
 
@@ -30,20 +32,19 @@ public class SaveLayersCommand implements ControllerCommand {
       this.path = path + "/" + name;
     }
     this.name = name;
-    this.format = format;
+    this.ie = new PngImportExporter();
   }
 
   @Override
   public void go(ImageProcessingModel model)
       throws IllegalStateException, IllegalArgumentException {
     createDirectory();
-    ImageImportExporter ie = ImportExporterCreator.create(format);
     StringBuilder text = new StringBuilder();
 
     // Save images
     for (int index = 0; index < model.numLayers(); index += 1) {
       String layerName = model.getLayerNameAt(index);
-      String filePath = path + "/" + layerName + "." + format;
+      String filePath = path + "/" + layerName + ".png";
       Image image = model.getImageIn(layerName);
       if (image != null) {
         try {

@@ -38,7 +38,7 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
       layerIndexNum += 1;
     }
     Layer layer = new Layer24Bit(name);
-    layers.add(0, layer);
+    layers.add(layer);
     current = name;
   }
 
@@ -51,11 +51,6 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
   }
 
   @Override
-  public void setCurrentImage(Image image) throws IllegalStateException {
-    setLayerImage(getCurrent(), image);
-  }
-
-  @Override
   public void setLayerImage(String layerName, Image image) {
     if (layerName == null || image == null) {
       throw new IllegalArgumentException("Arguments cannot be null.");
@@ -64,28 +59,13 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
   }
 
   @Override
-  public void showCurrent(boolean isVisible) {
-    showLayer(current, isVisible);
-  }
-
-  @Override
   public void showLayer(String layerName, boolean isVisible) {
     getLayer(layerName).show(isVisible);
   }
 
   @Override
-  public void applyOperationCurrent(ImageOperation operation) {
-    applyOperationLayer(current, operation);
-  }
-
-  @Override
-  public void applyOperationLayer(String layerName, ImageOperation operation) {
+  public void applyOperation(String layerName, ImageOperation operation) {
     getLayer(layerName).apply(operation);
-  }
-
-  @Override
-  public void removeCurrent() {
-    removeLayer(current);
   }
 
   @Override
@@ -94,6 +74,27 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
     if (layerName.equals(current)) {
       current = null;
     }
+  }
+
+  @Override
+  public void reorderLayer(String layerName, int index) {
+    if (layerName == null) {
+      throw new IllegalArgumentException("Layer name cannot be null.");
+    }
+    if (index < 0 || index >= numLayers()) {
+      throw new IllegalArgumentException("Invalid index.");
+    }
+
+    int layerIndex = -1;
+    for (int i = 0; i < numLayers(); i += 1) {
+      if (layers.get(i).getName().equals(layerName)) {
+        layerIndex = i;
+      }
+    }
+    if (layerIndex == -1) {
+      throw new IllegalArgumentException("No layer named " + layerName + ".");
+    }
+    layers.add(index, layers.remove(layerIndex));
   }
 
   @Override
@@ -147,16 +148,5 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
       }
     }
     throw new IllegalArgumentException("No layer named " + name + ".");
-  }
-
-  /**
-   * Returns the current layer is there is a current layer set.
-   * @throws IllegalStateException if there is no layer (i.e., there is a null value).
-   */
-  private String getCurrent() throws IllegalStateException {
-    if (current == null) {
-      throw new IllegalStateException("No current layer.");
-    }
-    return current;
   }
 }

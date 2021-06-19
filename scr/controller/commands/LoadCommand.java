@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import model.Image;
 import model.ImageProcessingModel;
+import view.ImageProcessingView;
 
 public class LoadCommand implements ControllerCommand {
 
@@ -37,6 +38,22 @@ public class LoadCommand implements ControllerCommand {
       throw new IllegalArgumentException("Failed to save the image.");
     }
 
-    model.setCurrentImage(parsedImage);
+    for (int index = 0; index < model.numLayers(); index += 1) {
+      Image image = model.getImageIn(model.getLayerNameAt(index));
+      if (image != null && (image.getWidth() != parsedImage.getWidth()
+          || image.getHeight() != parsedImage.getHeight())) {
+        throw new IllegalArgumentException("Images in all layers must have the same dimensions of "
+            + image.getWidth() + "x" + image.getHeight() + ".");
+      }
+    }
+
+
+
+    String current = model.getCurrentName();
+    if (current != null) {
+      model.setLayerImage(current, parsedImage);
+    } else {
+      throw new IllegalArgumentException("No current layer set");
+    }
   }
 }

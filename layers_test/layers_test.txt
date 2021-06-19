@@ -1,3 +1,0 @@
-rainbow true layers_test/rainbow.png
-checkerboard false layers_test/checkerboard.png
-no_image true 

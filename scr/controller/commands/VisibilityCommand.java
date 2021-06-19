@@ -1,6 +1,7 @@
 package controller.commands;
 
 import model.ImageProcessingModel;
+import view.ImageProcessingView;
 
 public class VisibilityCommand implements ControllerCommand {
 
@@ -16,7 +17,12 @@ public class VisibilityCommand implements ControllerCommand {
     if (model == null) {
       throw new IllegalArgumentException("The model cannot be null!");
     }
+    String current = model.getCurrentName();
+    if (current != null) {
+      model.showLayer(current, isVisible);
+    } else {
+      throw new IllegalArgumentException("No current layer set");
+    }
 
-    model.showCurrent(isVisible);
   }
 }

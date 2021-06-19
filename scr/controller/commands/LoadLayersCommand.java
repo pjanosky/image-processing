@@ -2,6 +2,7 @@ package controller.commands;
 
 import controller.ImageImportExporter;
 import controller.ImportExporterCreator;
+import controller.PngImportExporter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -9,6 +10,7 @@ import java.io.InputStream;
 import java.util.Scanner;
 import model.Image;
 import model.ImageProcessingModel;
+import view.ImageProcessingView;
 
 public class LoadLayersCommand implements ControllerCommand {
 
@@ -16,7 +18,7 @@ public class LoadLayersCommand implements ControllerCommand {
   private final ImageImportExporter ie;
 
 
-  public LoadLayersCommand(String path, String format) {
+  public LoadLayersCommand(String path) {
     if (path == null) {
       throw new IllegalArgumentException("Arguments must not be null.");
     }
@@ -33,7 +35,7 @@ public class LoadLayersCommand implements ControllerCommand {
       throw new IllegalArgumentException("Failed to read text info file.");
     }
 
-    ie = ImportExporterCreator.create(format);
+    ie = new PngImportExporter();
   }
 
   @Override
@@ -50,7 +52,7 @@ public class LoadLayersCommand implements ControllerCommand {
       String layerName = args[0];
       boolean isVisible = Boolean.parseBoolean(args[1]);
       model.addLayer(layerName);
-      model.showCurrent(isVisible);
+      model.showLayer(layerName, isVisible);
       if (args.length == 3) {
         model.setLayerImage(layerName, loadImage(args[2]));
       }

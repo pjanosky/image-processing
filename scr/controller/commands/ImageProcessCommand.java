@@ -1,17 +1,17 @@
 package controller.commands;
 
+import java.io.IOException;
 import model.ImageOperation;
 import model.ImageProcessingModel;
+import view.ImageProcessingView;
 
 public class ImageProcessCommand implements ControllerCommand {
 
-  String layerName;
   ImageOperation operation;
-  public ImageProcessCommand(String layerName, ImageOperation operation) {
-    if (layerName == null || operation == null) {
+  public ImageProcessCommand(ImageOperation operation) {
+    if (operation == null) {
       throw new IllegalArgumentException("The parameters cannot be null!");
     }
-    this.layerName = layerName;
     this.operation = operation;
   }
 
@@ -22,7 +22,11 @@ public class ImageProcessCommand implements ControllerCommand {
       throw new IllegalArgumentException("The model cannot be null!");
     }
 
-    model.applyOperationCurrent(operation);
-
+    String current = model.getCurrentName();
+    if (current != null) {
+      model.applyOperation(current, operation);
+    } else {
+      throw new IllegalArgumentException("No current layer set");
+    }
   }
 }

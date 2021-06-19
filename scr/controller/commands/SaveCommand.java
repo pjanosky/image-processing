@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import model.Image;
 import model.ImageProcessingModel;
+import view.ImageProcessingView;
 
 /**
  * A command that saves the top-most visible image in a specific location and format on disk.
@@ -50,7 +51,7 @@ public class SaveCommand implements ControllerCommand {
     Image image = null;
     for (int index = 0; index < model.numLayers(); index += 1) {
       String name = model.getLayerNameAt(index);
-      if (model.isVisible(name)) {
+      if (model.isVisible(name) & model.getImageIn(name) != null) {
         image = model.getImageIn(name);
       }
     }
