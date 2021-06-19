@@ -33,6 +33,9 @@ public class Layer24Bit implements Layer {
    * @param name the name of the layer.
    */
   public Layer24Bit(String name) {
+    if (name == null) {
+      throw new IllegalArgumentException("Name cannot be null.");
+    }
     this.name = name;
     this.image = null;
     this.isVisible = true;
@@ -58,6 +61,9 @@ public class Layer24Bit implements Layer {
     if (image == null) {
       throw new IllegalStateException("The image right now is null!");
     }
+    if (operation == null) {
+      throw new IllegalArgumentException("Image operation cannot be null");
+    }
     image = operation.apply(image);
   }
 
@@ -73,6 +79,9 @@ public class Layer24Bit implements Layer {
 
   @Override
   public void setName(String name) {
+    if (name == null) {
+      throw new IllegalArgumentException("Name cannot be null.");
+    }
     this.name = name;
   }
 }
