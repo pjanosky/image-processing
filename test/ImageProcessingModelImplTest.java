@@ -1,5 +1,5 @@
-import static junit.framework.Assert.assertFalse;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -58,7 +58,7 @@ public class ImageProcessingModelImplTest {
     assertEquals(1, model.numLayers());
     assertEquals("test", model.getLayerNameAt(0));
     assertEquals("test", model.getCurrentName());
-    assertEquals(true, model.isVisible("test"));
+    assertTrue(model.isVisible("test"));
   }
 
   @Test
@@ -124,8 +124,8 @@ public class ImageProcessingModelImplTest {
     model.addLayer("first");
     model.addLayer("second");
 
-    assertEquals(null, model.getImageIn("first"));
-    assertEquals(null, model.getImageIn("second"));
+    assertNull(model.getImageIn("first"));
+    assertNull(model.getImageIn("second"));
 
     model.setLayerImage("first", image1);
     model.setLayerImage("second", image3);
@@ -149,11 +149,11 @@ public class ImageProcessingModelImplTest {
     model.addLayer("first");
     model.addLayer("second");
     model.showLayer("first", true);
-    assertEquals(true, model.isVisible("first"));
+    assertTrue(model.isVisible("first"));
     model.showLayer("first", false);
-    assertEquals(false, model.isVisible("first"));
+    assertFalse(model.isVisible("first"));
     model.showLayer("first", true);
-    assertEquals(true, model.isVisible("first"));
+    assertTrue(model.isVisible("first"));
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -340,7 +340,7 @@ public class ImageProcessingModelImplTest {
   }
 
   @Test(expected = IllegalArgumentException.class)
-  public void testGetLayerNameAtHightIndex() {
+  public void testGetLayerNameAtHighIndex() {
     model.addLayer("first");
     model.addLayer("second");
     model.getLayerNameAt(2);
@@ -362,7 +362,7 @@ public class ImageProcessingModelImplTest {
     assertEquals(1, model.numLayers());
     model.addLayer("second");
     assertEquals(2, model.numLayers());
-    model.addLayer("thrid");
+    model.addLayer("third");
     assertEquals(3, model.numLayers());
     model.removeLayer("first");
     assertEquals(2, model.numLayers());
