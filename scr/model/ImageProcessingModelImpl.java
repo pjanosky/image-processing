@@ -12,7 +12,7 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
   private final List<Layer> layers;
   private String current;
 
-  private static int layerIndexNum = 0;
+  private static int layerIndexNum = 1;
 
   /**
    * Constructs a {@code ImageProcessingModelImpl} object.<br> The current image is initialized as
@@ -44,6 +44,9 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
 
   @Override
   public void setCurrentLayer(String name) {
+    if (name == null) {
+      throw new IllegalArgumentException("Name cannot be null.");
+    }
     if (!hasLayer(name)) {
       throw new IllegalArgumentException("No layer named " + name + ".");
     }
@@ -55,11 +58,15 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
     if (layerName == null || image == null) {
       throw new IllegalArgumentException("Arguments cannot be null.");
     }
+    ensureImageSize(image);
     getLayer(layerName).setImage(image);
   }
 
   @Override
   public void showLayer(String layerName, boolean isVisible) {
+    if (layerName == null) {
+      throw new IllegalArgumentException("Name cannot be null.");
+    }
     getLayer(layerName).show(isVisible);
   }
 
@@ -104,11 +111,17 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
 
   @Override
   public boolean isVisible(String layerName) {
+    if (layerName == null) {
+      throw new IllegalArgumentException("Layer name cannot be null.");
+    }
     return getLayer(layerName).isVisible();
   }
 
   @Override
   public Image getImageIn(String layerName) {
+    if (layerName == null) {
+      throw new IllegalArgumentException("Layer name cannot be null.");
+    }
     return getLayer(layerName).getImage();
   }
 
@@ -125,6 +138,12 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
     return layers.size();
   }
 
+  /**
+   * Determines whether the model has a layer with a given name.
+   *
+   * @param name the name of the layer to check for.
+   * @return whether the model has a layer with the name.
+   */
   private boolean hasLayer(String name) {
     for (Layer layer : layers) {
       if (layer.getName().equals(name)) {
@@ -148,5 +167,25 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
       }
     }
     throw new IllegalArgumentException("No layer named " + name + ".");
+  }
+
+  /**
+   * Ensures that an image is the same size as the images in the other layers if there are images in
+   * the other layers.
+   *
+   * @param image the image to check the dimensions of.
+   * @throws IllegalArgumentException if the image does match the dimension of the images in other
+   *                                  layers.
+   */
+  private void ensureImageSize(Image image) throws IllegalArgumentException {
+    for (Layer layer : layers) {
+      Image layerImage = layer.getImage();
+      if (layerImage != null &&
+          (layerImage.getWidth() != image.getWidth()
+              || layerImage.getHeight() != image.getHeight())) {
+        throw new IllegalArgumentException("All layers must have images of the same size: "
+            + image.getWidth() + "x" + image.getHeight() + ".");
+      }
+    }
   }
 }
