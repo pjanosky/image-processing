@@ -1,13 +1,23 @@
 package controller.commands;
 
 import model.ImageProcessingModel;
-import view.ImageProcessingView;
 
+/**
+ * When the user calls the command "add <i>layer-name</i>", the controller adds a layer to be stored
+ * in the model.
+ */
 public class AddCommand implements ControllerCommand {
 
   private final String name;
 
-  public AddCommand(String name) {
+  /**
+   * Constructs a {@code AddCommand} object.
+   *
+   * @param name the name the user wants to give to the to-be-added layer
+   * @throws IllegalArgumentException if the given name is invalid. That is if the name contains
+   *                                  symbols or whitespace.
+   */
+  public AddCommand(String name) throws IllegalArgumentException {
     if (name == null) {
       throw new IllegalArgumentException("Arguments must not be null");
     }
@@ -25,8 +35,8 @@ public class AddCommand implements ControllerCommand {
   }
 
   /**
-   * Determines whether a given string is a valid name for a layer. Valid layer names have not
-   * whitespace or special characters
+   * Determines whether a given string is a valid name for a layer. Valid layer names have not any
+   * whitespace or special characters.
    *
    * @param name the file name to check
    * @return whether the name is valid

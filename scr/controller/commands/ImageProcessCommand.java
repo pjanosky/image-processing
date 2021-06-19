@@ -1,14 +1,23 @@
 package controller.commands;
 
-import java.io.IOException;
 import model.ImageOperation;
 import model.ImageProcessingModel;
-import view.ImageProcessingView;
 
+/**
+ * When the user calls one of these commands—"blur", "sharpen", "sepia", "greyscale"—the controller
+ * applies the appropriate image operation on the current layer.
+ */
 public class ImageProcessCommand implements ControllerCommand {
 
-  ImageOperation operation;
-  public ImageProcessCommand(ImageOperation operation) {
+  private final ImageOperation operation;
+
+  /**
+   * Constructs a {@code ImageProcessCommand} object.
+   *
+   * @param operation the image operation that is called and is available in the model
+   * @throws IllegalArgumentException if the given operation object is null
+   */
+  public ImageProcessCommand(ImageOperation operation) throws IllegalArgumentException {
     if (operation == null) {
       throw new IllegalArgumentException("The parameters cannot be null!");
     }

@@ -12,22 +12,6 @@ public class Layer24Bit implements Layer {
   private boolean isVisible;
 
   /**
-   * Constructs a {@code Layer24Bit} object.<br> The name of the given layer follows the default
-   * naming convention. The number passed as the parameter represents the index number of the
-   * previous layer, which will be used to determine the layer number of this layer.
-   *
-   * @param layerIndexNum the index number of the previous layer
-   */
-  public Layer24Bit(int layerIndexNum) {
-    if (layerIndexNum < 0) { //get the max number of layers in the model
-      throw new IllegalArgumentException("The layer number cannot be out of bounds");
-    }
-    this.name = "Layer" + (layerIndexNum + 1);
-    this.image = null;
-    this.isVisible = true;
-  }
-
-  /**
    * Constructs and {@code Layer24Bit} object with a specific name.
    *
    * @param name the name of the layer.

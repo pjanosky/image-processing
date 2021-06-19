@@ -35,9 +35,16 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
   private final Readable input;
   private final Map<String, Function<Scanner, ControllerCommand>> commands;
 
-
+  /**
+   * Constructs a {@code SimpleImageProcessingController} object.
+   *
+   * @param model  the image processing model
+   * @param input  a Readable that serves as the scannable array of command line parameters
+   * @param output an Appendable object to append and output the view on in text format
+   * @throws IllegalArgumentException if any of the parameters are null
+   */
   public SimpleImageProcessingController(ImageProcessingModel model, Readable input,
-      Appendable output) {
+      Appendable output) throws IllegalArgumentException {
     // Check validity of arguments
     if (model == null || input == null || output == null) {
       throw new IllegalArgumentException("Arguments must not be null.");
@@ -66,9 +73,9 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
         ImageOperationCreator.create(OperationType.SEPIA)));
     commands.put("greyscale", s -> new ImageProcessCommand(
         ImageOperationCreator.create(OperationType.GREYSCALE)));
-    commands.put("script", s->new ScriptCommand(s.next()));
-    commands.put("current", s-> new CurrentCommand(s.next()));
-    commands.put("move", s->new MoveCommand(s.nextInt()));
+    commands.put("script", s -> new ScriptCommand(s.next()));
+    commands.put("current", s -> new CurrentCommand(s.next()));
+    commands.put("move", s -> new MoveCommand(s.nextInt()));
   }
 
   @Override
@@ -77,6 +84,15 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
     runCommands(input);
   }
 
+  /**
+   * A helper method that runs the commands according to the user's input.<br> If the read command
+   * is "q", then the whole program quits. If the read command is one of those that are saved in the
+   * controller, then it delegates to the appropriate command and runs its function. If the read
+   * command is not a member of the list of commands, it quits the program. If null, then it asks
+   * the user for another command.
+   *
+   * @param in the command from the user and that has been read.
+   */
   private void runCommands(Readable in) {
     Scanner scan = new Scanner(in);
     while (scan.hasNext()) {
@@ -102,12 +118,6 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
     }
   }
 
-  /*
-  controller should be able to support the following commands:
-  load/save images//, add/remove layer//, blur, sharpen, make the layer greyscale or sepia,
-  saving all the layers, run a batch script file
-
-   */
 
   /**
    * Renders a message to the view.
@@ -138,7 +148,7 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
   }
 
   /**
-   * A command that runs a scrip of other commands.
+   * A command that runs a script of other commands.
    */
   public class ScriptCommand implements ControllerCommand {
 

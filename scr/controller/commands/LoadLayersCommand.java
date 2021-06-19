@@ -1,7 +1,6 @@
 package controller.commands;
 
 import controller.ImageImportExporter;
-import controller.ImportExporterCreator;
 import controller.PngImportExporter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,8 +9,10 @@ import java.io.InputStream;
 import java.util.Scanner;
 import model.Image;
 import model.ImageProcessingModel;
-import view.ImageProcessingView;
 
+/**
+ * When
+ */
 public class LoadLayersCommand implements ControllerCommand {
 
   private final Scanner scan;
