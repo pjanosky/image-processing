@@ -1,11 +1,8 @@
-import controller.ImageImportExporter;
 import controller.ImageProcessingController;
 import controller.SimpleImageProcessingController;
 import java.io.InputStreamReader;
-import model.ImageOperationCreator.OperationType;
 import model.ImageProcessingModel;
 import model.ImageProcessingModelImpl;
-import controller.PpmImportExporter;
 
 /**
  * A simple controller for the sole purpose of producing images for testing. Produces sample images

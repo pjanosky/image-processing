@@ -47,26 +47,6 @@ public class Layer24BitTest {
     layer2.setImage(image2);
   }
 
-  @Test(expected = IllegalArgumentException.class)
-  public void testConstructorLowLayerNumber() {
-    new Layer24Bit(-1);
-  }
-
-  @Test
-  public void testConstructor0LayerNumber() {
-    Layer first = new Layer24Bit(0);
-    assertEquals("Layer1", first.getName());
-    assertTrue(first.isVisible());
-    assertNull(first.getImage());
-  }
-
-  @Test
-  public void testConstructor3LayerNumber() {
-    Layer first = new Layer24Bit(3);
-    assertEquals("Layer4", first.getName());
-    assertTrue(first.isVisible());
-    assertNull(first.getImage());
-  }
 
   @Test(expected = IllegalArgumentException.class)
   public void testConstructorNullName() {
@@ -93,8 +73,6 @@ public class Layer24BitTest {
     assertEquals(image1, layer1.getImage());
     layer1.setImage(image2);
     assertEquals(image2, layer1.getImage());
-    layer1.setImage(null);
-    assertNull(layer1.getImage());
   }
 
   @Test
@@ -109,7 +87,7 @@ public class Layer24BitTest {
     layer1.apply(null);
   }
 
-  @Test(expected = IllegalStateException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void testApplyNullImage() {
     layer1.setImage(null);
     layer1.apply(ImageOperationCreator.create(OperationType.BLUR));
