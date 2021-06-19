@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import model.Image;
 import model.ImageProcessingModel;
-import view.ImageProcessingView;
 
 /**
  * A command that saves the top-most visible image in a specific location and format on disk.

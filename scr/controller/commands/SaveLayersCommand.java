@@ -1,7 +1,6 @@
 package controller.commands;
 
 import controller.ImageImportExporter;
-import controller.ImportExporterCreator;
 import controller.PngImportExporter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -9,14 +8,24 @@ import java.io.IOException;
 import java.io.OutputStream;
 import model.Image;
 import model.ImageProcessingModel;
-import view.ImageProcessingView;
 
+/**
+ * When the user calls the command "saveall", the controller saves (i.e., exports) all the layers as
+ * .png files in a directory.
+ */
 public class SaveLayersCommand implements ControllerCommand {
 
   private final String path;
   private final String name;
   private final ImageImportExporter ie;
 
+  /**
+   * Constructs a {@code SaveLayersCommand} object. The controller creates a directory at the given
+   * path and renames the path to <i>path/name</i> to signify that the directory created has the
+   * given name.
+   * @param path
+   * @param name
+   */
   public SaveLayersCommand(String path, String name) {
     if (path == null || name == null) {
       throw new IllegalArgumentException("Arguments must not be null");

@@ -1,8 +1,10 @@
 package controller.commands;
 
 import model.ImageProcessingModel;
-import view.ImageProcessingView;
 
+/**
+ * When the user calls the command "remove", the controller removes the current layer.
+ */
 public class RemoveCommand implements ControllerCommand {
 
   @Override

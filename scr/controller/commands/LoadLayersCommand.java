@@ -11,15 +11,26 @@ import model.Image;
 import model.ImageProcessingModel;
 
 /**
- * When
+ * When the user calls the command "loadall", the controller loads (i.e., imports) all the layers
+ * saved in the directory directed by the given path.
  */
 public class LoadLayersCommand implements ControllerCommand {
 
   private final Scanner scan;
   private final ImageImportExporter ie;
 
-
-  public LoadLayersCommand(String path) {
+  /**
+   * Constructs a {@code LoadLayersCommand} object. A directory of layer files is retrieved via the
+   * path from the user. Because layers are .png files, the controller will use the import-exporter
+   * specifically made for .png files. The information of the retrieved directory is converted into
+   * a text file.
+   *
+   * @param path the path to the directory with all layer files the user wants to load to the model
+   * @throws IllegalArgumentException if the given path string is null, if the directed file is not
+   *                                  a directory, or if the controller fails to read text
+   *                                  information file.
+   */
+  public LoadLayersCommand(String path) throws IllegalArgumentException {
     if (path == null) {
       throw new IllegalArgumentException("Arguments must not be null.");
     }
@@ -61,7 +72,7 @@ public class LoadLayersCommand implements ControllerCommand {
   }
 
   /**
-   * Removes a layers from a model.
+   * Removes layers from a model.
    *
    * @param model the model to remove layers from.
    */
