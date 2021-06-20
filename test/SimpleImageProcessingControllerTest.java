@@ -646,6 +646,7 @@ public class SimpleImageProcessingControllerTest {
   }
 
 
+
   /**
    * Runs a series of commands in a new SimpleImageProcessingController.
    *
