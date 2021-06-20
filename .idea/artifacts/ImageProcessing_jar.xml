@@ -2,6 +2,9 @@
   <artifact type="jar" build-on-make="true" name="ImageProcessing:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/ImageProcessing_jar</output-path>
     <root id="archive" name="ImageProcessing.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/out/META-INF/MANIFEST.MF" />
+      </element>
       <element id="module-output" name="ImageProcessing" />
     </root>
   </artifact>

@@ -80,7 +80,7 @@ public class LoadLayersCommand implements ControllerCommand {
    * @param model the model to remove layers from.
    */
   private void resetModel(ImageProcessingModel model) {
-    for (int index = 0; index < model.numLayers(); index += 1) {
+    for (int index = model.numLayers() - 1; index >= 0; index -= 1) {
       String layerName = model.getLayerNameAt(index);
       model.removeLayer(layerName);
     }

@@ -1,4 +1,4 @@
-script res/script1
+script res/script1.txt
 set rainbow 200 25
 greyscale
 blur

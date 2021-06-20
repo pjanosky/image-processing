@@ -1,3 +1,4 @@
+Running a script file: "script path-to-script-file". Change directories to the project directory to easily run scripts in the res folder.
 
 Setting a layer to current: "current layer-name". The name of the layer has to exist within the displayed list of created layers.
 

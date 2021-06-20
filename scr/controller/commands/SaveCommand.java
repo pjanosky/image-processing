@@ -66,5 +66,6 @@ public class SaveCommand implements ControllerCommand {
     } catch (IOException e) {
       throw new IllegalStateException("Failed to save image. " + e.getMessage());
     }
+    System.out.println("saving");
   }
 }

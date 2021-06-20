@@ -202,7 +202,7 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
           (layerImage.getWidth() != image.getWidth()
               || layerImage.getHeight() != image.getHeight())) {
         throw new IllegalArgumentException("All layers must have images of the same size: "
-            + image.getWidth() + "x" + image.getHeight() + ".");
+            + layerImage.getWidth() + "x" + layerImage.getHeight() + ".");
       }
     }
   }

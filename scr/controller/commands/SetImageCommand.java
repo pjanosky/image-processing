@@ -111,7 +111,7 @@ public class SetImageCommand implements ControllerCommand {
       throw new IllegalArgumentException("Could not parse arguments for checkerboard.");
     }
 
-    Image image = ImageExamples.checkerboard(cols, rows, size, size,
+    Image image = ImageExamples.checkerboard(rows, cols, size, size,
         new RgbPixel(0, 0, 0),
         new RgbPixel(255, 255, 255));
     setImage(image, model);

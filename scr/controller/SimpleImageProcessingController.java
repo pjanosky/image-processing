@@ -115,8 +115,7 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
       try {
         command.apply(lineScanner).go(model);
       } catch (NoSuchElementException e) {
-        throw new IllegalStateException(
-            "Reached the end of the provided Readable object without quitting the program.");
+        renderMessage("Invalid number of arguments for " + commandName + ".");
       } catch (IllegalArgumentException | IllegalStateException e) {
         renderMessage(e.getMessage());
         continue;
@@ -179,7 +178,7 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
       try {
         this.input = new FileReader(filePath);
       } catch (IOException e) {
-        throw new IllegalArgumentException("Failed to read from scrip:" + filePath + ".");
+        throw new IllegalArgumentException("Failed to read from scrip: " + filePath + ".");
       }
     }
 

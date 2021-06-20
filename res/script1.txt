@@ -5,6 +5,9 @@ add layer4
 load res/flowers.ppm ppm
 sepia
 blur
+current layer1
+load res/flowers.ppm ppm
+hide
 save res/flowers-sepia-blurred.ppm ppm
 hide
 current layer2
@@ -18,7 +21,7 @@ show
 current layer4
 move 1
 remove
-saveall res/
+saveall res/ layers
 add layer5
-loadall res/
+loadall res/layers
 q
