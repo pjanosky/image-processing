@@ -12,9 +12,9 @@ Lastly, we defined a factory class, ImageOperationCreator, to allow us to easily
 
 
 Modifications to the model:
-- Changed ImageProcessingModelState and ImageProcessingModel interfaces to work with Layers instead of individual Images. Updated ImageProcessingModelImpl to match.
-- Moved import and export methods from ImageProcessingModel to the controller as they deal with IO.
-- The model supports importing and exporting of two other image types: jpeg and png. The original import-exporter is abstracted to minimize the amount of changes to make if there is a need to support new file format in the future. 
+ - Changed ImageProcessingModelState and ImageProcessingModel interfaces to work with Layers instead of individual Images. The model implementation and associated interfaces were  completely rewritten. Updated ImageProcessingModelImpl to match.
+ - Moved import and export methods from ImageProcessingModel to the controller as they deal with IO.
+ - The model supports importing and exporting of two other image types: jpeg and png. The original import-exporter is abstracted to minimize the amount of changes to make if there is a need to support new file format in the future.
 
 We added two new interfaces: ImageProcessingController and ImageProcessingView. The two newly added interfaces contain methods that allows the user to interact and see respectively. Due to the changes we made to the model, the controller is able to import and export different image types. The commands the controller supports will be further elaborated in the USEME file.
 

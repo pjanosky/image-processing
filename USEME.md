@@ -1,6 +1,3 @@
-Loading and saving image files (i.e., importing and exporting): the user needs to use the following template: "load full-filepath-name file-format" or "save full-filepath-name file-format". One example of that would be "load test/data/image.png png". 
-
-Adding a new layer: the command template looks like the following. "add layer-name". The layer name needs to be one word. 
 
 Setting a layer to current: "current layer-name". The name of the layer has to exist within the displayed list of created layers.
 
