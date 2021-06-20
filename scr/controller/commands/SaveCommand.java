@@ -9,7 +9,8 @@ import model.Image;
 import model.ImageProcessingModel;
 
 /**
- * A command that saves the top-most visible image in a specific location and format on disk.
+ * When the users class "save <i>filePath</i> <i>format</i>", the top-most visible layer is saved to
+ * disk at file path in the specified image file format.
  */
 public class SaveCommand implements ControllerCommand {
 

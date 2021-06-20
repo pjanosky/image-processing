@@ -22,6 +22,7 @@ public class SaveLayersCommand implements ControllerCommand {
    * Constructs a {@code SaveLayersCommand} object. The controller creates a directory at the given
    * path and renames the path to <i>path/name</i> to signify that the directory created has the
    * given name.
+   *
    * @param path
    * @param name
    */
@@ -61,7 +62,7 @@ public class SaveLayersCommand implements ControllerCommand {
           OutputStream output = new FileOutputStream(filePath);
           ie.saveImage(output, image);
         } catch (IOException e) {
-          throw new IllegalArgumentException("Failed to save images. " + e.getMessage());
+          throw new IllegalStateException("Failed to save images. " + e.getMessage());
         }
       }
 
@@ -79,13 +80,12 @@ public class SaveLayersCommand implements ControllerCommand {
       OutputStream output = new FileOutputStream(filePath);
       output.write(text.toString().getBytes());
     } catch (IOException e) {
-      throw new IllegalArgumentException("Failed to save text info file.");
+      throw new IllegalStateException("Failed to save text info file.");
     }
   }
 
   /**
-   * Creates a directory to house the image layers, deleting any files
-   * in the directory.
+   * Creates a directory to house the image layers, deleting any files in the directory.
    */
   private void createDirectory() {
     File directory = new File(path);
@@ -94,7 +94,7 @@ public class SaveLayersCommand implements ControllerCommand {
         file.delete();
       }
     } else if (!directory.mkdir()) {
-      throw new IllegalArgumentException("Could not create directory at " + path + ".");
+      throw new IllegalStateException("Could not create directory at " + path + ".");
     }
   }
 }

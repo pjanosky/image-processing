@@ -38,7 +38,7 @@ public class ImageProcessCommandTest {
     new ImageProcessCommand(ImageOperationCreator.create(OperationType.BLUR)).go(null);
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test(expected = IllegalStateException.class)
   public void testGoNoCurrentLayer() {
     new ImageProcessCommand(ImageOperationCreator.create(OperationType.BLUR)).go(model);
   }

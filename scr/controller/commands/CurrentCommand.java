@@ -12,6 +12,7 @@ public class CurrentCommand implements ControllerCommand {
 
   /**
    * Constructs a {@code CurrentCommand} object.
+   *
    * @param name the name of the layer the user wants to set as the current
    * @throws IllegalArgumentException if the given name is null
    */

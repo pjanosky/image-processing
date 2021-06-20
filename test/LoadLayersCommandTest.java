@@ -6,7 +6,6 @@ import static org.junit.Assert.fail;
 
 import controller.PngImportExporter;
 import controller.commands.LoadLayersCommand;
-import controller.commands.SaveLayersCommand;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -57,7 +56,7 @@ public class LoadLayersCommandTest {
     new LoadLayersCommand(null);
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test(expected = IllegalStateException.class)
   public void testGoInvalidTextFile() {
     clean();
 

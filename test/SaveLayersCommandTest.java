@@ -53,7 +53,7 @@ public class SaveLayersCommandTest {
     new SaveLayersCommand("test/data", "layers").go(null);
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test(expected = IllegalStateException.class)
   public void testGoInvalidName() {
     new SaveLayersCommand("test/data", "invalid/name#$\\%^&*").go(model);
   }

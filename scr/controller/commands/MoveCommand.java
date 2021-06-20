@@ -30,8 +30,7 @@ public class MoveCommand implements ControllerCommand {
     if (current != null) {
       model.reorderLayer(current, index - 1);
     } else {
-      throw new IllegalArgumentException("No current layer set");
+      throw new IllegalStateException("No current layer set");
     }
-
   }
 }

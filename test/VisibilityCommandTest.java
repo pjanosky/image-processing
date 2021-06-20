@@ -30,7 +30,7 @@ public class VisibilityCommandTest {
     new VisibilityCommand(true).go(null);
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test(expected = IllegalStateException.class)
   public void testGoNoCurrentLayerSet() {
     new VisibilityCommand(true).go(model);
   }

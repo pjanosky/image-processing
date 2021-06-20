@@ -30,7 +30,7 @@ public class RemoveCommandTest {
     new RemoveCommand().go(null);
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test(expected = IllegalStateException.class)
   public void testGoNoCurrentLayerSet() {
     new RemoveCommand().go(model);
   }

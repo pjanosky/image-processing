@@ -30,7 +30,7 @@ public class VisibilityCommand implements ControllerCommand {
     if (current != null) {
       model.showLayer(current, isVisible);
     } else {
-      throw new IllegalArgumentException("No current layer set");
+      throw new IllegalStateException("No current layer set");
     }
   }
 }

@@ -52,14 +52,14 @@ public class LoadCommand implements ControllerCommand {
     try {
       parsedImage = ie.parseImage(input);
     } catch (IOException e) {
-      throw new IllegalArgumentException("Failed to save the image. " + e.getMessage());
+      throw new IllegalStateException("Failed to save the image. " + e.getMessage());
     }
 
     String current = model.getCurrentName();
     if (current != null) {
       model.setLayerImage(current, parsedImage);
     } else {
-      throw new IllegalArgumentException("No current layer set");
+      throw new IllegalStateException("No current layer set");
     }
   }
 }

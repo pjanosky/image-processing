@@ -35,7 +35,7 @@ public class ImageProcessCommand implements ControllerCommand {
     if (current != null) {
       model.applyOperation(current, operation);
     } else {
-      throw new IllegalArgumentException("No current layer set");
+      throw new IllegalStateException("No current layer set");
     }
   }
 }

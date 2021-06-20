@@ -62,7 +62,7 @@ public class LoadLayersCommand implements ControllerCommand {
       String line = scan.nextLine();
       String[] args = line.split(" ");
       if (args.length != 2 && args.length != 3) {
-        throw new IllegalArgumentException("Failed to parse text file.");
+        throw new IllegalStateException("Failed to parse text file.");
       }
       String layerName = args[0];
       boolean isVisible = Boolean.parseBoolean(args[1]);

@@ -17,7 +17,7 @@ public class RemoveCommand implements ControllerCommand {
     if (current != null) {
       model.removeLayer(current);
     } else {
-      throw new IllegalArgumentException("No current layer set");
+      throw new IllegalStateException("No current layer set");
     }
 
   }
