@@ -1,0 +1,6 @@
+script res/script1
+set rainbow 200 25
+greyscale
+blur
+hide
+q
