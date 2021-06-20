@@ -80,7 +80,11 @@ public class SimpleImageProcessingControllerTest {
   @Test
   public void testRunSave() {
     model.addLayer("layer1");
-    model.setLayerImage("layer1", image1);
+    model.addLayer("layer2");
+    model.setLayerImage("layer2", image2);
+    model.showLayer("layer2", false);
+    model.addLayer("layer3");
+    model.setLayerImage("layer3", image1);
 
     String output = runCommands(
         "save test/data/image.ppm ppm",
@@ -90,9 +94,13 @@ public class SimpleImageProcessingControllerTest {
     String expected = concatenateLines(
         "Enter a command",
         "Layers:",
-        "1. layer1 (V) (current)",
+        "1. layer1 (V)",
+        "2. layer2 ( )",
+        "3. layer3 (V) (current)",
         "Layers:",
-        "1. layer1 (V) (current)",
+        "1. layer1 (V)",
+        "2. layer2 ( )",
+        "3. layer3 (V) (current)",
         "Quitting."
     );
     try {

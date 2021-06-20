@@ -13,7 +13,7 @@ public class MoveCommandTest {
   private ImageProcessingModel model;
 
   /**
-   * Construct a new ImageProcessCommandTest initializing all example test data.
+   * Construct a new MoveCommandTest initializing all example test data.
    */
   public MoveCommandTest() {
     model = new ImageProcessingModelImpl();

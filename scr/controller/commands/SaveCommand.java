@@ -52,17 +52,18 @@ public class SaveCommand implements ControllerCommand {
       String name = model.getLayerNameAt(index);
       if (model.isVisible(name) & model.getImageIn(name) != null) {
         image = model.getImageIn(name);
+        break;
       }
     }
 
     if (image == null) {
-      throw new IllegalArgumentException("No visible layers to export");
+      throw new IllegalStateException("No visible layers to export");
     }
 
     try {
       ie.saveImage(output, image);
     } catch (IOException e) {
-      throw new IllegalArgumentException("Failed to save image. " + e.getMessage());
+      throw new IllegalStateException("Failed to save image. " + e.getMessage());
     }
   }
 }
