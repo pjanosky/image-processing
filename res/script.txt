@@ -1,0 +1,17 @@
+add layer1
+add layer2
+add layer3
+load res/flowers.ppm ppm
+sepia
+blur
+save res/flowers-sepia-blurred.ppm ppm
+hide
+current layer2
+set rainbow 250 25
+sharpen
+greyscale
+current layer1
+set checkerboard 25 15 250 150
+current layer3
+show
+saveall res/
