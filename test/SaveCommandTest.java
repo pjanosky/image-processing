@@ -3,6 +3,7 @@ import static org.junit.Assert.fail;
 
 import controller.PngImportExporter;
 import controller.commands.SaveCommand;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import model.Image;
@@ -72,8 +73,10 @@ public class SaveCommandTest {
 
   @Test
   public void testGoValid() {
+    clean();
+
     Image image1 = ImageExamples.rainbow(10, 2);
-    Image image2 = ImageExamples.checkerboard(12, 10,1, 1,
+    Image image2 = ImageExamples.checkerboard(12, 10, 1, 1,
         new RgbPixel(0, 0, 0),
         new RgbPixel(255, 255, 255));
     String path = "test/data/image.png";
@@ -94,6 +97,28 @@ public class SaveCommandTest {
       assertEquals(image1, new PngImportExporter().parseImage(new FileInputStream(path)));
     } catch (IOException e) {
       fail("Failed to parse saved images. " + e.getMessage());
+    }
+  }
+
+  /**
+   * Deletes files from test/data/layers and layers directory to make sure tests
+   * run independently.
+   */
+  private void clean() {
+    File directory = new File("test/data/layers");
+    File[] files = directory.listFiles();
+    if (files != null) {
+      for (File file : files) {
+        file.delete();
+      }
+    }
+    directory.delete();
+
+    files = new File("test/data").listFiles();
+    if (files != null) {
+      for (File file : files) {
+        file.delete();
+      }
     }
   }
 }

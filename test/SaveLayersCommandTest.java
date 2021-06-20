@@ -60,6 +60,7 @@ public class SaveLayersCommandTest {
 
   @Test
   public void testGoValid() {
+    clean();
     Image image1 = ImageExamples.rainbow(10, 2);;
     Image image2 = ImageExamples.checkerboard(12, 10, 1, 1,
         new RgbPixel(0, 0, 0),
@@ -87,12 +88,27 @@ public class SaveLayersCommandTest {
     } catch (IOException e) {
       fail("Failed to parse saved images. " + e.getMessage());
     }
+  }
 
-    // Clean up
+  /**
+   * Deletes files from test/data/layers and layers directory to make sure tests
+   * run independently.
+   */
+  private void clean() {
     File directory = new File("test/data/layers");
-    for (File file : directory.listFiles()) {
-      file.delete();
+    File[] files = directory.listFiles();
+    if (files != null) {
+      for (File file : files) {
+        file.delete();
+      }
     }
     directory.delete();
+
+    files = new File("test/data").listFiles();
+    if (files != null) {
+      for (File file : files) {
+        file.delete();
+      }
+    }
   }
 }

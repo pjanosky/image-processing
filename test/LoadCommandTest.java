@@ -4,6 +4,7 @@ import static org.junit.Assert.fail;
 
 import controller.PngImportExporter;
 import controller.commands.LoadCommand;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import model.Image;
@@ -63,6 +64,8 @@ public class LoadCommandTest {
 
   @Test
   public void testGoValid() {
+    clean();
+
     Image image = ImageExamples.rainbow(1, 2);
     String path = "test/data/image.png";
     try {
@@ -75,5 +78,27 @@ public class LoadCommandTest {
 
     new LoadCommand(path, "png").go(model);
     assertEquals(image, model.getImageIn("layer1"));
+  }
+
+  /**
+   * Deletes files from test/data/layers and layers directory to make sure tests
+   * run independently.
+   */
+  private void clean() {
+    File directory = new File("test/data/layers");
+    File[] files = directory.listFiles();
+    if (files != null) {
+      for (File file : files) {
+        file.delete();
+      }
+    }
+    directory.delete();
+
+    files = new File("test/data").listFiles();
+    if (files != null) {
+      for (File file : files) {
+        file.delete();
+      }
+    }
   }
 }

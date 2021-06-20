@@ -80,6 +80,8 @@ public class SimpleImageProcessingControllerTest {
 
   @Test
   public void testRunSave() {
+    clean();
+
     model.addLayer("layer1");
     model.addLayer("layer2");
     model.setLayerImage("layer2", image2);
@@ -117,6 +119,8 @@ public class SimpleImageProcessingControllerTest {
 
   @Test
   public void testRunLoad() {
+    clean();
+
     try {
       new PpmImportExporter().saveImage(
           new FileOutputStream("test/data/image.ppm"), image1);
@@ -203,6 +207,8 @@ public class SimpleImageProcessingControllerTest {
 
   @Test
   public void testRunSaveall() {
+    clean();
+
     model.addLayer("layer1");
     model.setLayerImage("layer1", image1);
     model.addLayer("layer2");
@@ -247,6 +253,8 @@ public class SimpleImageProcessingControllerTest {
 
   @Test
   public void testRunLoadall() {
+    clean();
+
     String textFile = "layer1 true test/data/layers/layer1.png\n"
         + "layer2 false test/data/layers/layer2.png\n"
         + "layer3 true\n";
@@ -592,5 +600,27 @@ public class SimpleImageProcessingControllerTest {
       commandText.append(command).append(System.lineSeparator());
     }
     return commandText.toString();
+  }
+
+  /**
+   * Deletes files from test/data/layers and layers directory to make sure tests
+   * run independently.
+   */
+  private void clean() {
+    File directory = new File("test/data/layers");
+    File[] files = directory.listFiles();
+    if (files != null) {
+      for (File file : files) {
+        file.delete();
+      }
+    }
+    directory.delete();
+
+    files = new File("test/data").listFiles();
+    if (files != null) {
+      for (File file : files) {
+        file.delete();
+      }
+    }
   }
 }

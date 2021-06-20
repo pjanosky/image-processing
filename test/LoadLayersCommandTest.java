@@ -53,6 +53,11 @@ public class LoadLayersCommandTest {
   }
 
   @Test(expected = IllegalArgumentException.class)
+  public void testGoNullModel() {
+    new LoadLayersCommand(null);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
   public void testGoInvalidTextFile() {
     clean();
 
@@ -171,10 +176,17 @@ public class LoadLayersCommandTest {
     File directory = new File("test/data/layers");
     File[] files = directory.listFiles();
     if (files != null) {
-      for (File file : directory.listFiles()) {
+      for (File file : files) {
         file.delete();
       }
     }
     directory.delete();
+
+    files = new File("test/data").listFiles();
+    if (files != null) {
+      for (File file : files) {
+        file.delete();
+      }
+    }
   }
 }
