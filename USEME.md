@@ -11,3 +11,4 @@ Loading and saving all layers (i.e., importing and exporting multiple layer file
 Hiding and showing layers: by calling "show" and "hide", it shows or hides the current layer. Similar to image operation commands, the user needs to set the layer they want to apply the visibility change to as the current layer before calling this command. 
 
 Creating an image programmatically: when the user wants to create an image (rainbow and checkerboard images are what our model currently supports) programmatically, the user needs to follow the given template. For example, the user may type "set rainbow 10 2" to create a rainbow image or "set checkerboard 2 4 1" for the checkerboard.
+ 
