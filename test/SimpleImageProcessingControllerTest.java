@@ -538,6 +538,59 @@ public class SimpleImageProcessingControllerTest {
 
     assertEquals(ImageExamples.rainbow(1, 1),
         model.getImageIn("layer2"));
+    assertEquals(expected, output);
+  }
+
+
+  @Test
+  public void testRunMultipleCommands() {
+    assertEquals(0, model.numLayers());
+
+    String output = runCommands(
+        "add layer1",
+        "add layer2",
+        "set rainbow 10 2",
+        "sepia",
+        "current layer1",
+        "remove",
+        "current layer2",
+        "hide",
+        "q"
+    );
+    String expected = concatenateLines(
+        "Enter a command",
+        "Layers:",
+        "1. layer1 (V) (current)",
+        "Layers:",
+        "1. layer1 (V)",
+        "2. layer2 (V) (current)",
+        "Layers:",
+        "1. layer1 (V)",
+        "2. layer2 (V) (current)",
+        "Layers:",
+        "1. layer1 (V)",
+        "2. layer2 (V) (current)",
+        "Layers:",
+        "1. layer1 (V) (current)",
+        "2. layer2 (V)",
+        "Layers:",
+        "1. layer2 (V)",
+        "Layers:",
+        "1. layer2 (V) (current)",
+        "Layers:",
+        "1. layer2 ( ) (current)",
+        "Quitting."
+    );
+
+    Image edited = ImageOperationCreator.create(OperationType.SEPIA).apply(image1);
+
+    assertEquals(1, model.numLayers());
+    assertEquals("layer2", model.getLayerNameAt(0));
+    assertEquals(edited, model.getImageIn("layer2"));
+    assertFalse(model.isVisible("layer2"));
+    assertEquals("layer2", model.getCurrentName());
+
+    assertEquals(expected, output);
   }
 
   // Tests inputting commands that are not valid into the controller.
