@@ -36,7 +36,7 @@ public class SaveCommand implements ControllerCommand {
     try {
       output = new FileOutputStream(filePath);
     } catch (IOException e) {
-      throw new IllegalArgumentException("Failed to save file to " + filePath);
+      throw new IllegalArgumentException("Failed to save file. " + e.getMessage());
     }
   }
 
@@ -62,7 +62,7 @@ public class SaveCommand implements ControllerCommand {
     try {
       ie.saveImage(output, image);
     } catch (IOException e) {
-      throw new IllegalArgumentException("Failed to save image");
+      throw new IllegalArgumentException("Failed to save image. " + e.getMessage());
     }
   }
 }

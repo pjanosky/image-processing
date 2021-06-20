@@ -113,6 +113,7 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
             "Reached the end of the provided Readable object without quitting the program.");
       } catch (IllegalArgumentException | IllegalStateException e) {
         renderMessage(e.getMessage());
+        continue;
       }
       if (!commandName.equals("script")) {
         renderLayers();

@@ -38,7 +38,7 @@ public class LoadCommand implements ControllerCommand {
     try {
       input = new FileInputStream(filepath);
     } catch (IOException e) {
-      throw new IllegalArgumentException("Failed to load file from " + filepath);
+      throw new IllegalArgumentException("Failed to load file. " + e.getMessage());
     }
   }
 

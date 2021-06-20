@@ -1,11 +1,13 @@
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import controller.ImageImportExporter;
 import controller.ImageProcessingController;
 import controller.PngImportExporter;
 import controller.PpmImportExporter;
 import controller.SimpleImageProcessingController;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -16,7 +18,6 @@ import model.ImageOperationCreator;
 import model.ImageOperationCreator.OperationType;
 import model.ImageProcessingModel;
 import model.ImageProcessingModelImpl;
-import model.Pixel;
 import model.RgbPixel;
 import org.junit.Before;
 import org.junit.Test;
@@ -104,7 +105,6 @@ public class SimpleImageProcessingControllerTest {
     }
     assertEquals(expected, output);
   }
-
 
   @Test
   public void testRunLoad() {
@@ -481,6 +481,58 @@ public class SimpleImageProcessingControllerTest {
 
     assertEquals("layer2", model.getLayerNameAt(0));
     assertEquals("layer1", model.getLayerNameAt(1));
+    assertEquals(expected, output);
+  }
+
+  // Tests inputting commands that are not valid into the controller.
+  @Test
+  public void testInvalidCommands() {
+    String output = runCommands(
+        "notarealcommand",
+        "anotherfakecommand",
+        "yay",
+        "q"
+    );
+    String expected = concatenateLines(
+        "Enter a command",
+        "Unknown Command",
+        "Unknown Command",
+        "Unknown Command",
+        "Quitting."
+    );
+
+    assertEquals(expected, output);
+  }
+
+  /*
+  Tests inputting invalid arguments for a valid command into the controller.
+  Just test the controller's ability to render error messages produced by
+  a ControllerCommand implementation. The actual error behavior of specific
+  invalid arguments should be tested for each ControllerCommand implementation
+  individually.
+   */
+  @Test
+  public void testInvalidCommandArguments() {
+    model.addLayer("layer1");
+    model.addLayer("layer2");
+    model.setLayerImage("layer1", image1);
+
+    String output = runCommands(
+        "current name",
+        "sharpen",
+        "save notarealpath/fake/crashandburn ppm",
+        "move -3",
+        "q"
+    );
+    String expected = concatenateLines(
+        "Enter a command",
+        "No layer named name.",
+        "The image right now is null!",
+        "Failed to save file. notarealpath/fake/crashandburn (Not a directory)",
+        "Invalid index.",
+        "Quitting."
+    );
+
     assertEquals(expected, output);
   }
 
