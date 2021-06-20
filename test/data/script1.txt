@@ -1,0 +1,4 @@
+add layer1
+add layer2
+script test/data/script2.txt
+q

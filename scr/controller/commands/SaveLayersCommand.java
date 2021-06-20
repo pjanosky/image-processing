@@ -65,16 +65,16 @@ public class SaveLayersCommand implements ControllerCommand {
       }
 
       text.append(layerName).append(' ');
-      text.append(model.isVisible(layerName)).append(' ');
+      text.append(model.isVisible(layerName));
       if (image != null) {
-        text.append(filePath);
+        text.append(' ').append(filePath);
       }
       text.append('\n');
     }
 
     // Save text file
     try {
-      String filePath = path + "/" + name + ".txt";
+      String filePath = path + "/info.txt";
       OutputStream output = new FileOutputStream(filePath);
       output.write(text.toString().getBytes());
     } catch (IOException e) {

@@ -7,6 +7,7 @@ import controller.ImportExporterCreator;
 import controller.JpegImportExporter;
 import controller.PngImportExporter;
 import controller.PpmImportExporter;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -27,14 +28,14 @@ public class ImportExporterCreatorTest {
   @Test
   public void testCreateJpeg() {
     ImageImportExporter ie = ImportExporterCreator.create("jpeg");
-    String path = "test/images/image.jpeg";
+    String path = "test/data/image.jpeg";
 
     Image parsedImage = null;
     try {
       new JpegImportExporter().saveImage(new FileOutputStream(path), image);
       parsedImage = ie.parseImage(new FileInputStream(path));
     } catch (IOException e) {
-      fail("Failed to save and parse images.");
+      fail("Failed to save and parse images. " + e.getMessage());
     }
 
     assertEquals(image.getWidth(), parsedImage.getWidth());
@@ -51,14 +52,14 @@ public class ImportExporterCreatorTest {
   @Test
   public void testCreatePng() {
     ImageImportExporter ie = ImportExporterCreator.create("png");
-    String path = "test/images/image.png";
+    String path = "test/data/image.png";
 
     Image parsedImage = null;
     try {
       new PngImportExporter().saveImage(new FileOutputStream(path), image);
       parsedImage = ie.parseImage(new FileInputStream(path));
     } catch (IOException e) {
-      fail("Failed to save and parse images.");
+      fail("Failed to save and parse images. " + e.getMessage());
     }
     assertEquals(image, parsedImage);
   }
@@ -66,14 +67,14 @@ public class ImportExporterCreatorTest {
   @Test
   public void testCreatePpm() {
     ImageImportExporter ie = ImportExporterCreator.create("ppm");
-    String path = "test/images/image.ppm";
+    String path = "test/data/image.ppm";
 
     Image parsedImage = null;
     try {
       new PpmImportExporter().saveImage(new FileOutputStream(path), image);
       parsedImage = ie.parseImage(new FileInputStream(path));
     } catch (IOException e) {
-      fail("Failed to save and parse images.");
+      fail("Failed to save and parse images. " + e.getMessage());
     }
     assertEquals(image, parsedImage);
   }

@@ -41,10 +41,10 @@ public class LoadLayersCommand implements ControllerCommand {
     }
 
     try {
-      InputStream input = new FileInputStream(path + "/" + directory.getName() + ".txt");
+      InputStream input = new FileInputStream(path + "/info.txt");
       this.scan = new Scanner(input);
     } catch (IOException e) {
-      throw new IllegalArgumentException("Failed to read text info file.");
+      throw new IllegalArgumentException("Failed to read text info file. " + e.getMessage());
     }
 
     ie = new PngImportExporter();
@@ -95,7 +95,7 @@ public class LoadLayersCommand implements ControllerCommand {
     try {
       return ie.parseImage(new FileInputStream(filePath));
     } catch (IOException e) {
-      throw new IllegalArgumentException("Failed to load image " + filePath + ".");
+      throw new IllegalArgumentException("Failed to load image. " + e.getMessage());
     }
   }
 }

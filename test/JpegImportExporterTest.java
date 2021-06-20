@@ -23,7 +23,7 @@ public class JpegImportExporterTest {
 
   @Test
   public void testSaveImage() {
-    String path = "test/images/image.jpeg";
+    String path = "test/data/image.jpeg";
     Image image = ImageExamples.rainbow(10, 2);
     try {
       ie.saveImage(new FileOutputStream(path), image);
@@ -39,7 +39,7 @@ public class JpegImportExporterTest {
 
   @Test
   public void testParseImage() {
-    String path = "test/images/image.png";
+    String path = "test/data/image.png";
     Image image = ImageExamples.rainbow(10, 2);
     ByteArrayOutputStream output = new ByteArrayOutputStream();
     Image parsedImage = null;

@@ -82,6 +82,7 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
   public void run() {
     renderMessage("Enter a command");
     runCommands(input);
+    renderMessage("Quitting.");
   }
 
   /**
@@ -98,7 +99,6 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
     while (scan.hasNext()) {
       String commandName = scan.next();
       if (commandName.toLowerCase().equals("q")) {
-        renderMessage("Quitting.");
         return;
       }
       Function<Scanner, ControllerCommand> command = commands.get(commandName);
@@ -109,13 +109,17 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
       try {
         command.apply(scan).go(model);
       } catch (NoSuchElementException e) {
-        renderMessage("Ran out of commands.");
-        return;
+        throw new IllegalStateException(
+            "Reached the end of the provided Readable object without quitting the program.");
       } catch (IllegalArgumentException | IllegalStateException e) {
         renderMessage(e.getMessage());
       }
-      renderLayers();
+      if (!commandName.equals("script")) {
+        renderLayers();
+      }
     }
+    throw new IllegalStateException(
+        "Reached the end of the provided Readable object without quitting the program.");
   }
 
 
@@ -123,27 +127,27 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
    * Renders a message to the view.
    *
    * @param message the message to render
-   * @throws IllegalArgumentException if writing the the Appendable object fails.
+   * @throws IllegalStateException if writing the the Appendable object fails.
    */
-  private void renderMessage(String message) throws IllegalArgumentException {
+  private void renderMessage(String message) throws IllegalStateException {
     try {
       view.renderMessage(message + System.lineSeparator());
     } catch (IOException e) {
-      throw new IllegalArgumentException("Failed to render message to output.");
+      throw new IllegalStateException("Failed to render message to output.");
     }
   }
 
   /**
    * Renders the layers of the model to the view.
    *
-   * @throws IllegalArgumentException if writing the the Appendable object fails.
+   * @throws IllegalStateException if writing the the Appendable object fails.
    */
-  private void renderLayers() throws IllegalArgumentException {
+  private void renderLayers() throws IllegalStateException {
     try {
       view.renderLayers();
       view.renderMessage(System.lineSeparator());
     } catch (IOException e) {
-      throw new IllegalArgumentException("Failed to render image layers to output.");
+      throw new IllegalStateException("Failed to render image layers to output.");
     }
   }
 
