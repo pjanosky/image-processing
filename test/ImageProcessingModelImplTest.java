@@ -269,6 +269,7 @@ public class ImageProcessingModelImplTest {
     assertEquals("third", model.getLayerNameAt(2));
 
     model.reorderLayer("third", 1);
+    model.reorderLayer("first", 0);
 
     assertEquals("first", model.getLayerNameAt(0));
     assertEquals("third", model.getLayerNameAt(1));

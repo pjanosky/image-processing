@@ -45,11 +45,14 @@ public class LoadCommand implements ControllerCommand {
   @Override
   public void go(ImageProcessingModel model)
       throws IllegalStateException, IllegalArgumentException {
+    if (model == null) {
+      throw new IllegalArgumentException("Model cannot be null.");
+    }
     Image parsedImage;
     try {
       parsedImage = ie.parseImage(input);
     } catch (IOException e) {
-      throw new IllegalArgumentException("Failed to save the image.");
+      throw new IllegalArgumentException("Failed to save the image. " + e.getMessage());
     }
 
     String current = model.getCurrentName();

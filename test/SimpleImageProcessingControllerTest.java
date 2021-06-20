@@ -528,7 +528,7 @@ public class SimpleImageProcessingControllerTest {
         "Enter a command",
         "No layer named name.",
         "The image right now is null!",
-        "Failed to save file. notarealpath/fake/crashandburn (Not a directory)",
+        "Failed to save file. notarealpath/fake/crashandburn (No such file or directory)",
         "Invalid index.",
         "Quitting."
     );
