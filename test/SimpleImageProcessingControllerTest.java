@@ -8,6 +8,7 @@ import controller.ImageProcessingController;
 import controller.PngImportExporter;
 import controller.PpmImportExporter;
 import controller.SimpleImageProcessingController;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -235,6 +236,13 @@ public class SimpleImageProcessingControllerTest {
       fail("Failed to parse saved images. " + e.getMessage());
     }
     assertEquals(expected, output);
+
+    // Clean up
+    File directory = new File("test/data/layers");
+    for (File file : directory.listFiles()) {
+      file.delete();
+    }
+    directory.delete();
   }
 
   @Test
@@ -245,6 +253,7 @@ public class SimpleImageProcessingControllerTest {
 
     model.addLayer("other");
     try {
+      new File("test/data/layers").mkdir();
       new PngImportExporter().saveImage(
           new FileOutputStream("test/data/layers/layer1.png"), image1);
       new PngImportExporter().saveImage(
@@ -282,6 +291,13 @@ public class SimpleImageProcessingControllerTest {
     assertTrue(model.isVisible("layer3"));
 
     assertEquals(expected, output);
+
+    // Clean up
+    File directory = new File("test/data/layers");
+    for (File file : directory.listFiles()) {
+      file.delete();
+    }
+    directory.delete();
   }
 
   @Test

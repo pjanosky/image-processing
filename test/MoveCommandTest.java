@@ -10,6 +10,7 @@ import org.junit.Test;
  * Tess the MoveCommand class.
  */
 public class MoveCommandTest {
+
   private ImageProcessingModel model;
 
   /**

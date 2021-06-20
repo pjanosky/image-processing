@@ -16,7 +16,6 @@ import model.ImageProcessingModel;
 public class SaveLayersCommand implements ControllerCommand {
 
   private final String path;
-  private final String name;
   private final ImageImportExporter ie;
 
   /**
@@ -40,13 +39,15 @@ public class SaveLayersCommand implements ControllerCommand {
       }
       this.path = path + "/" + name;
     }
-    this.name = name;
     this.ie = new PngImportExporter();
   }
 
   @Override
   public void go(ImageProcessingModel model)
       throws IllegalStateException, IllegalArgumentException {
+    if (model == null) {
+      throw new IllegalArgumentException("Model cannot bu null.");
+    }
     createDirectory();
     StringBuilder text = new StringBuilder();
 
