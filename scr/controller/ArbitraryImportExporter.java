@@ -30,7 +30,13 @@ public abstract class ArbitraryImportExporter implements ImageImportExporter {
 
   @Override
   public Image parseImage(InputStream input) throws IOException {
+    if (input == null) {
+      throw new IllegalArgumentException("Input cannot be null.");
+    }
     BufferedImage image = ImageIO.read(input);
+    if (image == null) {
+      throw new IOException("Failed to parse image.");
+    }
 
     Pixel[][] pixels = new Pixel[image.getHeight()][image.getWidth()];
     for (int r = 0; r < image.getHeight(); r += 1) {
@@ -43,6 +49,9 @@ public abstract class ArbitraryImportExporter implements ImageImportExporter {
 
   @Override
   public void saveImage(OutputStream output, Image image) throws IOException {
+    if (output == null || image == null) {
+      throw new IllegalArgumentException("Arguments cannot be null");
+    }
     BufferedImage buffer = new BufferedImage(image.getWidth(),
         image.getHeight(), BufferedImage.TYPE_INT_BGR);
     for (int r = 0; r < image.getHeight(); r += 1) {

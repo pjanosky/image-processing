@@ -18,6 +18,9 @@ public class PpmImportExporter implements ImageImportExporter {
 
   @Override
   public Image parseImage(InputStream input) throws IOException {
+    if (input == null) {
+      throw new IllegalArgumentException("Input must not be null.");
+    }
     Scanner scanner = new Scanner(removeComments(input));
 
     // Parse file token
@@ -98,6 +101,9 @@ public class PpmImportExporter implements ImageImportExporter {
 
   @Override
   public void saveImage(OutputStream output, Image image) throws IOException {
+    if (output == null || image == null) {
+      throw new IllegalArgumentException("Arguments cannot be null.");
+    }
     StringBuilder content = new StringBuilder();
 
     content.append("P3").append(System.lineSeparator());

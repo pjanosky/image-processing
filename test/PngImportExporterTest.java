@@ -56,4 +56,41 @@ public class PngImportExporterTest {
     }
     assertEquals(image, parsedImage);
   }
+
+  @Test(expected = IOException.class)
+  public void testSaveImageFailOutputStream() throws IOException{
+    ie.saveImage(new FailOutputStream(), ImageExamples.rainbow(10, 2));
+  }
+
+  @Test(expected = IOException.class)
+  public void testParseImageFailInputStream() throws IOException {
+    ie.parseImage(new FailInputStream());
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testParseImageNullInput() {
+    try {
+      ie.parseImage(null);
+    } catch (IOException e) {
+      fail("Should throw IllegalArgumentException");
+    }
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testSaveImageNullOutput() {
+    try {
+      ie.saveImage(null, ImageExamples.rainbow(10, 2));
+    } catch (IOException e) {
+      fail("Should throw IllegalArgumentException");
+    }
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testSaveImageNullImage() {
+    try {
+      ie.saveImage(new ByteArrayOutputStream(), null);
+    } catch (IOException e) {
+      fail("Should throw IllegalArgumentException");
+    }
+  }
 }

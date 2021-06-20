@@ -105,6 +105,33 @@ public class PpmImportExporterTest {
     ie.parseImage(input);
   }
 
+  @Test(expected = IllegalArgumentException.class)
+  public void testParseImageNullInput() {
+    try {
+      ie.parseImage(null);
+    } catch (IOException e) {
+      fail("Should throw IllegalArgumentException");
+    }
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testSaveImageNullOutput() {
+    try {
+      ie.saveImage(null, ImageExamples.rainbow(10, 2));
+    } catch (IOException e) {
+      fail("Should throw IllegalArgumentException");
+    }
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testSaveImageNullImage() {
+    try {
+      ie.saveImage(new ByteArrayOutputStream(), null);
+    } catch (IOException e) {
+      fail("Should throw IllegalArgumentException");
+    }
+  }
+
   /**
    * Saves an image to an output stream, failing the test if the image cannot be written.
    *

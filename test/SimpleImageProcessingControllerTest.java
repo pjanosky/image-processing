@@ -442,7 +442,7 @@ public class SimpleImageProcessingControllerTest {
     assertEquals(0, model.numLayers());
 
     String output = runCommands(
-        "script test/data/script1.txt",
+        "script test/data/scripts/script1.txt",
         "q"
     );
     String expected = concatenateLines(
