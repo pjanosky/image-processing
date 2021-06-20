@@ -1,6 +1,7 @@
 import static org.junit.Assert.*;
 
 import model.Image;
+import model.ImageExamples;
 import model.ImageProcessingModel;
 import model.ImageProcessingModelImpl;
 import model.ImageProcessingModelState;

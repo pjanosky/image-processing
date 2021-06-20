@@ -9,10 +9,13 @@ import controller.commands.MoveCommand;
 import controller.commands.RemoveCommand;
 import controller.commands.SaveCommand;
 import controller.commands.SaveLayersCommand;
+import controller.commands.SetImageCommand;
 import controller.commands.VisibilityCommand;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -76,6 +79,7 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
     commands.put("script", s -> new ScriptCommand(s.next()));
     commands.put("current", s -> new CurrentCommand(s.next()));
     commands.put("move", s -> new MoveCommand(s.nextInt()));
+    commands.put("set", new SetImageCommandCreator());
   }
 
   @Override
@@ -96,8 +100,10 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
    */
   private void runCommands(Readable in) {
     Scanner scan = new Scanner(in);
-    while (scan.hasNext()) {
-      String commandName = scan.next();
+    while (scan.hasNextLine()) {
+      String line = scan.nextLine();
+      Scanner lineScanner = new Scanner(line);
+      String commandName = lineScanner.next();
       if (commandName.toLowerCase().equals("q")) {
         return;
       }
@@ -107,7 +113,7 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
         continue;
       }
       try {
-        command.apply(scan).go(model);
+        command.apply(lineScanner).go(model);
       } catch (NoSuchElementException e) {
         throw new IllegalStateException(
             "Reached the end of the provided Readable object without quitting the program.");
@@ -184,6 +190,28 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
         throw new IllegalArgumentException("Model cannot be null.");
       }
       runCommands(input);
+    }
+  }
+
+  /**
+   * A function for creating a SetImageCommand from a scanner over a line of user input.
+   */
+  private static class SetImageCommandCreator implements Function<Scanner, ControllerCommand> {
+
+    @Override
+    public ControllerCommand apply(Scanner scanner) {
+      String type = scanner.next();
+
+      List<String> arguments = new ArrayList<>();
+      while (scanner.hasNext()) {
+        arguments.add(scanner.next());
+      }
+
+      String[] args = new String[arguments.size()];
+      for (int index = 0; index < arguments.size(); index += 1) {
+        args[index] = arguments.get(index);
+      }
+      return new SetImageCommand(type, args);
     }
   }
 }

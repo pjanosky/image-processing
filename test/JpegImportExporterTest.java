@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import model.Image;
+import model.ImageExamples;
 import org.junit.Test;
 
 public class JpegImportExporterTest {

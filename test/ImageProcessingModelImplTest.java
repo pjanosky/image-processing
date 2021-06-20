@@ -4,11 +4,11 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import model.Image;
+import model.ImageExamples;
 import model.ImageOperationCreator;
 import model.ImageOperationCreator.OperationType;
 import model.ImageProcessingModel;
 import model.ImageProcessingModelImpl;
-import model.ImageProcessingModelState;
 import model.RgbPixel;
 import org.junit.Before;
 import org.junit.Test;

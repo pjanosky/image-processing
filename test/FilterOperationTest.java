@@ -3,6 +3,7 @@ import static org.junit.Assert.assertEquals;
 import model.FilterOperation;
 import model.Image;
 import model.Image24Bit;
+import model.ImageExamples;
 import model.ImageOperation;
 import model.ImageOperationCreator;
 import model.ImageOperationCreator.OperationType;
