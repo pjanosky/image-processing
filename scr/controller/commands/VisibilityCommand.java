@@ -8,7 +8,7 @@ import model.ImageProcessingModel;
  */
 public class VisibilityCommand implements ControllerCommand {
 
-  private boolean isVisible;
+  private final boolean isVisible;
 
   /**
    * Constructs a {@code VisibilityCommand} object. For "show" command, {@code isVisible} is true.
@@ -32,6 +32,5 @@ public class VisibilityCommand implements ControllerCommand {
     } else {
       throw new IllegalArgumentException("No current layer set");
     }
-
   }
 }

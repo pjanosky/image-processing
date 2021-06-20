@@ -180,6 +180,9 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
     @Override
     public void go(ImageProcessingModel model)
         throws IllegalStateException, IllegalArgumentException {
+      if (model == null) {
+        throw new IllegalArgumentException("Model cannot be null.");
+      }
       runCommands(input);
     }
   }
