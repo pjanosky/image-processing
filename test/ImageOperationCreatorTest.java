@@ -1,6 +1,7 @@
 import static org.junit.Assert.assertEquals;
 
 import model.Image;
+import model.ImageExamples;
 import model.ImageOperation;
 import model.ImageOperationCreator;
 import model.ImageOperationCreator.OperationType;

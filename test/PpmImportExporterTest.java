@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import model.Image;
 import model.Image24Bit;
 import controller.ImageImportExporter;
+import model.ImageExamples;
 import model.Pixel;
 import model.RgbPixel;
 import controller.PpmImportExporter;

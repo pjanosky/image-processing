@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import model.Image;
+import model.ImageExamples;
 import model.ImageOperationCreator;
 import model.ImageOperationCreator.OperationType;
 import model.ImageProcessingModel;
@@ -514,6 +515,29 @@ public class SimpleImageProcessingControllerTest {
     assertEquals("layer2", model.getLayerNameAt(0));
     assertEquals("layer1", model.getLayerNameAt(1));
     assertEquals(expected, output);
+  }
+
+  @Test
+  public void testRunSet() {
+    model.addLayer("layer1");
+    model.addLayer("layer2");
+    assertEquals("layer1", model.getLayerNameAt(0));
+    assertEquals("layer2", model.getLayerNameAt(1));
+
+    String output = runCommands(
+        "set rainbow 1 1",
+        "q"
+    );
+    String expected = concatenateLines(
+        "Enter a command",
+        "Layers:",
+        "1. layer1 (V)",
+        "2. layer2 (V) (current)",
+        "Quitting."
+    );
+
+    assertEquals(ImageExamples.rainbow(1, 1),
+        model.getImageIn("layer2"));
   }
 
   // Tests inputting commands that are not valid into the controller.

@@ -7,11 +7,11 @@ import controller.ImportExporterCreator;
 import controller.JpegImportExporter;
 import controller.PngImportExporter;
 import controller.PpmImportExporter;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import model.Image;
+import model.ImageExamples;
 import org.junit.Test;
 
 /**

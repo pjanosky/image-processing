@@ -1,3 +1,5 @@
+package model;
+
 import model.Image;
 import model.Image24Bit;
 import model.Pixel;

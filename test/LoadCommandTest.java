@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import model.Image;
+import model.ImageExamples;
 import model.ImageProcessingModel;
 import model.ImageProcessingModelImpl;
 import org.junit.Before;

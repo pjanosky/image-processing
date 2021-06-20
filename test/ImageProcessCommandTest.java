@@ -2,6 +2,7 @@ import static org.junit.Assert.assertEquals;
 
 import controller.commands.ImageProcessCommand;
 import model.Image;
+import model.ImageExamples;
 import model.ImageOperationCreator;
 import model.ImageOperationCreator.OperationType;
 import model.ImageProcessingModel;
