@@ -10,38 +10,37 @@ import javax.swing.JTextField;
 
 public class GUIView extends JFrame implements GUIImageProcessingView {
 
-//  JButton importImageButton;
-//  JButton exportLayerButton;
-
   JTextField addLayerNameField;
 
+  //buttons to be displayed
   JButton addButton;
   JButton showButton;
-
+  JButton hideButton;
+  JButton importImageButton;
+  JButton exportLayerButton;
 
   public GUIView(String caption) {
-
-    //find file to import/load
-//    JPanel fileopenPanel = new JPanel();
-//    fileopenPanel.setLayout(new FlowLayout());
-//    dialogBoxesPanel.add(fileopenPanel);
-//    importImageButton = new JButton("Load an image");
-//    importImageButton.setActionCommand("Load image");
-//    this.add(importImageButton);
-//    fileOpenButton.addActionListener(this);
-//    fileopenPanel.add(fileOpenButton);
-//    fileOpenDisplay = new JLabel("File path will appear here");
-//    fileopenPanel.add(fileOpenDisplay);
-
-    //find a place to export/save
-//    exportLayerButton = new JButton("Save the layer");
-//    exportLayerButton.setActionCommand("Save layer");
-//    this.add(exportLayerButton);
+    addButton = new JButton("Add a layer");
+    addButton.setActionCommand("Add layer");
+    this.add(addButton);
 
     showButton = new JButton("Show the layer");
     showButton.setActionCommand("Show layer");
     this.add(showButton);
 
+    hideButton = new JButton("Hide the layer");
+    hideButton.setActionCommand("Hide layer");
+    this.add(hideButton);
+
+    importImageButton = new JButton("Load an image");
+    importImageButton.setActionCommand("Load image");
+    this.add(importImageButton);
+
+    exportLayerButton = new JButton("Save the layer");
+    exportLayerButton.setActionCommand("Save layer");
+    this.add(exportLayerButton);
+
+    //text field
     addLayerNameField = new JTextField(15);
     this.add(addLayerNameField);
   }
@@ -64,6 +63,10 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
     showButton.addActionListener(evt -> features.runCommand(
         new VisibilityCommand(true)
     ));
+    hideButton.addActionListener(evt -> features.runCommand(
+        new VisibilityCommand(false)
+    ));
+
     // add more action listeners for each command
     // can possible store 'features' object as a field if other methods need access to it
   }
@@ -113,3 +116,20 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
     fileSaveDisplay = new JLabel("File path will appear here");
     filesavePanel.add(fileSaveDisplay);
  */
+
+//find file to import/load
+//    JPanel fileopenPanel = new JPanel();
+//    fileopenPanel.setLayout(new FlowLayout());
+//    dialogBoxesPanel.add(fileopenPanel);
+//    importImageButton = new JButton("Load an image");
+//    importImageButton.setActionCommand("Load image");
+//    this.add(importImageButton);
+//    fileOpenButton.addActionListener(this);
+//    fileopenPanel.add(fileOpenButton);
+//    fileOpenDisplay = new JLabel("File path will appear here");
+//    fileopenPanel.add(fileOpenDisplay);
+
+//find a place to export/save
+//    exportLayerButton = new JButton("Save the layer");
+//    exportLayerButton.setActionCommand("Save layer");
+//    this.add(exportLayerButton);
