@@ -32,12 +32,12 @@ public class CurrentCommandTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void testGoNullModel() {
-    new CurrentCommand("layer1").go(null);
+    new CurrentCommand("layer1").runCommand(null);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testGoInvalidName() {
-    new CurrentCommand("layer1").go(model);
+    new CurrentCommand("layer1").runCommand(model);
   }
 
   @Test
@@ -46,7 +46,7 @@ public class CurrentCommandTest {
     model.addLayer("layer2");
     assertEquals("layer2", model.getCurrentName());
 
-    new CurrentCommand("layer1").go(model);
+    new CurrentCommand("layer1").runCommand(model);
 
     assertEquals("layer1", model.getCurrentName());
   }

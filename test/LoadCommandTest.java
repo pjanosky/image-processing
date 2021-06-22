@@ -55,12 +55,12 @@ public class LoadCommandTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void testGoNullModel() {
-    new LoadCommand("test/data", "ppm").go(null);
+    new LoadCommand("test/data", "ppm").runCommand(null);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testGoNoCurrentLayerSet() {
-    new LoadCommand("test/data", "ppm").go(model);
+    new LoadCommand("test/data", "ppm").runCommand(model);
   }
 
   @Test
@@ -77,7 +77,7 @@ public class LoadCommandTest {
     model.addLayer("layer1");
     assertNull(model.getImageIn("layer1"));
 
-    new LoadCommand(path, "png").go(model);
+    new LoadCommand(path, "png").runCommand(model);
     assertEquals(image, model.getImageIn("layer1"));
   }
 

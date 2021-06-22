@@ -23,8 +23,9 @@ public class SaveLayersCommand implements ControllerCommand {
    * path and renames the path to <i>path/name</i> to signify that the directory created has the
    * given name.
    *
-   * @param path
-   * @param name
+   * @param path the file path to the directory where the layers will be saved.
+   * @param name the name of the subdirectory to save the image and text file describing the
+   *             layers.
    */
   public SaveLayersCommand(String path, String name) {
     if (path == null || name == null) {
@@ -44,7 +45,7 @@ public class SaveLayersCommand implements ControllerCommand {
   }
 
   @Override
-  public void go(ImageProcessingModel model)
+  public void runCommand(ImageProcessingModel model)
       throws IllegalStateException, IllegalArgumentException {
     if (model == null) {
       throw new IllegalArgumentException("Model cannot bu null.");

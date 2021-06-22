@@ -101,7 +101,7 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
 
   @Override
   public void reorderLayer(String layerName, int index) {
-    if (layerName == null ) {
+    if (layerName == null) {
       throw new IllegalArgumentException("Layer name cannot be null.");
     }
     if (index < 0 || index >= numLayers()) {
@@ -198,9 +198,9 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
   private void ensureImageSize(Image image) throws IllegalArgumentException {
     for (Layer layer : layers) {
       Image layerImage = layer.getImage();
-      if (layerImage != null &&
-          (layerImage.getWidth() != image.getWidth()
-              || layerImage.getHeight() != image.getHeight())) {
+      if (layerImage != null
+          && (layerImage.getWidth() != image.getWidth()
+          || layerImage.getHeight() != image.getHeight())) {
         throw new IllegalArgumentException("All layers must have images of the same size: "
             + layerImage.getWidth() + "x" + layerImage.getHeight() + ".");
       }

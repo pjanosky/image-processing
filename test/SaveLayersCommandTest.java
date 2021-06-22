@@ -51,21 +51,21 @@ public class SaveLayersCommandTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void testGoNullModel() {
-    new SaveLayersCommand("test/data", "layers").go(null);
+    new SaveLayersCommand("test/data", "layers").runCommand(null);
   }
 
   @Test(expected = IllegalStateException.class)
   public void testGoInvalidName() {
-    new SaveLayersCommand("test/data", "invalid/name#$\\%^&*").go(model);
+    new SaveLayersCommand("test/data", "invalid/name#$\\%^&*").runCommand(model);
   }
 
   @Test
   public void testGoValid() {
     clean();
-    Image image1 = ImageExamples.rainbow(10, 2);;
+    Image image1 = ImageExamples.rainbow(10, 2);
     Image image2 = ImageExamples.checkerboard(12, 10, 1, 1,
         new RgbPixel(0, 0, 0),
-        new RgbPixel(255, 255, 255));;
+        new RgbPixel(255, 255, 255));
     model.addLayer("layer1");
     model.setLayerImage("layer1", image1);
     model.addLayer("layer2");
@@ -73,8 +73,7 @@ public class SaveLayersCommandTest {
     model.setLayerImage("layer2", image2);
     model.addLayer("layer3");
 
-    new SaveLayersCommand("test/data", "layers").go(model);
-
+    new SaveLayersCommand("test/data", "layers").runCommand(model);
 
     String textFile = "layer1 true test/data/layers/layer1.png\n"
         + "layer2 false test/data/layers/layer2.png\n"
@@ -92,8 +91,7 @@ public class SaveLayersCommandTest {
   }
 
   /**
-   * Deletes files from test/data/layers and layers directory to make sure tests
-   * run independently.
+   * Deletes files from test/data/layers and layers directory to make sure tests run independently.
    */
   private void clean() {
     File directory = new File("test/data/layers");

@@ -36,12 +36,12 @@ public class ImageProcessCommandTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void testGoNullModel() {
-    new ImageProcessCommand(ImageOperationCreator.create(OperationType.BLUR)).go(null);
+    new ImageProcessCommand(ImageOperationCreator.create(OperationType.BLUR)).runCommand(null);
   }
 
   @Test(expected = IllegalStateException.class)
   public void testGoNoCurrentLayer() {
-    new ImageProcessCommand(ImageOperationCreator.create(OperationType.BLUR)).go(model);
+    new ImageProcessCommand(ImageOperationCreator.create(OperationType.BLUR)).runCommand(model);
   }
 
   @Test
@@ -51,7 +51,7 @@ public class ImageProcessCommandTest {
     model.addLayer("layer1");
     model.setLayerImage("layer1", image);
     assertEquals(image, model.getImageIn("layer1"));
-    new ImageProcessCommand(ImageOperationCreator.create(OperationType.BLUR)).go(model);
+    new ImageProcessCommand(ImageOperationCreator.create(OperationType.BLUR)).runCommand(model);
 
     assertEquals(edited, model.getImageIn("layer1"));
   }
@@ -63,7 +63,7 @@ public class ImageProcessCommandTest {
     model.addLayer("layer1");
     model.setLayerImage("layer1", image);
     assertEquals(image, model.getImageIn("layer1"));
-    new ImageProcessCommand(ImageOperationCreator.create(OperationType.SEPIA)).go(model);
+    new ImageProcessCommand(ImageOperationCreator.create(OperationType.SEPIA)).runCommand(model);
 
     assertEquals(edited, model.getImageIn("layer1"));
   }

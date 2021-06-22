@@ -33,6 +33,9 @@ public class SimpleImageProcessingControllerTest {
   private final Image image1;
   private final Image image2;
 
+  /**
+   * Construct a new SimpleImageProcessingControllerTest initializing all example test data.
+   */
   public SimpleImageProcessingControllerTest() {
     model = new ImageProcessingModelImpl();
     image1 = ImageExamples.rainbow(10, 2);
@@ -646,7 +649,6 @@ public class SimpleImageProcessingControllerTest {
   }
 
 
-
   /**
    * Runs a series of commands in a new SimpleImageProcessingController.
    *
@@ -666,8 +668,8 @@ public class SimpleImageProcessingControllerTest {
   }
 
   /**
-   * Concatenates a series of lines into one String with each line followed
-   * by a new line character.
+   * Concatenates a series of lines into one String with each line followed by a new line
+   * character.
    *
    * @param commands the lines to concatenate.
    * @return the concatenated lines as a String.
@@ -681,8 +683,7 @@ public class SimpleImageProcessingControllerTest {
   }
 
   /**
-   * Deletes files from test/data/layers and layers directory to make sure tests
-   * run independently.
+   * Deletes files from test/data/layers and layers directory to make sure tests run independently.
    */
   private void clean() {
     File directory = new File("test/data/layers");

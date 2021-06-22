@@ -59,7 +59,7 @@ public class PngImportExporterTest {
   }
 
   @Test(expected = IOException.class)
-  public void testSaveImageFailOutputStream() throws IOException{
+  public void testSaveImageFailOutputStream() throws IOException {
     ie.saveImage(new FailOutputStream(), ImageExamples.rainbow(10, 2));
   }
 

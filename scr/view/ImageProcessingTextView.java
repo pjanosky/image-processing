@@ -20,7 +20,7 @@ public class ImageProcessingTextView implements ImageProcessingView {
    * @throws IllegalArgumentException if the model or output is null.
    */
   public ImageProcessingTextView(ImageProcessingModelState model, Appendable output)
-  throws IllegalArgumentException{
+      throws IllegalArgumentException {
     if (model == null || output == null) {
       throw new IllegalArgumentException("Arguments cannot be null.");
     }

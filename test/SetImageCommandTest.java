@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Tests the SetImageCommandClass
+ * Tests the SetImageCommand class.
  */
 public class SetImageCommandTest {
 
@@ -46,32 +46,32 @@ public class SetImageCommandTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void testGoInvalidTyp() {
-    new SetImageCommand("no a real type", new String[0]).go(model);
+    new SetImageCommand("no a real type", new String[0]).runCommand(model);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testGoRainbowWrongNumArgs() {
     String[] args = {"2"};
-    new SetImageCommand("rainbow", args).go(model);
+    new SetImageCommand("rainbow", args).runCommand(model);
   }
 
   @Test(expected = IllegalStateException.class)
   public void testGoRainbowNoCurrentLayerSet() {
     String[] args = {"1", "1"};
-    new SetImageCommand("rainbow", args).go(model);
+    new SetImageCommand("rainbow", args).runCommand(model);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testGoRainbowInvalidArgs() {
     String[] args = {"hello", "it's me"};
-    new SetImageCommand("rainbow", args).go(model);
+    new SetImageCommand("rainbow", args).runCommand(model);
   }
 
   @Test
   public void testGoRainbowValid() {
     model.addLayer("layer1");
     String[] args = {"2", "2"};
-    new SetImageCommand("rainbow", args).go(model);
+    new SetImageCommand("rainbow", args).runCommand(model);
     Image expected = ImageExamples.rainbow(2, 2);
     assertEquals(expected, model.getImageIn("layer1"));
   }
@@ -79,26 +79,26 @@ public class SetImageCommandTest {
   @Test(expected = IllegalArgumentException.class)
   public void testGoCheckerboardWrongNumArgs() {
     String[] args = {"2", "3"};
-    new SetImageCommand("checkerboard", args).go(model);
+    new SetImageCommand("checkerboard", args).runCommand(model);
   }
 
   @Test(expected = IllegalStateException.class)
   public void testGoCheckerboardNoCurrentLayerSet() {
     String[] args = {"1", "1", "1"};
-    new SetImageCommand("checkerboard", args).go(model);
+    new SetImageCommand("checkerboard", args).runCommand(model);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testGoCheckerboardInvalidArgs() {
     String[] args = {"hello", "it's me", " "};
-    new SetImageCommand("checkerboard", args).go(model);
+    new SetImageCommand("checkerboard", args).runCommand(model);
   }
 
   @Test
   public void testGoCheckerboardValid() {
     model.addLayer("layer1");
     String[] args = {"2", "2", "2"};
-    new SetImageCommand("checkerboard", args).go(model);
+    new SetImageCommand("checkerboard", args).runCommand(model);
     Image expected = ImageExamples.checkerboard(2, 2, 2, 2,
         new RgbPixel(0, 0, 0),
         new RgbPixel(255, 255, 255));

@@ -55,12 +55,12 @@ public class SaveCommandTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void testGoNullModel() {
-    new SaveCommand("test/data", "png").go(null);
+    new SaveCommand("test/data", "png").runCommand(null);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testNoLayers() {
-    new SaveCommand("test/data", "png").go(model);
+    new SaveCommand("test/data", "png").runCommand(model);
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -69,7 +69,7 @@ public class SaveCommandTest {
     model.addLayer("layer2");
     model.setLayerImage("layer2", ImageExamples.rainbow(2, 10));
     model.showLayer("layer2", false);
-    new SaveCommand("test/data", "png").go(model);
+    new SaveCommand("test/data", "png").runCommand(model);
   }
 
   @Test
@@ -92,7 +92,7 @@ public class SaveCommandTest {
     model.setLayerImage("layer3", image1);
     model.setLayerImage("layer4", image2);
 
-    new SaveCommand(path, "png").go(model);
+    new SaveCommand(path, "png").runCommand(model);
 
     try {
       assertEquals(image1, new PngImportExporter().parseImage(new FileInputStream(path)));

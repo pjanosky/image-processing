@@ -27,12 +27,12 @@ public class RemoveCommandTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void testGoNullModel() {
-    new RemoveCommand().go(null);
+    new RemoveCommand().runCommand(null);
   }
 
   @Test(expected = IllegalStateException.class)
   public void testGoNoCurrentLayerSet() {
-    new RemoveCommand().go(model);
+    new RemoveCommand().runCommand(model);
   }
 
   @Test
@@ -45,7 +45,7 @@ public class RemoveCommandTest {
     assertEquals(3, model.numLayers());
     assertEquals("layer2", model.getCurrentName());
 
-    new RemoveCommand().go(model);
+    new RemoveCommand().runCommand(model);
 
     assertEquals(2, model.numLayers());
     assertNull(model.getCurrentName());

@@ -42,7 +42,7 @@ public class SaveCommand implements ControllerCommand {
   }
 
   @Override
-  public void go(ImageProcessingModel model)
+  public void runCommand(ImageProcessingModel model)
       throws IllegalStateException, IllegalArgumentException {
     if (model == null) {
       throw new IllegalArgumentException("Model cannot be null.");

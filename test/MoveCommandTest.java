@@ -28,7 +28,7 @@ public class MoveCommandTest {
   @Test(expected = IllegalArgumentException.class)
   public void testGoNullModel() {
     model.addLayer("layer1");
-    new MoveCommand(0).go(null);
+    new MoveCommand(0).runCommand(null);
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -37,7 +37,7 @@ public class MoveCommandTest {
     model.addLayer("layer2");
     model.addLayer("layer3");
 
-    new MoveCommand(0).go(model);
+    new MoveCommand(0).runCommand(model);
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -46,7 +46,7 @@ public class MoveCommandTest {
     model.addLayer("layer2");
     model.addLayer("layer3");
 
-    new MoveCommand(4).go(model);
+    new MoveCommand(4).runCommand(model);
   }
 
   @Test
@@ -58,7 +58,7 @@ public class MoveCommandTest {
     assertEquals("layer2", model.getLayerNameAt(1));
     assertEquals("layer3", model.getLayerNameAt(2));
 
-    new MoveCommand(1).go(model);
+    new MoveCommand(1).runCommand(model);
     assertEquals("layer3", model.getLayerNameAt(0));
     assertEquals("layer1", model.getLayerNameAt(1));
     assertEquals("layer2", model.getLayerNameAt(2));

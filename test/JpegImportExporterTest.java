@@ -1,4 +1,6 @@
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import controller.ImageImportExporter;
 import controller.JpegImportExporter;
@@ -11,6 +13,9 @@ import model.Image;
 import model.ImageExamples;
 import org.junit.Test;
 
+/**
+ * Tests the JpegImportExporter class.
+ */
 public class JpegImportExporterTest {
 
   private ImageImportExporter ie;
@@ -62,7 +67,7 @@ public class JpegImportExporterTest {
   }
 
   @Test(expected = IOException.class)
-  public void testSaveImageFailOutputStream() throws IOException{
+  public void testSaveImageFailOutputStream() throws IOException {
     ie.saveImage(new FailOutputStream(), ImageExamples.rainbow(10, 2));
   }
 

@@ -31,7 +31,7 @@ public class LoadLayersCommandTest {
    */
   public LoadLayersCommandTest() {
     model = new ImageProcessingModelImpl();
-    image1 = ImageExamples.rainbow(10, 2);;
+    image1 = ImageExamples.rainbow(10, 2);
     image2 = ImageExamples.checkerboard(12, 10, 1, 1,
         new RgbPixel(0, 0, 0),
         new RgbPixel(255, 255, 255));
@@ -77,7 +77,7 @@ public class LoadLayersCommandTest {
       fail("Failed to save test images. " + e.getMessage());
     }
 
-    new LoadLayersCommand("test/data/layers").go(model);
+    new LoadLayersCommand("test/data/layers").runCommand(model);
 
     clean();
   }
@@ -100,7 +100,7 @@ public class LoadLayersCommandTest {
       fail("Failed to save test images. " + e.getMessage());
     }
 
-    new LoadLayersCommand("test/data/layers").go(model);
+    new LoadLayersCommand("test/data/layers").runCommand(model);
 
     clean();
   }
@@ -124,7 +124,7 @@ public class LoadLayersCommandTest {
       fail("Failed to save test images. " + e.getMessage());
     }
 
-    new LoadLayersCommand("test/data/layers").go(model);
+    new LoadLayersCommand("test/data/layers").runCommand(model);
 
     clean();
   }
@@ -149,7 +149,7 @@ public class LoadLayersCommandTest {
       fail("Failed to save test images. " + e.getMessage());
     }
 
-    new LoadLayersCommand("test/data/layers").go(model);
+    new LoadLayersCommand("test/data/layers").runCommand(model);
 
     assertEquals(3, model.numLayers());
 

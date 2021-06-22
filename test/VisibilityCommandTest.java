@@ -27,12 +27,12 @@ public class VisibilityCommandTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void testGoNullModel() {
-    new VisibilityCommand(true).go(null);
+    new VisibilityCommand(true).runCommand(null);
   }
 
   @Test(expected = IllegalStateException.class)
   public void testGoNoCurrentLayerSet() {
-    new VisibilityCommand(true).go(model);
+    new VisibilityCommand(true).runCommand(model);
   }
 
   @Test
@@ -40,7 +40,7 @@ public class VisibilityCommandTest {
     model.addLayer("layer1");
     model.showLayer("layer1", false);
     assertFalse(model.isVisible("layer1"));
-    new VisibilityCommand(true).go(model);
+    new VisibilityCommand(true).runCommand(model);
     assertTrue(model.isVisible("layer1"));
   }
 
@@ -49,7 +49,7 @@ public class VisibilityCommandTest {
     model.addLayer("layer1");
     model.showLayer("layer1", true);
     assertTrue(model.isVisible("layer1"));
-    new VisibilityCommand(false).go(model);
+    new VisibilityCommand(false).runCommand(model);
     assertFalse(model.isVisible("layer1"));
   }
 }

@@ -104,7 +104,7 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
       String line = scan.nextLine();
       Scanner lineScanner = new Scanner(line);
       String commandName = lineScanner.next();
-      if (commandName.toLowerCase().equals("q")) {
+      if (commandName.equalsIgnoreCase("q")) {
         return;
       }
       Function<Scanner, ControllerCommand> command = commands.get(commandName);
@@ -113,7 +113,7 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
         continue;
       }
       try {
-        command.apply(lineScanner).go(model);
+        command.apply(lineScanner).runCommand(model);
       } catch (NoSuchElementException e) {
         renderMessage("Invalid number of arguments for " + commandName + ".");
       } catch (IllegalArgumentException | IllegalStateException e) {
@@ -165,7 +165,7 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
     private final Readable input;
 
     /**
-     * Creates a new script controller with
+     * Creates a new script controller with.
      *
      * @param filePath the path to the script file to execute.
      * @throws IllegalArgumentException if the filePath is null or is not a path to a valid script
@@ -183,7 +183,7 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
     }
 
     @Override
-    public void go(ImageProcessingModel model)
+    public void runCommand(ImageProcessingModel model)
         throws IllegalStateException, IllegalArgumentException {
       if (model == null) {
         throw new IllegalArgumentException("Model cannot be null.");

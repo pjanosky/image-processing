@@ -39,7 +39,7 @@ public class SetImageCommand implements ControllerCommand {
 
 
   @Override
-  public void go(ImageProcessingModel model)
+  public void runCommand(ImageProcessingModel model)
       throws IllegalStateException, IllegalArgumentException {
     if (model == null) {
       throw new IllegalArgumentException("Model cannot be null.");
@@ -59,12 +59,12 @@ public class SetImageCommand implements ControllerCommand {
 
 
   /**
-   * Sets the image of the current layers to a rainbow image, parsing the parameters from
-   * the user input. Rainbow image commands take the form "rainbow width stripHeight".
+   * Sets the image of the current layers to a rainbow image, parsing the parameters from the user
+   * input. Rainbow image commands take the form "rainbow width stripHeight".
    *
    * @param model the model to set the current layers of.
    * @throws IllegalArgumentException if the parameters for the image are wrong.
-   * @throws IllegalStateException if there is no current layers set in the model.
+   * @throws IllegalStateException    if there is no current layers set in the model.
    */
   void rainbow(ImageProcessingModel model) {
     if (args.length != 2) {
@@ -86,14 +86,15 @@ public class SetImageCommand implements ControllerCommand {
   }
 
   /**
-   * Sets the image of the current layers to a checkerboard image, parsing the parameters from
-   * the user input. Checkerboard images have the form "checkerboard numRows numCols squareSize".
+   * Sets the image of the current layers to a checkerboard image, parsing the parameters from the
+   * user input. Checkerboard images have the form "checkerboard numRows numCols squareSize".
    *
    * @param model the model to set the current layers of.
    * @throws IllegalArgumentException if the parameters for the image are wrong.
-   * @throws IllegalStateException if there is no current layers set in the model.
+   * @throws IllegalStateException    if there is no current layers set in the model.
    */
-  void checkerBoard(ImageProcessingModel model) throws IllegalArgumentException, IllegalStateException{
+  void checkerBoard(ImageProcessingModel model)
+      throws IllegalArgumentException, IllegalStateException {
     if (args.length != 3) {
       throw new IllegalArgumentException(
           "Checkerboard images need 2 parameters: number of horizontal squares, "

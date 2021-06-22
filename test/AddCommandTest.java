@@ -1,8 +1,6 @@
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 import controller.commands.AddCommand;
-import controller.commands.ControllerCommand;
 import model.ImageProcessingModel;
 import model.ImageProcessingModelImpl;
 import org.junit.Before;
@@ -53,22 +51,22 @@ public class AddCommandTest {
     model.addLayer("layer2");
     model.addLayer("layer3");
 
-    new AddCommand("layer2").go(model);
+    new AddCommand("layer2").runCommand(model);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testGoNullModel() {
-    new AddCommand("layer1").go(null);
+    new AddCommand("layer1").runCommand(null);
   }
 
   @Test
   public void testGo() {
     assertEquals(0, model.numLayers());
-    new AddCommand("layer1").go(model);
+    new AddCommand("layer1").runCommand(model);
     assertEquals(1, model.numLayers());
     assertEquals("layer1", model.getLayerNameAt(0));
 
-    new AddCommand("layer2").go(model);
+    new AddCommand("layer2").runCommand(model);
     assertEquals(2, model.numLayers());
     assertEquals("layer2", model.getLayerNameAt(1));
   }

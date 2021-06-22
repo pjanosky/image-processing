@@ -1,4 +1,7 @@
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import model.Image;
 import model.ImageExamples;
@@ -39,6 +42,7 @@ public class ImageProcessingViewModelTest {
   public void testGetCurrentNameNull() {
     delegate = new ImageProcessingModelImpl();
     model = new ImageProcessingViewModel(delegate);
+    assertNull(model.getCurrentName());
   }
 
   @Test
