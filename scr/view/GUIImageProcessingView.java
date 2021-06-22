@@ -1,9 +1,9 @@
 package view;
 
-import java.awt.event.ActionListener;
+import controller.GuiController;
 
 public interface GUIImageProcessingView extends ImageProcessingView {
 
-  void addActionListener(ActionListener listener);
+  void addFeatures(GuiController features);
 
 }
