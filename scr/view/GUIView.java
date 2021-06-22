@@ -1,6 +1,6 @@
 package view;
 
-import controller.GuiController;
+import controller.GuiProcessingController;
 import controller.commands.AddCommand;
 import controller.commands.VisibilityCommand;
 import java.io.IOException;
@@ -57,7 +57,7 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
   }
 
   @Override
-  public void addFeatures(GuiController features) {
+  public void addFeatures(GuiProcessingController features) {
     addButton.addActionListener(evt -> features.runCommand(
         new AddCommand(addLayerNameField.getName())
     ));
