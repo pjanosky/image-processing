@@ -2,6 +2,7 @@ package controller;
 
 import controller.commands.ControllerCommand;
 
-public interface GuiControllerFeatures {
+public interface GuiController {
   void runCommand(ControllerCommand command);
 }
+

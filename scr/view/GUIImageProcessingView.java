@@ -1,9 +1,9 @@
 package view;
 
-import controller.GuiControllerFeatures;
+import controller.GuiController;
 
 public interface GUIImageProcessingView extends ImageProcessingView {
 
-  void addFeatures(GuiControllerFeatures features);
+  void addFeatures(GuiController features);
 
 }
