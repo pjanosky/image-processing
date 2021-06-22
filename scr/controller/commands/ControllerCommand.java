@@ -15,6 +15,6 @@ public interface ControllerCommand {
    * @throws IllegalArgumentException if illegal arguments are passed to the command.
    * @throws IllegalStateException    if the command fails for any other reason
    */
-  void runCommand(ImageProcessingModel model, ImageProcessingView view)
+  void runCommand(ImageProcessingModel model)
       throws IllegalStateException, IllegalArgumentException;
 }
