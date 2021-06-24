@@ -2,14 +2,31 @@ package view;
 
 import controller.GuiProcessingController;
 import controller.commands.AddCommand;
+import controller.commands.LoadCommand;
+import controller.commands.SaveCommand;
 import controller.commands.VisibilityCommand;
+import java.awt.FlowLayout;
+import java.io.File;
 import java.io.IOException;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 public class GUIView extends JFrame implements GUIImageProcessingView {
 
+  //main panel
+  JPanel main;
+  JScrollPane mainScrollPane;
+
+  //menu panel
+  JPanel menu;
+
+  //text field to add the layer name
   JTextField addLayerNameField;
 
   //buttons to be displayed
@@ -19,33 +36,48 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
   JButton importImageButton;
   JButton exportLayerButton;
 
+
   public GUIView(String caption) {
+    super(caption);
+    setSize(400, 400);
+    setLayout(new FlowLayout());
+
+    main = new JPanel();
+    main.setLayout(new BoxLayout(main, BoxLayout.PAGE_AXIS));
+    //scroll bars around this main panel
+    mainScrollPane = new JScrollPane(main);
+    add(mainScrollPane);
+
+    menu = new JPanel();
+    menu.setBorder(BorderFactory.createTitledBorder("menu"));
+    menu.setLayout(new BoxLayout(menu, BoxLayout.PAGE_AXIS));
+    main.add(menu);
+
     addButton = new JButton("Add a layer");
     addButton.setActionCommand("Add layer");
-    this.add(addButton);
+    menu.add(addButton);
 
     showButton = new JButton("Show the layer");
     showButton.setActionCommand("Show layer");
-    this.add(showButton);
+    menu.add(showButton);
 
     hideButton = new JButton("Hide the layer");
     hideButton.setActionCommand("Hide layer");
-    this.add(hideButton);
+    menu.add(hideButton);
 
     importImageButton = new JButton("Load an image");
     importImageButton.setActionCommand("Load image");
-    this.add(importImageButton);
+    menu.add(importImageButton);
 
     exportLayerButton = new JButton("Save the layer");
     exportLayerButton.setActionCommand("Save layer");
-    this.add(exportLayerButton);
+    menu.add(exportLayerButton);
 
     //text field
     addLayerNameField = new JTextField(15);
-    this.add(addLayerNameField);
+    menu.add(addLayerNameField);
   }
 
-  @Override
   public void renderLayers() throws IOException {
 
   }
@@ -66,13 +98,51 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
     hideButton.addActionListener(evt -> features.runCommand(
         new VisibilityCommand(false)
     ));
+//    importImageButton.addActionListener(evt -> features.runCommand(
+//        new LoadCommand(loadedFilePathGetter().getAbsolutePath())
+//    ));
+    exportLayerButton.addActionListener(evt -> features.runCommand(
+        new SaveCommand(saveFilePathGetter().getAbsolutePath(), "png") //<-- is this correct?
+    ));
 
     // add more action listeners for each command
     // can possible store 'features' object as a field if other methods need access to it
   }
+
+  @Override
+  public void clearInputString() {
+    addLayerNameField.setText("");
+  }
+
+  private File loadedFilePathGetter() {
+    File f = null;
+    final JFileChooser fchooser = new JFileChooser(".");
+    int retvalue = fchooser.showSaveDialog(this);
+    if (retvalue == JFileChooser.APPROVE_OPTION) {
+      f = fchooser.getSelectedFile();
+    }
+    return f;
+  }
+
+  private File saveFilePathGetter() {
+    File f = null;
+    final JFileChooser fchooser = new JFileChooser(".");
+    int retvalue = fchooser.showSaveDialog(this);
+    if (retvalue == JFileChooser.APPROVE_OPTION) {
+      f = fchooser.getSelectedFile();
+    }
+    return f;
+  }
+
 }
 
 /*
+final JFileChooser fchooser = new JFileChooser(".");
+        int retvalue = fchooser.showSaveDialog(SwingFeaturesFrame.this);
+        if (retvalue == JFileChooser.APPROVE_OPTION) {
+          File f = fchooser.getSelectedFile();
+          fileSaveDisplay.setText(f.getAbsolutePath());
+
 //show an image with a scrollbar
     JPanel imagePanel = new JPanel();
     //a border around the panel with a caption
