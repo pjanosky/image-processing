@@ -6,6 +6,7 @@ import controller.commands.LoadCommand;
 import controller.commands.SaveCommand;
 import controller.commands.VisibilityCommand;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.BorderFactory;
@@ -35,6 +36,9 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
   JButton hideButton;
   JButton importImageButton;
   JButton exportLayerButton;
+
+  //image panel; one can scroll up, down, left, right
+  JPanel imageDisplay;
 
 
   public GUIView(String caption) {
@@ -76,15 +80,23 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
     //text field
     addLayerNameField = new JTextField(15);
     menu.add(addLayerNameField);
+
+    //image display
+    imageDisplay = new JPanel();
+    //a border around the panel with a caption
+    imageDisplay.setBorder(BorderFactory.createTitledBorder("Layer display"));
+    imageDisplay.setLayout(new GridLayout(1, 0, 10, 10));
+    //imagePanel.setMaximumSize(null);
+    main.add(imageDisplay);
   }
 
   public void renderLayers() throws IOException {
-
+    //maybe here, we can control which image or layer is displayed?
   }
 
   @Override
   public void renderMessage(String message) throws IOException {
-
+    //display activity message via here; mutating the JLabel object?
   }
 
   @Override
@@ -137,11 +149,6 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
 }
 
 /*
-final JFileChooser fchooser = new JFileChooser(".");
-        int retvalue = fchooser.showSaveDialog(SwingFeaturesFrame.this);
-        if (retvalue == JFileChooser.APPROVE_OPTION) {
-          File f = fchooser.getSelectedFile();
-          fileSaveDisplay.setText(f.getAbsolutePath());
 
 //show an image with a scrollbar
     JPanel imagePanel = new JPanel();
@@ -186,20 +193,3 @@ final JFileChooser fchooser = new JFileChooser(".");
     fileSaveDisplay = new JLabel("File path will appear here");
     filesavePanel.add(fileSaveDisplay);
  */
-
-//find file to import/load
-//    JPanel fileopenPanel = new JPanel();
-//    fileopenPanel.setLayout(new FlowLayout());
-//    dialogBoxesPanel.add(fileopenPanel);
-//    importImageButton = new JButton("Load an image");
-//    importImageButton.setActionCommand("Load image");
-//    this.add(importImageButton);
-//    fileOpenButton.addActionListener(this);
-//    fileopenPanel.add(fileOpenButton);
-//    fileOpenDisplay = new JLabel("File path will appear here");
-//    fileopenPanel.add(fileOpenDisplay);
-
-//find a place to export/save
-//    exportLayerButton = new JButton("Save the layer");
-//    exportLayerButton.setActionCommand("Save layer");
-//    this.add(exportLayerButton);
