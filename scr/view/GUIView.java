@@ -2,6 +2,8 @@ package view;
 
 import controller.CommandListener;
 import controller.commands.CurrentCommand;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -23,6 +25,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import model.Image;
@@ -36,7 +39,7 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
 
   // Panels:
   // main panel
-  JPanel mainPanel;
+  JSplitPane mainSplitPlane;
 
   // image panel
   JPanel imagePanel;
@@ -84,7 +87,8 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
     this.model = model;
 
     setName("Image Processing");
-    setSize(400, 400);
+    setSize(600, 400);
+    setMinimumSize(new Dimension(400, 250));
     setDefaultCloseOperation(EXIT_ON_CLOSE);
 
     setupMenu();
@@ -146,20 +150,20 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
    */
   private void setupPanel() {
     // main panel
-    mainPanel = new JPanel();
-    mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
+    mainSplitPlane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 
     // image panel
     imagePanel = new JPanel();
-    imagePanel.setLayout(new BoxLayout(imagePanel, BoxLayout.Y_AXIS));
+    imagePanel.setLayout(new BorderLayout());
     imageLabel = new JLabel();
     imageLabel.setHorizontalAlignment(JLabel.CENTER);
-    imagePanel.add(imageLabel);
+    imageScrollPane = new JScrollPane(imageLabel);
+    imagePanel.add(imageScrollPane, BorderLayout.CENTER);
     imageCaption = new JLabel();
     imageCaption.setHorizontalAlignment(JLabel.CENTER);
-    imagePanel.add(imageCaption);
-    imageScrollPane = new JScrollPane(imagePanel);
-    mainPanel.add(imageScrollPane);
+    imagePanel.add(imageCaption, BorderLayout.SOUTH);
+    imagePanel.setMinimumSize(new Dimension(250, 150));
+    mainSplitPlane.setLeftComponent(imagePanel);
 
     // layers panel
     layersPanel = new JPanel();
@@ -167,10 +171,12 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
     layersPanel.setBorder(BorderFactory.createTitledBorder("Layers"));
     layersLabels = new ArrayList<>();
     layersScrollPane = new JScrollPane(layersPanel);
-    mainPanel.add(layersScrollPane);
+    layersScrollPane.setMinimumSize(new Dimension(150, 150));
+    mainSplitPlane.setRightComponent(layersScrollPane);
 
     // add to the view
-    add(new JScrollPane(mainPanel));
+    mainSplitPlane.setDividerLocation(400);
+    add(mainSplitPlane);
   }
 
   public void renderLayers(ImageProcessingModelState model) {
@@ -180,11 +186,11 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
 
   @Override
   public void renderMessage(String message) {
-    JOptionPane.showMessageDialog(mainPanel, message, "", JOptionPane.PLAIN_MESSAGE);
+    JOptionPane.showMessageDialog(mainSplitPlane, message, "", JOptionPane.PLAIN_MESSAGE);
   }
 
   public void renderError(String message) {
-    JOptionPane.showMessageDialog(mainPanel, message, "Error", JOptionPane.ERROR_MESSAGE);
+    JOptionPane.showMessageDialog(mainSplitPlane, message, "Error", JOptionPane.ERROR_MESSAGE);
   }
 
   @Override
@@ -293,8 +299,10 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
     }
     imageIcon = new ImageIcon(convertImage(displayedImage));
     imageLabel.setIcon(imageIcon);
+    imageScrollPane.setPreferredSize(
+        new Dimension(displayedImage.getWidth(), displayedImage.getHeight()));
     imageCaption.setText("Displaying: " + displayedLayerName);
-    mainPanel.revalidate();
+    revalidate();
   }
 
   /**
@@ -309,9 +317,9 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
         "JPEG, PNG, and PPM (P3) Images", "jpeg", "png", "ppm");
     chooser.setFileFilter(filter);
     if (open) {
-      chooser.showOpenDialog(mainPanel);
+      chooser.showOpenDialog(mainSplitPlane);
     } else {
-      chooser.showSaveDialog(mainPanel);
+      chooser.showSaveDialog(mainSplitPlane);
     }
     return chooser.getSelectedFile();
   }
@@ -327,9 +335,9 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
     FileFilter filter = chooser.getFileFilter();
     chooser.setFileFilter(new DirectoryFileFilter());
     if (open) {
-      chooser.showOpenDialog(mainPanel);
+      chooser.showOpenDialog(mainSplitPlane);
     } else {
-      chooser.showSaveDialog(mainPanel);
+      chooser.showSaveDialog(mainSplitPlane);
     }
     return chooser.getSelectedFile();
   }

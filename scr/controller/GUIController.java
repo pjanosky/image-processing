@@ -46,68 +46,132 @@ public class GUIController extends SimpleImageProcessingController implements Co
 
   @Override
   public void run() {
-    view.setVisible(true);
+    try {
+      view.setVisible(true);
+    } catch (IllegalArgumentException | IllegalStateException e) {
+      view.renderError(e.getMessage());
+    }
   }
 
   @Override
   public void add(String name) {
-    runCommand(new AddCommand(name));
+    try {
+      runCommand(new AddCommand(name));
+    } catch (IllegalArgumentException | IllegalStateException e) {
+      view.renderError(e.getMessage());
+    }
   }
 
   @Override
   public void remove() {
-    runCommand(new RemoveCommand());
+    try {
+      runCommand(new RemoveCommand());
+    } catch (IllegalArgumentException | IllegalStateException e) {
+      view.renderError(e.getMessage());
+    }
   }
 
   @Override
   public void current(String layerName) {
-    runCommand(new CurrentCommand(layerName));
+    try {
+      runCommand(new CurrentCommand(layerName));
+    } catch (IllegalArgumentException | IllegalStateException e) {
+      view.renderError(e.getMessage());
+    }
   }
 
   @Override
   public void move(int index) {
-    runCommand(new MoveCommand(index));
+    try {
+      runCommand(new MoveCommand(index));
+    } catch (IllegalArgumentException | IllegalStateException e) {
+      view.renderError(e.getMessage());
+    }
   }
 
   @Override
   public void imageProcess(ImageOperationCreator.OperationType type) {
-    ImageOperation operation = ImageOperationCreator.create(type);
-    runCommand(new ImageProcessCommand(operation));
+    try {
+      ImageOperation operation = ImageOperationCreator.create(type);
+      runCommand(new ImageProcessCommand(operation));
+    } catch (IllegalArgumentException | IllegalStateException e) {
+      view.renderError(e.getMessage());
+    }
   }
 
   @Override
   public void load(File file) {
-    runCommand(new LoadCommand(file.getAbsolutePath(), parseExtension(file)));
+    if (file == null) {
+      return;
+    }
+    try {
+      runCommand(new LoadCommand(file.getAbsolutePath(), parseExtension(file)));
+    } catch (IllegalArgumentException | IllegalStateException e) {
+      view.renderError(e.getMessage());
+    }
   }
 
   @Override
   public void loadLayers(File file) {
-    runCommand(new LoadLayersCommand(file.getAbsolutePath()));
+    if (file == null) {
+      return;
+    }
+    try {
+      runCommand(new LoadLayersCommand(file.getAbsolutePath()));
+    } catch (IllegalArgumentException | IllegalStateException e) {
+      view.renderError(e.getMessage());
+    }
   }
 
   @Override
   public void save(File file) {
-    runCommand(new SaveCommand(file.getAbsolutePath(), parseExtension(file)));
+    if (file == null) {
+      return;
+    }
+    try {
+      runCommand(new SaveCommand(file.getAbsolutePath(), parseExtension(file)));
+    } catch (IllegalArgumentException | IllegalStateException e) {
+      view.renderError(e.getMessage());
+    }
   }
 
   @Override
   public void saveLayers(File file, String name) {
-    runCommand(new SaveLayersCommand(file.getAbsolutePath(), name));
+    if (file == null) {
+      return;
+    }
+    try {
+      runCommand(new SaveLayersCommand(file.getAbsolutePath(), name));
+    } catch (IllegalArgumentException | IllegalStateException e) {
+      view.renderError(e.getMessage());
+    }
   }
 
   @Override
   public void setImage(String type, String... args) {
-    runCommand(new SetImageCommand(type, args));
+    try {
+      runCommand(new SetImageCommand(type, args));
+    } catch (IllegalArgumentException | IllegalStateException e) {
+      view.renderError(e.getMessage());
+    }
   }
 
   @Override
   public void visibility(boolean isVisible) {
-    runCommand(new VisibilityCommand(isVisible));
+    try {
+      runCommand(new VisibilityCommand(isVisible));
+    } catch (IllegalArgumentException | IllegalStateException e) {
+      view.renderError(e.getMessage());
+    }
   }
 
   @Override
   public void script(String filePath) {
-    runCommand(new ScriptCommand(filePath));
+    try {
+      runCommand(new ScriptCommand(filePath));
+    } catch (IllegalArgumentException | IllegalStateException e) {
+      view.renderError(e.getMessage());
+    }
   }
 
   /**
@@ -116,11 +180,8 @@ public class GUIController extends SimpleImageProcessingController implements Co
    * @param command the command to run.
    */
   private void runCommand(ControllerCommand command) {
-    try {
-      command.runCommand(model, view);
-    } catch (IllegalArgumentException | IllegalStateException e) {
-      view.renderError(e.getMessage());
-    }
+    command.runCommand(model, view);
+    view.renderLayers(model);
   }
 
   /**
