@@ -2,6 +2,7 @@ package view;
 
 import controller.CommandListener;
 import controller.commands.CurrentCommand;
+import controller.commands.ImageProcessCommand;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
@@ -29,6 +30,7 @@ import javax.swing.JSplitPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import model.Image;
+import model.ImageOperationCreator;
 import model.ImageOperationCreator.OperationType;
 import model.ImageProcessingModelState;
 import model.Pixel;
@@ -78,11 +80,11 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
   JMenuItem moveMenuItem;
 
   // image processing menu
-  JMenu processMenu;
-  JMenuItem blurMenuItem;
-  JMenuItem sharpenMenuItem;
-  JMenuItem greyscaleMenuItem;
-  JMenuItem sepiaMenuItem;
+  JMenu imageProcessMenu;
+  JMenuItem blurImageItem;
+  JMenuItem sharpenImageItem;
+  JMenuItem greyscaleImageItem;
+  JMenuItem sepiaImageItem;
 
 
   public GUIView(ImageProcessingModelState model) {
@@ -152,18 +154,19 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
     menuBar.add(layerMenu);
 
     // Image Processing Menu (blur, sharpen, sepia, greyscale)
-    processMenu = new JMenu("Image Processing");
-    blurMenuItem = new JMenuItem("Blur Current Image");
-    sharpenMenuItem = new JMenuItem("Sharpen Current Image");
-    greyscaleMenuItem = new JMenuItem("Greyscale Current Image");
-    sepiaMenuItem = new JMenuItem("Sepia Current Image");
+    imageProcessMenu = new JMenu("Image Processing");
 
-    processMenu.add(blurMenuItem);
-    processMenu.add(sharpenMenuItem);
-    processMenu.add(greyscaleMenuItem);
-    processMenu.add(sepiaMenuItem);
+    blurImageItem = new JMenuItem("Blur Current Layer");
+    sharpenImageItem = new JMenuItem("Sharpen Current Layer");
+    sepiaImageItem = new JMenuItem("Sepia Current Layer");
+    greyscaleImageItem = new JMenuItem("Greyscale Current Layer");
 
-    menuBar.add(processMenu);
+    imageProcessMenu.add(blurImageItem);
+    imageProcessMenu.add(sharpenImageItem);
+    imageProcessMenu.add(sepiaImageItem);
+    imageProcessMenu.add(greyscaleImageItem);
+
+    menuBar.add(imageProcessMenu);
 
     // Update and set the menu bar
     this.setJMenuBar(menuBar);
@@ -260,18 +263,17 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
       listener.move(JOptionPane.showInputDialog("Enter an new index for the current layer."));
     });
 
-    // Image Processing menu
-    blurMenuItem.addActionListener(evt -> {
+    blurImageItem.addActionListener(evt -> {
       listener.imageProcess(OperationType.BLUR);
     });
-    sharpenMenuItem.addActionListener(evt -> {
+    sharpenImageItem.addActionListener(evt -> {
       listener.imageProcess(OperationType.SHARPEN);
     });
-    greyscaleMenuItem.addActionListener(evt -> {
-      listener.imageProcess(OperationType.GREYSCALE);
-    });
-    sepiaMenuItem.addActionListener(evt -> {
+    sepiaImageItem.addActionListener(evt -> {
       listener.imageProcess(OperationType.SEPIA);
+    });
+    greyscaleImageItem.addActionListener(evt -> {
+      listener.imageProcess(OperationType.GREYSCALE);
     });
   }
 
