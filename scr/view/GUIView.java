@@ -29,6 +29,7 @@ import javax.swing.JSplitPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import model.Image;
+import model.ImageOperationCreator.OperationType;
 import model.ImageProcessingModelState;
 import model.Pixel;
 
@@ -61,7 +62,9 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
   JMenuItem loadAllMenuItem;
   JMenuItem saveMenuItem;
   JMenuItem saveAllMenuItem;
-  // TODO: Add menu item for loading programmatic images
+  JMenu presetImageMenu;
+  JMenuItem rainbowMenuItem;
+  JMenuItem checkerboardMenuItem;
 
   // layers menu
   JMenu layerMenu;
@@ -72,11 +75,14 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
   JMenu currentMenu;
   ButtonGroup currentLayerMenuButtons;
   Function<String, ActionListener> currentListenerCreator;
-
-  // TODO: Add menu item for move command
+  JMenuItem moveMenuItem;
 
   // image processing menu
-  // TODO: Add menu items for image processing commands
+  JMenu processMenu;
+  JMenuItem blurMenuItem;
+  JMenuItem sharpenMenuItem;
+  JMenuItem greyscaleMenuItem;
+  JMenuItem sepiaMenuItem;
 
 
   public GUIView(ImageProcessingModelState model) {
@@ -110,22 +116,29 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
     loadAllMenuItem = new JMenuItem("Load All layers");
     saveMenuItem = new JMenuItem("Save Current Layer");
     saveAllMenuItem = new JMenuItem("Save All Layers");
+    presetImageMenu = new JMenu("Load Preset Image");
+    rainbowMenuItem = new JMenu("Rainbow");
+    checkerboardMenuItem = new JMenuItem("Checkerboard");
+    presetImageMenu.add(rainbowMenuItem);
+    presetImageMenu.add(checkerboardMenuItem);
 
     fileMenu.add(loadMenuItem);
     fileMenu.add(loadAllMenuItem);
     fileMenu.add(saveMenuItem);
     fileMenu.add(saveAllMenuItem);
+    fileMenu.add(presetImageMenu);
 
     menuBar.add(fileMenu);
     // TODO: initialize menu item for loading programmatic images
 
     // Layers Menu (add, remove, hide/show, current)
-    layerMenu = new JMenu("Layer");
+    layerMenu = new JMenu("Layers");
 
     addMenuItem = new JMenuItem("Add Layer");
     removeMenuItem = new JMenuItem("Remove Current Layer");
     showMenuItem = new JMenuItem("Show Current Layer");
     hideMenuItem = new JMenuItem("Hide Current Layer");
+    moveMenuItem = new JMenuItem("Move Current Layer");
     currentMenu = new JMenu("Current Layer");
     currentLayerMenuButtons = new ButtonGroup();
 
@@ -133,13 +146,24 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
     layerMenu.add(removeMenuItem);
     layerMenu.add(hideMenuItem);
     layerMenu.add(showMenuItem);
+    layerMenu.add(moveMenuItem);
     layerMenu.add(currentMenu);
 
     menuBar.add(layerMenu);
-    // TODO: initialize menu item for the move command
 
     // Image Processing Menu (blur, sharpen, sepia, greyscale)
-    // TODO: initialize image processing menu items
+    processMenu = new JMenu("Image Processing");
+    blurMenuItem = new JMenuItem("Blur Current Image");
+    sharpenMenuItem = new JMenuItem("Sharpen Current Image");
+    greyscaleMenuItem = new JMenuItem("Greyscale Current Image");
+    sepiaMenuItem = new JMenuItem("Sepia Current Image");
+
+    processMenu.add(blurMenuItem);
+    processMenu.add(sharpenMenuItem);
+    processMenu.add(greyscaleMenuItem);
+    processMenu.add(sepiaMenuItem);
+
+    menuBar.add(processMenu);
 
     // Update and set the menu bar
     this.setJMenuBar(menuBar);
@@ -210,7 +234,13 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
           JOptionPane.showInputDialog("Chose a name for the new subdirectory"
               + " where layers will be saved."));
     });
-    // TODO: add functionality for loading programmatic images menu items
+    rainbowMenuItem.addActionListener(evt -> {
+
+    });
+    checkerboardMenuItem.addActionListener(evt -> {
+
+    });
+    // TODO: add functionality for programmatic images when menu items are selected
 
     // Layers menu
     addMenuItem.addActionListener(evt -> {
@@ -225,11 +255,26 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
     hideMenuItem.addActionListener(evt -> {
       listener.visibility(false);
     });
-    currentListenerCreator = name -> (evt -> new CurrentCommand(name));
-    // TODO: add functionality for move command menu item
+    currentListenerCreator = name -> (evt -> {
+      listener.current(name);
+    });
+    moveMenuItem.addActionListener(evt -> {
+      listener.move(JOptionPane.showInputDialog("Enter an new index for the current layer."));
+    });
 
     // Image Processing menu
-    // TODO: add functionality to image processing menu options
+    blurMenuItem.addActionListener(evt -> {
+      listener.imageProcess(OperationType.BLUR);
+    });
+    sharpenMenuItem.addActionListener(evt -> {
+      listener.imageProcess(OperationType.SHARPEN);
+    });
+    greyscaleMenuItem.addActionListener(evt -> {
+      listener.imageProcess(OperationType.GREYSCALE);
+    });
+    sepiaMenuItem.addActionListener(evt -> {
+      listener.imageProcess(OperationType.SEPIA);
+    });
   }
 
   /**
@@ -264,7 +309,7 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
       if (model.isVisible(layerName)) {
         line += " (V)";
       } else {
-        line += "( )";
+        line += " ( )";
       }
       if (layerName.equals(model.getCurrentName())) {
         line += " (current)";

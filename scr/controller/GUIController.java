@@ -12,6 +12,7 @@ import controller.commands.SaveCommand;
 import controller.commands.SaveLayersCommand;
 import controller.commands.SetImageCommand;
 import controller.commands.VisibilityCommand;
+import java.awt.font.NumericShaper;
 import java.io.File;
 import java.io.StringReader;
 import javax.swing.UIManager;
@@ -81,9 +82,11 @@ public class GUIController extends SimpleImageProcessingController implements Co
   }
 
   @Override
-  public void move(int index) {
+  public void move(String index) {
     try {
-      runCommand(new MoveCommand(index));
+      runCommand(new MoveCommand(Integer.parseInt(index)));
+    } catch(NumberFormatException e){
+      view.renderError("Invalid index.");
     } catch (IllegalArgumentException | IllegalStateException e) {
       view.renderError(e.getMessage());
     }

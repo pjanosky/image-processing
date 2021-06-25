@@ -12,7 +12,7 @@ public interface CommandListener {
 
   void current(String layerName);
 
-  void move(int index);
+  void move(String index);
 
   void imageProcess(ImageOperationCreator.OperationType type);
 
