@@ -33,6 +33,9 @@ public class SaveLayersCommand implements ControllerCommand {
       throw new IllegalArgumentException("Arguments must not be null");
     }
 
+    System.out.println(path);
+    System.out.println(name);
+
     File file = new File(path);
     if (path.isEmpty()) {
       this.path = name;
@@ -75,6 +78,7 @@ public class SaveLayersCommand implements ControllerCommand {
       }
       text.append('\n');
     }
+    System.out.println(text.toString());
 
     // Save text file
     try {
@@ -91,11 +95,7 @@ public class SaveLayersCommand implements ControllerCommand {
    */
   private void createDirectory() {
     File directory = new File(path);
-    if (directory.exists()) {
-      for (File file : directory.listFiles()) {
-        file.delete();
-      }
-    } else if (!directory.mkdir()) {
+    if ((!directory.exists() || !directory.isDirectory()) && !directory.mkdir()) {
       throw new IllegalStateException("Could not create directory at " + path + ".");
     }
   }

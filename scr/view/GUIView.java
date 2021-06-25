@@ -230,9 +230,7 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
       listener.save(chooseImage(false));
     });
     saveAllMenuItem.addActionListener(evt -> {
-      listener.saveLayers(chooseDirectory(false),
-          JOptionPane.showInputDialog("Chose a name for the new subdirectory"
-              + " where layers will be saved."));
+      listener.saveLayers(chooseDirectory(false));
     });
     rainbowMenuItem.addActionListener(evt -> {
 

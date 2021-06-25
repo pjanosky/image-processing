@@ -139,12 +139,15 @@ public class GUIController extends SimpleImageProcessingController implements Co
   }
 
   @Override
-  public void saveLayers(File file, String name) {
+  public void saveLayers(File file) {
     if (file == null) {
       return;
     }
+    String name = file.getName();
+    String absolutePath = file.getAbsolutePath();
+    String path = absolutePath.substring(0, absolutePath.length() - name.length());
     try {
-      runCommand(new SaveLayersCommand(file.getAbsolutePath(), name));
+      runCommand(new SaveLayersCommand(path, name));
     } catch (IllegalArgumentException | IllegalStateException e) {
       view.renderError(e.getMessage());
     }

@@ -22,7 +22,7 @@ public interface CommandListener {
 
   void save(File file);
 
-  void saveLayers(File file, String name);
+  void saveLayers(File file);
 
   void setImage(String type, String... args);
 
