@@ -13,6 +13,8 @@ import model.ImageProcessingModel;
 import model.ImageProcessingModelImpl;
 import org.junit.Before;
 import org.junit.Test;
+import view.ImageProcessingTextView;
+import view.ImageProcessingView;
 
 /**
  * Test the LoadCommand class.
@@ -20,17 +22,23 @@ import org.junit.Test;
 public class LoadCommandTest {
 
   private ImageProcessingModel model;
+  private Appendable output;
+  private ImageProcessingView view;
 
   /**
    * Construct a new ImageProcessCommandTest initializing all example test data.
    */
   public LoadCommandTest() {
     model = new ImageProcessingModelImpl();
+    output = new StringBuilder();
+    view = new ImageProcessingTextView(model, output);
   }
 
   @Before
   public void setup() {
     model = new ImageProcessingModelImpl();
+    output = new StringBuilder();
+    view = new ImageProcessingTextView(model, output);
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -55,12 +63,12 @@ public class LoadCommandTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void testGoNullModel() {
-    new LoadCommand("test/data", "ppm").runCommand(null);
+    new LoadCommand("test/data", "ppm").runCommand(null, view);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testGoNoCurrentLayerSet() {
-    new LoadCommand("test/data", "ppm").runCommand(model);
+    new LoadCommand("test/data", "ppm").runCommand(model, view);
   }
 
   @Test
@@ -77,7 +85,7 @@ public class LoadCommandTest {
     model.addLayer("layer1");
     assertNull(model.getImageIn("layer1"));
 
-    new LoadCommand(path, "png").runCommand(model);
+    new LoadCommand(path, "png").runCommand(model, view);
     assertEquals(image, model.getImageIn("layer1"));
   }
 

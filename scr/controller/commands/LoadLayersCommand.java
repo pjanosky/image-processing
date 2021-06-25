@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.util.Scanner;
 import model.Image;
 import model.ImageProcessingModel;
+import view.ImageProcessingView;
 
 /**
  * When the user calls the command "loadall", the controller loads (i.e., imports) all the layers
@@ -51,7 +52,7 @@ public class LoadLayersCommand implements ControllerCommand {
   }
 
   @Override
-  public void runCommand(ImageProcessingModel model)
+  public void runCommand(ImageProcessingModel model, ImageProcessingView view)
       throws IllegalStateException, IllegalArgumentException {
     if (model == null) {
       throw new IllegalArgumentException("Model cannot be null.");

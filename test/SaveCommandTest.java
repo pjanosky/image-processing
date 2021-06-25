@@ -13,6 +13,8 @@ import model.ImageProcessingModelImpl;
 import model.RgbPixel;
 import org.junit.Before;
 import org.junit.Test;
+import view.ImageProcessingTextView;
+import view.ImageProcessingView;
 
 /**
  * Tests the SaveCommand class.
@@ -20,17 +22,23 @@ import org.junit.Test;
 public class SaveCommandTest {
 
   private ImageProcessingModel model;
+  private Appendable output;
+  private ImageProcessingView view;
 
   /**
    * Construct a new SaveCommandTest initializing all example test data.
    */
   public SaveCommandTest() {
     model = new ImageProcessingModelImpl();
+    output = new StringBuilder();
+    view = new ImageProcessingTextView(model, output);
   }
 
   @Before
   public void setup() {
     model = new ImageProcessingModelImpl();
+    output = new StringBuilder();
+    view = new ImageProcessingTextView(model, output);
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -55,12 +63,13 @@ public class SaveCommandTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void testGoNullModel() {
-    new SaveCommand("test/data", "png").runCommand(null);
+    new SaveCommand("test/data", "png").runCommand(null, view);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testNoLayers() {
-    new SaveCommand("test/data", "png").runCommand(model);
+    new SaveCommand("test/data", "png")
+        .runCommand(model, view);
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -69,7 +78,7 @@ public class SaveCommandTest {
     model.addLayer("layer2");
     model.setLayerImage("layer2", ImageExamples.rainbow(2, 10));
     model.showLayer("layer2", false);
-    new SaveCommand("test/data", "png").runCommand(model);
+    new SaveCommand("test/data", "png").runCommand(model, view);
   }
 
   @Test
@@ -92,7 +101,7 @@ public class SaveCommandTest {
     model.setLayerImage("layer3", image1);
     model.setLayerImage("layer4", image2);
 
-    new SaveCommand(path, "png").runCommand(model);
+    new SaveCommand(path, "png").runCommand(model, view);
 
     try {
       assertEquals(image1, new PngImportExporter().parseImage(new FileInputStream(path)));

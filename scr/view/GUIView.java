@@ -43,8 +43,10 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
 
   public GUIView(String caption) {
     super(caption);
+
     setSize(400, 400);
     setLayout(new FlowLayout());
+    setDefaultCloseOperation(EXIT_ON_CLOSE);
 
     main = new JPanel();
     main.setLayout(new BoxLayout(main, BoxLayout.PAGE_AXIS));

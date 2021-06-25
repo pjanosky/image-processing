@@ -4,6 +4,7 @@ import model.Image;
 import model.ImageExamples;
 import model.ImageProcessingModel;
 import model.RgbPixel;
+import view.ImageProcessingView;
 
 /**
  * When the user calls the command "set" followed by a series of arguments. A new image (created
@@ -39,7 +40,7 @@ public class SetImageCommand implements ControllerCommand {
 
 
   @Override
-  public void runCommand(ImageProcessingModel model)
+  public void runCommand(ImageProcessingModel model, ImageProcessingView view)
       throws IllegalStateException, IllegalArgumentException {
     if (model == null) {
       throw new IllegalArgumentException("Model cannot be null.");

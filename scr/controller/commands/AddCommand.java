@@ -1,6 +1,7 @@
 package controller.commands;
 
 import model.ImageProcessingModel;
+import view.ImageProcessingView;
 
 /**
  * When the user calls the command "add <i>layer-name</i>", the controller adds a layer to be stored
@@ -29,7 +30,7 @@ public class AddCommand implements ControllerCommand {
   }
 
   @Override
-  public void runCommand(ImageProcessingModel model)
+  public void runCommand(ImageProcessingModel model, ImageProcessingView view)
       throws IllegalStateException, IllegalArgumentException {
     if (model == null) {
       throw new IllegalArgumentException("Model cannot be null.");

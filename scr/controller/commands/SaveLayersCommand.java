@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import model.Image;
 import model.ImageProcessingModel;
+import view.ImageProcessingView;
 
 /**
  * When the user calls the command "saveall", the controller saves (i.e., exports) all the layers as
@@ -45,7 +46,7 @@ public class SaveLayersCommand implements ControllerCommand {
   }
 
   @Override
-  public void runCommand(ImageProcessingModel model)
+  public void runCommand(ImageProcessingModel model, ImageProcessingView view)
       throws IllegalStateException, IllegalArgumentException {
     if (model == null) {
       throw new IllegalArgumentException("Model cannot bu null.");

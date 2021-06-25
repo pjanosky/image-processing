@@ -1,6 +1,7 @@
 package controller.commands;
 
 import model.ImageProcessingModel;
+import view.ImageProcessingView;
 
 /**
  * When the user calls the command "move <i>number-to-move-the-current-layer-to</i>", the controller
@@ -20,7 +21,7 @@ public class MoveCommand implements ControllerCommand {
   }
 
   @Override
-  public void runCommand(ImageProcessingModel model)
+  public void runCommand(ImageProcessingModel model, ImageProcessingView view)
       throws IllegalStateException, IllegalArgumentException {
     if (model == null) {
       throw new IllegalArgumentException("Model cannot be null");

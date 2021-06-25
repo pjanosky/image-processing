@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import model.Image;
 import model.ImageProcessingModel;
+import view.ImageProcessingView;
 
 /**
  * When the users class "save <i>filePath</i> <i>format</i>", the top-most visible layer is saved to
@@ -42,7 +43,7 @@ public class SaveCommand implements ControllerCommand {
   }
 
   @Override
-  public void runCommand(ImageProcessingModel model)
+  public void runCommand(ImageProcessingModel model, ImageProcessingView view)
       throws IllegalStateException, IllegalArgumentException {
     if (model == null) {
       throw new IllegalArgumentException("Model cannot be null.");

@@ -2,6 +2,7 @@ package controller.commands;
 
 import model.ImageOperation;
 import model.ImageProcessingModel;
+import view.ImageProcessingView;
 
 /**
  * When the user calls one of these commands—"blur", "sharpen", "sepia", "greyscale"—the controller
@@ -25,7 +26,7 @@ public class ImageProcessCommand implements ControllerCommand {
   }
 
   @Override
-  public void runCommand(ImageProcessingModel model)
+  public void runCommand(ImageProcessingModel model, ImageProcessingView view)
       throws IllegalStateException, IllegalArgumentException {
     if (model == null) {
       throw new IllegalArgumentException("The model cannot be null!");

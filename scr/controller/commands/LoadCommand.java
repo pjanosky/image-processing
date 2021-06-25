@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import model.Image;
 import model.ImageProcessingModel;
+import view.ImageProcessingView;
 
 /**
  * When the user calls the command "load <i>file-path</i> <i>format-of-file</i>", it loads (i.e.,
@@ -43,7 +44,7 @@ public class LoadCommand implements ControllerCommand {
   }
 
   @Override
-  public void runCommand(ImageProcessingModel model)
+  public void runCommand(ImageProcessingModel model, ImageProcessingView view)
       throws IllegalStateException, IllegalArgumentException {
     if (model == null) {
       throw new IllegalArgumentException("Model cannot be null.");

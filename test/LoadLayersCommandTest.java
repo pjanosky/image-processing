@@ -16,6 +16,8 @@ import model.ImageProcessingModelImpl;
 import model.RgbPixel;
 import org.junit.Before;
 import org.junit.Test;
+import view.ImageProcessingTextView;
+import view.ImageProcessingView;
 
 /**
  * Tests the SaveLayersCommand class.
@@ -25,6 +27,8 @@ public class LoadLayersCommandTest {
   private ImageProcessingModel model;
   private final Image image1;
   private final Image image2;
+  private Appendable output;
+  private ImageProcessingView view;
 
   /**
    * Construct a new LoadLayersCommandTest initializing all example test data.
@@ -35,11 +39,15 @@ public class LoadLayersCommandTest {
     image2 = ImageExamples.checkerboard(12, 10, 1, 1,
         new RgbPixel(0, 0, 0),
         new RgbPixel(255, 255, 255));
+    output = new StringBuilder();
+    view = new ImageProcessingTextView(model, output);
   }
 
   @Before
   public void setup() {
     model = new ImageProcessingModelImpl();
+    output = new StringBuilder();
+    view = new ImageProcessingTextView(model, output);
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -77,7 +85,7 @@ public class LoadLayersCommandTest {
       fail("Failed to save test images. " + e.getMessage());
     }
 
-    new LoadLayersCommand("test/data/layers").runCommand(model);
+    new LoadLayersCommand("test/data/layers").runCommand(model, view);
 
     clean();
   }
@@ -100,7 +108,7 @@ public class LoadLayersCommandTest {
       fail("Failed to save test images. " + e.getMessage());
     }
 
-    new LoadLayersCommand("test/data/layers").runCommand(model);
+    new LoadLayersCommand("test/data/layers").runCommand(model, view);
 
     clean();
   }
@@ -124,7 +132,7 @@ public class LoadLayersCommandTest {
       fail("Failed to save test images. " + e.getMessage());
     }
 
-    new LoadLayersCommand("test/data/layers").runCommand(model);
+    new LoadLayersCommand("test/data/layers").runCommand(model, view);
 
     clean();
   }
@@ -149,7 +157,7 @@ public class LoadLayersCommandTest {
       fail("Failed to save test images. " + e.getMessage());
     }
 
-    new LoadLayersCommand("test/data/layers").runCommand(model);
+    new LoadLayersCommand("test/data/layers").runCommand(model, view);
 
     assertEquals(3, model.numLayers());
 

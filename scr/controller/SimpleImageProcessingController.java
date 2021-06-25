@@ -113,7 +113,7 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
         continue;
       }
       try {
-        command.apply(lineScanner).runCommand(model);
+        command.apply(lineScanner).runCommand(model, view);
       } catch (NoSuchElementException e) {
         renderMessage("Invalid number of arguments for " + commandName + ".");
       } catch (IllegalArgumentException | IllegalStateException e) {
@@ -183,7 +183,7 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
     }
 
     @Override
-    public void runCommand(ImageProcessingModel model)
+    public void runCommand(ImageProcessingModel model, ImageProcessingView view)
         throws IllegalStateException, IllegalArgumentException {
       if (model == null) {
         throw new IllegalArgumentException("Model cannot be null.");

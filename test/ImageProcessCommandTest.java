@@ -9,6 +9,8 @@ import model.ImageProcessingModel;
 import model.ImageProcessingModelImpl;
 import org.junit.Before;
 import org.junit.Test;
+import view.ImageProcessingTextView;
+import view.ImageProcessingView;
 
 /**
  * Test the ImageProcessCommand class.
@@ -16,17 +18,23 @@ import org.junit.Test;
 public class ImageProcessCommandTest {
 
   private ImageProcessingModel model;
+  private Appendable output;
+  private ImageProcessingView view;
 
   /**
    * Construct a new ImageProcessCommandTest initializing all example test data.
    */
   public ImageProcessCommandTest() {
     model = new ImageProcessingModelImpl();
+    output = new StringBuilder();
+    view = new ImageProcessingTextView(model, output);
   }
 
   @Before
   public void setup() {
     model = new ImageProcessingModelImpl();
+    output = new StringBuilder();
+    view = new ImageProcessingTextView(model, output);
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -36,12 +44,12 @@ public class ImageProcessCommandTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void testGoNullModel() {
-    new ImageProcessCommand(ImageOperationCreator.create(OperationType.BLUR)).runCommand(null);
+    new ImageProcessCommand(ImageOperationCreator.create(OperationType.BLUR)).runCommand(null, view);
   }
 
   @Test(expected = IllegalStateException.class)
   public void testGoNoCurrentLayer() {
-    new ImageProcessCommand(ImageOperationCreator.create(OperationType.BLUR)).runCommand(model);
+    new ImageProcessCommand(ImageOperationCreator.create(OperationType.BLUR)).runCommand(model, view);
   }
 
   @Test
@@ -51,7 +59,7 @@ public class ImageProcessCommandTest {
     model.addLayer("layer1");
     model.setLayerImage("layer1", image);
     assertEquals(image, model.getImageIn("layer1"));
-    new ImageProcessCommand(ImageOperationCreator.create(OperationType.BLUR)).runCommand(model);
+    new ImageProcessCommand(ImageOperationCreator.create(OperationType.BLUR)).runCommand(model, view);
 
     assertEquals(edited, model.getImageIn("layer1"));
   }
@@ -63,7 +71,7 @@ public class ImageProcessCommandTest {
     model.addLayer("layer1");
     model.setLayerImage("layer1", image);
     assertEquals(image, model.getImageIn("layer1"));
-    new ImageProcessCommand(ImageOperationCreator.create(OperationType.SEPIA)).runCommand(model);
+    new ImageProcessCommand(ImageOperationCreator.create(OperationType.SEPIA)).runCommand(model, view);
 
     assertEquals(edited, model.getImageIn("layer1"));
   }

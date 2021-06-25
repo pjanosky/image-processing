@@ -1,6 +1,7 @@
 package controller.commands;
 
 import model.ImageProcessingModel;
+import view.ImageProcessingView;
 
 /**
  * When the user calls the command "remove", the controller removes the current layer.
@@ -8,7 +9,7 @@ import model.ImageProcessingModel;
 public class RemoveCommand implements ControllerCommand {
 
   @Override
-  public void runCommand(ImageProcessingModel model)
+  public void runCommand(ImageProcessingModel model, ImageProcessingView view)
       throws IllegalStateException, IllegalArgumentException {
     if (model == null) {
       throw new IllegalArgumentException("Model cannot be null");

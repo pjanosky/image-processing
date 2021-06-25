@@ -13,6 +13,8 @@ import model.ImageProcessingModelImpl;
 import model.RgbPixel;
 import org.junit.Before;
 import org.junit.Test;
+import view.ImageProcessingTextView;
+import view.ImageProcessingView;
 
 
 /**
@@ -21,17 +23,23 @@ import org.junit.Test;
 public class SaveLayersCommandTest {
 
   private ImageProcessingModel model;
+  private Appendable output;
+  private ImageProcessingView view;
 
   /**
    * Construct a new SaveLayersCommandTest initializing all example test data.
    */
   public SaveLayersCommandTest() {
     model = new ImageProcessingModelImpl();
+    output = new StringBuilder();
+    view = new ImageProcessingTextView(model, output);
   }
 
   @Before
   public void setup() {
     model = new ImageProcessingModelImpl();
+    output = new StringBuilder();
+    view = new ImageProcessingTextView(model, output);
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -51,12 +59,12 @@ public class SaveLayersCommandTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void testGoNullModel() {
-    new SaveLayersCommand("test/data", "layers").runCommand(null);
+    new SaveLayersCommand("test/data", "layers").runCommand(null, view);
   }
 
   @Test(expected = IllegalStateException.class)
   public void testGoInvalidName() {
-    new SaveLayersCommand("test/data", "invalid/name#$\\%^&*").runCommand(model);
+    new SaveLayersCommand("test/data", "invalid/name#$\\%^&*").runCommand(model, view);
   }
 
   @Test
@@ -73,7 +81,7 @@ public class SaveLayersCommandTest {
     model.setLayerImage("layer2", image2);
     model.addLayer("layer3");
 
-    new SaveLayersCommand("test/data", "layers").runCommand(model);
+    new SaveLayersCommand("test/data", "layers").runCommand(model, view);
 
     String textFile = "layer1 true test/data/layers/layer1.png\n"
         + "layer2 false test/data/layers/layer2.png\n"

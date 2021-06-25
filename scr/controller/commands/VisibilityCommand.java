@@ -1,6 +1,7 @@
 package controller.commands;
 
 import model.ImageProcessingModel;
+import view.ImageProcessingView;
 
 /**
  * When the user calls either of these commands—"show" or "hide"—the controller shows or hides the
@@ -21,7 +22,7 @@ public class VisibilityCommand implements ControllerCommand {
   }
 
   @Override
-  public void runCommand(ImageProcessingModel model)
+  public void runCommand(ImageProcessingModel model, ImageProcessingView view)
       throws IllegalStateException, IllegalArgumentException {
     if (model == null) {
       throw new IllegalArgumentException("The model cannot be null!");
