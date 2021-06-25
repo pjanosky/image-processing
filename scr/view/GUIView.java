@@ -9,9 +9,6 @@ import controller.commands.RemoveCommand;
 import controller.commands.SaveCommand;
 import controller.commands.SaveLayersCommand;
 import controller.commands.VisibilityCommand;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -30,13 +27,11 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import model.Image;
-import model.ImageExamples;
 import model.ImageProcessingModelState;
 import model.Pixel;
 
@@ -71,7 +66,7 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
   JMenuItem loadAllMenuItem;
   JMenuItem saveMenuItem;
   JMenuItem saveAllMenuItem;
-  // TODO: Add ability to load programmatic images
+  // TODO: Add menu item for loading programmatic images
 
   // layers menu
   JMenu layerMenu;
@@ -81,10 +76,10 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
   JMenuItem hideMenuItem;
   JMenu currentMenu;
   ButtonGroup layerMenuButtons;
-  // TODO: Add move command functionality
+  // TODO: Add menu item for move command
 
   // image processing menu
-  // TODO: Implement image processing menu
+  // TODO: Add menu items for image processing commands
 
 
   public GUIView(ImageProcessingModelState model) {
@@ -126,6 +121,7 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
     fileMenu.add(saveAllMenuItem);
 
     menuBar.add(fileMenu);
+    // TODO: initialize menu item for loading programmatic images
 
     // Layers Menu (add, remove, hide/show, current)
     layerMenu = new JMenu("Layer");
@@ -144,6 +140,7 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
     layerMenu.add(currentMenu);
 
     menuBar.add(layerMenu);
+    // TODO: initialize menu item for the move command
 
     // Image Processing Menu (blur, sharpen, sepia, greyscale)
     // TODO: initialize image processing menu items
@@ -200,8 +197,9 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
   @Override
   public void setController(GuiProcessingController controller) {
     this.controller = controller;
-    // TODO: Error Checking
+    // TODO: Add checks for exceptions
 
+    // File menu
     loadMenuItem.addActionListener(evt -> {
       File file = chooseImage(true);
       if (file != null) {
@@ -230,7 +228,9 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
                 + " where layers will be saved.")));
       }
     });
+    // TODO: add functionality for loading programmatic images menu items
 
+    // Layers menu
     addMenuItem.addActionListener(evt -> {
       controller.runCommand(
           new AddCommand(JOptionPane.showInputDialog("Enter a name for the new layer.")));
@@ -249,8 +249,12 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
       controller.runCommand(new VisibilityCommand(false));
       updateImage();
     });
+    // TODO: add functionality for move command menu item
 
+    // Image Processing menu
     // TODO: add functionality to image processing menu options
+
+    // Update layers
     updateLayers();
   }
 
