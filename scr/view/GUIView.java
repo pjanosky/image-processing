@@ -14,6 +14,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -22,10 +23,10 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import model.DownscaleOperation;
 import model.Image;
@@ -53,7 +54,7 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
   // layers panel
   JPanel layersPanel;
   JScrollPane layersScrollPane;
-  List<JLabel> layersLabels;
+  ButtonGroup layerButtons;
 
 
   // Menus:
@@ -201,7 +202,7 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
     layersPanel = new JPanel();
     layersPanel.setLayout(new BoxLayout(layersPanel, BoxLayout.Y_AXIS));
     layersPanel.setBorder(BorderFactory.createTitledBorder("Layers"));
-    layersLabels = new ArrayList<>();
+    layerButtons = new ButtonGroup();
     layersScrollPane = new JScrollPane(layersPanel);
     layersScrollPane.setMinimumSize(new Dimension(150, 150));
     mainSplitPlane.setRightComponent(layersScrollPane);
@@ -303,43 +304,48 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
    * layers in the image processing program. Should only be called from the renderLayers method.
    */
   private void updateLayers(ImageProcessingModelState model) {
-    // updated current layers menu bar item
     currentMenu.removeAll();
     currentLayerMenuButtons = new ButtonGroup();
     layersPanel.removeAll();
-    layersLabels.clear();
+    layerButtons = new ButtonGroup();
+
     for (int index = 0; index < model.numLayers(); index += 1) {
       String layerName = model.getLayerNameAt(index);
-      JRadioButtonMenuItem button;
 
+      // Menu
+      JRadioButtonMenuItem button;
       if (layerName.equals(model.getCurrentName())) {
         button = new JRadioButtonMenuItem(layerName, true);
       } else {
         button = new JRadioButtonMenuItem(layerName, false);
       }
-
-      // Menu
       if (currentListenerCreator != null) {
         button.addActionListener(currentListenerCreator.apply(layerName));
       }
       currentLayerMenuButtons.add(button);
       currentMenu.add(button);
 
+
       // Layers Panel
-      String line = index + 1 + ". " + layerName;
+      JRadioButton layerButton;
+      String text = index + 1 + ". " + layerName;
       if (model.isVisible(layerName)) {
-        line += " (V)";
+        text += " (V)";
       } else {
-        line += " ( )";
+        text += " ( )";
       }
       if (layerName.equals(model.getCurrentName())) {
-        line += " (current)";
+        layerButton = new JRadioButton(text, true);
+      } else {
+        layerButton = new JRadioButton(text, false);
       }
-      layersLabels.add(new JLabel(line));
+      if (currentListenerCreator != null) {
+        layerButton.addActionListener(currentListenerCreator.apply(layerName));
+      }
+      layersPanel.add(layerButton);
+      layerButtons.add(layerButton);
     }
-    for (JLabel label : layersLabels) {
-      layersPanel.add(label);
-    }
+
     layersPanel.revalidate();
     layersPanel.repaint();
   }
