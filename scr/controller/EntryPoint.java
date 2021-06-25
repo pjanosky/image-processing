@@ -26,7 +26,7 @@ public class EntryPoint {
     ImageProcessingController controller;
 
     if (args.length == 0) {
-      GUIImageProcessingView view = new GUIView("Image Processing");
+      GUIImageProcessingView view = new GUIView(model, "Image Processing");
       controller = new GUIController(model, view);
       controller.run();
     } else switch (args[0]) {
@@ -48,7 +48,7 @@ public class EntryPoint {
         controller.run();
         break;
       case "-interactive":
-        GUIImageProcessingView view = new GUIView("Image Processing");
+        GUIImageProcessingView view = new GUIView(model, "Image Processing");
         controller = new GUIController(model, view);
         controller.run();
         break;

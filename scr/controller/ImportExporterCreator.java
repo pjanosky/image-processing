@@ -21,6 +21,7 @@ public class ImportExporterCreator {
       case "ppm":
         return new PpmImportExporter();
       default:
+        System.out.println(format);
         throw new IllegalArgumentException("Unsupported image format.");
     }
   }

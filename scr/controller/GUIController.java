@@ -26,6 +26,7 @@ public class GUIController implements GuiProcessingController {
 
     this.model = model;
     this.view = view;
+    view.setController(this);
 
     try {
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -44,7 +45,11 @@ public class GUIController implements GuiProcessingController {
 
   @Override
   public void runCommand(ControllerCommand command) {
-    command.runCommand(model, view);
+    try {
+      command.runCommand(model, view);
+    } catch (IllegalArgumentException | IllegalStateException e) {
+      renderMessage(e.getMessage());
+    }
   }
 
 
