@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import model.Image;
 import model.ImageProcessingModel;
+import model.ImageProcessingViewModel;
 import view.ImageProcessingView;
 
 /**

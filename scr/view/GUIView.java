@@ -9,11 +9,13 @@ import controller.commands.RemoveCommand;
 import controller.commands.SaveCommand;
 import controller.commands.SaveLayersCommand;
 import controller.commands.VisibilityCommand;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -95,8 +97,6 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
 
     setupMenu();
     setupPanel();
-    updateLayers();
-    updateImage();
   }
 
   /**
@@ -181,12 +181,13 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
     add(new JScrollPane(mainPanel));
   }
 
-  public void renderLayers() throws IOException {
-    //maybe here, we can control which image or layer is displayed? (yep)
+  public void renderLayers(ImageProcessingModelState model) {
+    updateImage(model);
+    updateLayers(model);
   }
 
   @Override
-  public void renderMessage(String message) throws IOException {
+  public void renderMessage(String message) {
     JOptionPane.showMessageDialog(mainPanel, message, "", JOptionPane.PLAIN_MESSAGE);
   }
 
@@ -205,14 +206,12 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
       if (file != null) {
         controller.runCommand(new LoadCommand(file.getAbsolutePath(), parseExtension(file)));
       }
-      updateImage();
     });
     loadAllMenuItem.addActionListener(evt -> {
       File file = chooseDirectory(true);
       if (file != null) {
         controller.runCommand(new LoadLayersCommand(file.getAbsolutePath()));
       }
-      updateImage();
     });
     saveMenuItem.addActionListener(evt -> {
       File file = chooseImage(false);
@@ -234,35 +233,27 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
     addMenuItem.addActionListener(evt -> {
       controller.runCommand(
           new AddCommand(JOptionPane.showInputDialog("Enter a name for the new layer.")));
-      updateLayers();
     });
     removeMenuItem.addActionListener(evt -> {
       controller.runCommand(new RemoveCommand());
-      updateLayers();
-      updateImage();
     });
     showMenuItem.addActionListener(evt -> {
       controller.runCommand(new VisibilityCommand(true));
-      updateImage();
     });
     hideMenuItem.addActionListener(evt -> {
       controller.runCommand(new VisibilityCommand(false));
-      updateImage();
     });
     // TODO: add functionality for move command menu item
 
     // Image Processing menu
     // TODO: add functionality to image processing menu options
-
-    // Update layers
-    updateLayers();
   }
 
   /**
    * Updates the list of layers in the menu bar and side layers panel after a change is made to the
-   * layers in the image processing program;
+   * layers in the image processing program. Should only be called from the renderLayers method.
    */
-  private void updateLayers() {
+  private void updateLayers(ImageProcessingModelState model) {
     // updated current layers menu bar item
     currentMenu.removeAll();
     layerMenuButtons = new ButtonGroup();
@@ -308,8 +299,9 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
 
   /**
    * Updates the  image that is shown on screen after a change is made to the model.
+   * Should only be called from the renderLayers method.
    */
-  private void updateImage() {
+  private void updateImage(ImageProcessingModelState model) {
     Image displayedImage = null;
     String displayedLayerName = null;
     for (int index = 0; index < model.numLayers(); index += 1) {

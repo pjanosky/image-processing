@@ -40,14 +40,14 @@ public class LoadLayersCommandTest {
         new RgbPixel(0, 0, 0),
         new RgbPixel(255, 255, 255));
     output = new StringBuilder();
-    view = new ImageProcessingTextView(model, output);
+    view = new ImageProcessingTextView(output);
   }
 
   @Before
   public void setup() {
     model = new ImageProcessingModelImpl();
     output = new StringBuilder();
-    view = new ImageProcessingTextView(model, output);
+    view = new ImageProcessingTextView(output);
   }
 
   @Test(expected = IllegalArgumentException.class)

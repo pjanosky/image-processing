@@ -1,6 +1,7 @@
 package controller.commands;
 
 import model.ImageProcessingModel;
+import model.ImageProcessingViewModel;
 import view.ImageProcessingView;
 
 /**

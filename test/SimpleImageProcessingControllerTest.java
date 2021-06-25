@@ -466,6 +466,10 @@ public class SimpleImageProcessingControllerTest {
         "2. layer2 (V) (current)",
         "Layers:",
         "1. layer1 (V)",
+        "Layers:",
+        "1. layer1 (V)",
+        "Layers:",
+        "1. layer1 (V)",
         "Quitting."
     );
 
