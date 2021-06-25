@@ -3,6 +3,7 @@ package view;
 import controller.GuiProcessingController;
 import controller.commands.AddCommand;
 import controller.commands.CurrentCommand;
+import controller.commands.ImageProcessCommand;
 import controller.commands.LoadCommand;
 import controller.commands.LoadLayersCommand;
 import controller.commands.RemoveCommand;
@@ -19,6 +20,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -32,6 +34,8 @@ import javax.swing.JScrollPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import model.Image;
+import model.ImageOperationCreator;
+import model.ImageOperationCreator.OperationType;
 import model.ImageProcessingModelState;
 import model.Pixel;
 
@@ -79,6 +83,11 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
   // TODO: Add menu item for move command
 
   // image processing menu
+  JMenu imageProcessMenu;
+  JMenuItem blurImageItem;
+  JMenuItem sharpenImageItem;
+  JMenuItem greyscaleImageItem;
+  JMenuItem sepiaImageItem;
   // TODO: Add menu items for image processing commands
 
 
@@ -143,6 +152,19 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
     // TODO: initialize menu item for the move command
 
     // Image Processing Menu (blur, sharpen, sepia, greyscale)
+    imageProcessMenu = new JMenu("Image Processing");
+
+    blurImageItem = new JMenuItem("Blur Current Layer");
+    sharpenImageItem = new JMenuItem("Sharpen Current Layer");
+    sepiaImageItem = new JMenuItem("Sepia Current Layer");
+    greyscaleImageItem = new JMenuItem("Greyscale Current Layer");
+
+    imageProcessMenu.add(blurImageItem);
+    imageProcessMenu.add(sharpenImageItem);
+    imageProcessMenu.add(sepiaImageItem);
+    imageProcessMenu.add(greyscaleImageItem);
+
+    menuBar.add(imageProcessMenu);
     // TODO: initialize image processing menu items
 
     // Update and set the menu bar
@@ -252,6 +274,30 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
     // TODO: add functionality for move command menu item
 
     // Image Processing menu
+    blurImageItem.addActionListener(evt -> {
+      controller.runCommand(
+          new ImageProcessCommand(ImageOperationCreator.create(OperationType.BLUR))
+      );
+      updateImage();
+    });
+    sharpenImageItem.addActionListener(evt -> {
+      controller.runCommand(
+          new ImageProcessCommand(ImageOperationCreator.create(OperationType.SHARPEN))
+      );
+      updateImage();
+    });
+    sepiaImageItem.addActionListener(evt -> {
+      controller.runCommand(
+          new ImageProcessCommand(ImageOperationCreator.create(OperationType.SEPIA))
+      );
+      updateImage();
+    });
+    greyscaleImageItem.addActionListener(evt -> {
+      controller.runCommand(
+          new ImageProcessCommand(ImageOperationCreator.create(OperationType.GREYSCALE))
+      );
+      updateImage();
+    });
     // TODO: add functionality to image processing menu options
 
     // Update layers
