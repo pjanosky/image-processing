@@ -55,6 +55,7 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
   JPanel imagePanel;
   JScrollPane imageScrollPane;
   JLabel imageLabel;
+  JLabel imageCaption;
   Icon imageIcon;
 
   // layers panel
@@ -86,15 +87,15 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
   // TODO: Implement image processing menu
 
 
-  public GUIView(ImageProcessingModelState model, String caption) {
-    super(caption);
-    if (model == null || caption == null) {
-      throw new IllegalArgumentException("Arguments must not be null");
+  public GUIView(ImageProcessingModelState model) {
+    super();
+    if (model == null) {
+      throw new IllegalArgumentException("Model must not be null.");
     }
     this.model = model;
 
+    setName("Image Processing");
     setSize(400, 400);
-    setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
     setDefaultCloseOperation(EXIT_ON_CLOSE);
 
     setupMenu();
@@ -157,24 +158,30 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
   private void setupPanel() {
     // main panel
     mainPanel = new JPanel();
-    mainPanel.setLayout(new FlowLayout());
+    mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
 
     // image panel
     imagePanel = new JPanel();
+    imagePanel.setLayout(new BoxLayout(imagePanel, BoxLayout.Y_AXIS));
     imageLabel = new JLabel();
+    imageLabel.setHorizontalAlignment(JLabel.CENTER);
     imagePanel.add(imageLabel);
+    imageCaption = new JLabel();
+    imageCaption.setHorizontalAlignment(JLabel.CENTER);
+    imagePanel.add(imageCaption);
     imageScrollPane = new JScrollPane(imagePanel);
     mainPanel.add(imageScrollPane);
 
     // layers panel
     layersPanel = new JPanel();
+    layersPanel.setLayout(new BoxLayout(layersPanel, BoxLayout.Y_AXIS));
     layersPanel.setBorder(BorderFactory.createTitledBorder("Layers"));
     layersLabels = new ArrayList<>();
     layersScrollPane = new JScrollPane(layersPanel);
     mainPanel.add(layersScrollPane);
 
     // add to the view
-    add(mainPanel);
+    add(new JScrollPane(mainPanel));
   }
 
   public void renderLayers() throws IOException {
@@ -193,6 +200,7 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
   @Override
   public void setController(GuiProcessingController controller) {
     this.controller = controller;
+    // TODO: Error Checking
 
     loadMenuItem.addActionListener(evt -> {
       File file = chooseImage(true);
@@ -247,8 +255,8 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
   }
 
   /**
-   * Updates the list of layers in the menu bar after a change is made to the layers in the image
-   * processing program;
+   * Updates the list of layers in the menu bar and side layers panel after a change is made to the
+   * layers in the image processing program;
    */
   private void updateLayers() {
     // updated current layers menu bar item
@@ -259,6 +267,7 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
     for (int index = 0; index < model.numLayers(); index += 1) {
       String layerName = model.getLayerNameAt(index);
       JRadioButtonMenuItem button;
+
       if (layerName.equals(model.getCurrentName())) {
         button = new JRadioButtonMenuItem(layerName, true);
       } else {
@@ -275,20 +284,36 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
       currentMenu.add(button);
 
       // Layers Panel
-      layersLabels.add(new JLabel(index + 1 + ". " + layerName));
+      String line = index + 1 + ". " + layerName;
+      if (model.isVisible(layerName)) {
+        line += " (V)";
+      }else {
+        line += "( )";
+      }
+      if (layerName.equals(model.getCurrentName())) {
+        line += " (current)";
+      }
+      layersLabels.add(new JLabel(line));
     }
     for (JLabel label : layersLabels) {
       layersPanel.add(label);
     }
+    layersPanel.revalidate();
+    layersPanel.repaint();
   }
 
+  /**
+   * Updates the  image that is shown on screen after a change is made to the model.
+   */
   private void updateImage() {
     Image displayedImage = null;
+    String displayedLayerName = null;
     for (int index = 0; index < model.numLayers(); index += 1) {
       String layerName = model.getLayerNameAt(index);
       Image layerImage = model.getImageIn(layerName);
       if (layerImage != null && model.isVisible(layerName)) {
         displayedImage = layerImage;
+        displayedLayerName = layerName;
         break;
       }
     }
@@ -297,9 +322,8 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
     }
     imageIcon = new ImageIcon(convertImage(displayedImage));
     imageLabel.setIcon(imageIcon);
-//    imagePanel.setPreferredSize(
-//        new Dimension(displayedImage.getWidth(),
-//            displayedImage.getHeight()));
+    imageCaption.setText("Displaying: " + displayedLayerName);
+    mainPanel.revalidate();
   }
 
   /**
