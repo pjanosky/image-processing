@@ -49,6 +49,14 @@ public interface ImageProcessingModelState {
    * @return the number of layers
    */
   int numLayers();
+
+
+  /**
+   * Gets the top most visible image from the layers in the model.
+   *
+   * @return the top most visible image or null if there are no visible images.
+   */
+  Image topVisibleImage();
 }
 
 /*

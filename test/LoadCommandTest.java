@@ -75,7 +75,7 @@ public class LoadCommandTest {
   public void testGoValid() {
     clean();
 
-    Image image = ImageExamples.rainbow(1, 2);
+    Image image = ImageExamples.rainbow(1, 12);
     String path = "test/data/image.png";
     try {
       new PngImportExporter().saveImage(new FileOutputStream(path), image);

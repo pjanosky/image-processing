@@ -38,7 +38,7 @@ public class SimpleImageProcessingControllerTest {
    */
   public SimpleImageProcessingControllerTest() {
     model = new ImageProcessingModelImpl();
-    image1 = ImageExamples.rainbow(10, 2);
+    image1 = ImageExamples.rainbow(10, 12);
     image2 = ImageExamples.checkerboard(12, 10, 1, 1,
         new RgbPixel(0, 0, 0),
         new RgbPixel(255, 255, 255));
@@ -532,7 +532,7 @@ public class SimpleImageProcessingControllerTest {
     assertEquals("layer2", model.getLayerNameAt(1));
 
     String output = runCommands(
-        "set rainbow 1 1",
+        "set rainbow 1 6",
         "q"
     );
     String expected = concatenateLines(
@@ -543,7 +543,7 @@ public class SimpleImageProcessingControllerTest {
         "Quitting."
     );
 
-    assertEquals(ImageExamples.rainbow(1, 1),
+    assertEquals(ImageExamples.rainbow(1, 6),
         model.getImageIn("layer2"));
     assertEquals(expected, output);
   }
@@ -556,7 +556,7 @@ public class SimpleImageProcessingControllerTest {
     String output = runCommands(
         "add layer1",
         "add layer2",
-        "set rainbow 10 2",
+        "set rainbow 10 12",
         "sepia",
         "current layer1",
         "remove",

@@ -70,7 +70,7 @@ public class SaveLayersCommandTest {
   @Test
   public void testGoValid() {
     clean();
-    Image image1 = ImageExamples.rainbow(10, 2);
+    Image image1 = ImageExamples.rainbow(10, 12);
     Image image2 = ImageExamples.checkerboard(12, 10, 1, 1,
         new RgbPixel(0, 0, 0),
         new RgbPixel(255, 255, 255));

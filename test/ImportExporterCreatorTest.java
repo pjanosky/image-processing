@@ -22,7 +22,7 @@ public class ImportExporterCreatorTest {
   private final Image image;
 
   public ImportExporterCreatorTest() {
-    image = ImageExamples.rainbow(10, 2);
+    image = ImageExamples.rainbow(10, 12);
   }
 
   @Test

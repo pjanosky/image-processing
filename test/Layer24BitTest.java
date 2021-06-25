@@ -31,7 +31,7 @@ public class Layer24BitTest {
     layer1 = new Layer24Bit("layer1");
     layer2 = new Layer24Bit("layer2");
     layer3 = new Layer24Bit("layer3");
-    image1 = ImageExamples.rainbow(1, 1);
+    image1 = ImageExamples.rainbow(1, 6);
     image2 = ImageExamples.checkerboard(2, 3, 1, 1,
         new RgbPixel(0, 0, 0),
         new RgbPixel(255, 255, 255));

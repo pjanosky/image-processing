@@ -61,7 +61,7 @@ public class SetImageCommand implements ControllerCommand {
 
   /**
    * Sets the image of the current layers to a rainbow image, parsing the parameters from the user
-   * input. Rainbow image commands take the form "rainbow width stripHeight".
+   * input. Rainbow image commands take the form "rainbow width height".
    *
    * @param model the model to set the current layers of.
    * @throws IllegalArgumentException if the parameters for the image are wrong.
@@ -74,15 +74,15 @@ public class SetImageCommand implements ControllerCommand {
     }
 
     int width;
-    int stripeHeight;
+    int height;
     try {
       width = Integer.parseInt(args[0]);
-      stripeHeight = Integer.parseInt(args[1]);
+      height = Integer.parseInt(args[1]);
     } catch (NumberFormatException e) {
       throw new IllegalArgumentException("Could not parse arguments for rainbow.");
     }
 
-    Image image = ImageExamples.rainbow(width, stripeHeight);
+    Image image = ImageExamples.rainbow(width, height);
     setImage(image, model);
   }
 

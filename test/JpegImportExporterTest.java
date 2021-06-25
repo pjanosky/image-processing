@@ -30,7 +30,7 @@ public class JpegImportExporterTest {
   @Test
   public void testSaveImage() {
     String path = "test/data/image.jpeg";
-    Image image = ImageExamples.rainbow(10, 2);
+    Image image = ImageExamples.rainbow(10, 12);
     try {
       ie.saveImage(new FileOutputStream(path), image);
     } catch (IOException e) {
@@ -46,7 +46,7 @@ public class JpegImportExporterTest {
   @Test
   public void testParseImage() {
     String path = "test/data/image.png";
-    Image image = ImageExamples.rainbow(10, 2);
+    Image image = ImageExamples.rainbow(10, 12);
     ByteArrayOutputStream output = new ByteArrayOutputStream();
     Image parsedImage = null;
     try {
@@ -68,7 +68,7 @@ public class JpegImportExporterTest {
 
   @Test(expected = IOException.class)
   public void testSaveImageFailOutputStream() throws IOException {
-    ie.saveImage(new FailOutputStream(), ImageExamples.rainbow(10, 2));
+    ie.saveImage(new FailOutputStream(), ImageExamples.rainbow(10, 12));
   }
 
   @Test(expected = IOException.class)
@@ -88,7 +88,7 @@ public class JpegImportExporterTest {
   @Test(expected = IllegalArgumentException.class)
   public void testSaveImageNullOutput() {
     try {
-      ie.saveImage(null, ImageExamples.rainbow(10, 2));
+      ie.saveImage(null, ImageExamples.rainbow(10, 12));
     } catch (IOException e) {
       fail("Should throw IllegalArgumentException");
     }

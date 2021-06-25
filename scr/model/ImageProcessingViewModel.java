@@ -34,4 +34,9 @@ public class ImageProcessingViewModel implements ImageProcessingModelState {
   public int numLayers() {
     return delegate.numLayers();
   }
+
+  @Override
+  public Image topVisibleImage() {
+    return delegate.topVisibleImage();
+  }
 }

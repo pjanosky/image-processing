@@ -156,6 +156,20 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
     return layers.size();
   }
 
+  @Override
+  public Image topVisibleImage() {
+    Image image = null;
+    for (int index = 0; index < numLayers(); index += 1) {
+      String layerName = getLayerNameAt(index);
+      Image layerImage = getImageIn(layerName);
+      if (layerImage != null && isVisible(layerName)) {
+        image = layerImage;
+        break;
+      }
+    }
+    return image;
+  }
+
   /**
    * Determines whether the model has a layer with a given name.
    *

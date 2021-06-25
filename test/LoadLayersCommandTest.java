@@ -35,7 +35,7 @@ public class LoadLayersCommandTest {
    */
   public LoadLayersCommandTest() {
     model = new ImageProcessingModelImpl();
-    image1 = ImageExamples.rainbow(10, 2);
+    image1 = ImageExamples.rainbow(10, 12);
     image2 = ImageExamples.checkerboard(12, 10, 1, 1,
         new RgbPixel(0, 0, 0),
         new RgbPixel(255, 255, 255));

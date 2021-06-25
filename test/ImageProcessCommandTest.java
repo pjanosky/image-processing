@@ -54,7 +54,7 @@ public class ImageProcessCommandTest {
 
   @Test
   public void tstGoBlur() {
-    Image image = ImageExamples.rainbow(10, 2);
+    Image image = ImageExamples.rainbow(10, 12);
     Image edited = ImageOperationCreator.create(OperationType.BLUR).apply(image);
     model.addLayer("layer1");
     model.setLayerImage("layer1", image);
@@ -66,7 +66,7 @@ public class ImageProcessCommandTest {
 
   @Test
   public void tstGoSepia() {
-    Image image = ImageExamples.rainbow(10, 2);
+    Image image = ImageExamples.rainbow(10, 12);
     Image edited = ImageOperationCreator.create(OperationType.SEPIA).apply(image);
     model.addLayer("layer1");
     model.setLayerImage("layer1", image);

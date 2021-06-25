@@ -41,11 +41,12 @@ public class ImageExamples {
   /**
    * Generates a rainbow image.
    *
-   * @param width        the width of the image in pixels
-   * @param stripeHeight the height of each color stripe in the rainbow
+   * @param width  the width of the image in pixels
+   * @param height the height of the entire image. The strips will be rouble height / 6 pixels tall,
+   *               except the last strip which my be cropped to fit the specified height.
    * @return the rainbow image
    */
-  public static Image rainbow(int width, int stripeHeight) {
+  public static Image rainbow(int width, int height) {
     Pixel[] colors = {
         new RgbPixel(200, 0, 0),
         new RgbPixel(200, 75, 0),
@@ -55,8 +56,9 @@ public class ImageExamples {
         new RgbPixel(160, 0, 200),
     };
 
+    int stripeHeight = height / 6;
     Pixel[][] pixels = new Pixel[stripeHeight * colors.length][width];
-    for (int r = 0; r < stripeHeight * colors.length; r += 1) {
+    for (int r = 0; r < height; r += 1) {
       for (int c = 0; c < width; c += 1) {
         pixels[r][c] = colors[r / stripeHeight];
       }
