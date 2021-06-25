@@ -67,6 +67,7 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
   JMenu presetImageMenu;
   JMenuItem rainbowMenuItem;
   JMenuItem checkerboardMenuItem;
+  JMenuItem runBatchScriptMenuItem;
 
   // layers menu
   JMenu layerMenu;
@@ -123,12 +124,14 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
     checkerboardMenuItem = new JMenuItem("Checkerboard");
     presetImageMenu.add(rainbowMenuItem);
     presetImageMenu.add(checkerboardMenuItem);
+    runBatchScriptMenuItem = new JMenuItem("Run Batch Script File");
 
     fileMenu.add(loadMenuItem);
     fileMenu.add(loadAllMenuItem);
     fileMenu.add(saveMenuItem);
     fileMenu.add(saveAllMenuItem);
     fileMenu.add(presetImageMenu);
+    fileMenu.add(runBatchScriptMenuItem);
 
     menuBar.add(fileMenu);
     // TODO: initialize menu item for loading programmatic images
@@ -236,10 +239,19 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
       listener.saveLayers(chooseDirectory(false));
     });
     rainbowMenuItem.addActionListener(evt -> {
-
+      listener.setImage("rainbow",
+          JOptionPane.showInputDialog("Enter the width and the height of the rainbow image: ")
+              .split(" "));
     });
     checkerboardMenuItem.addActionListener(evt -> {
-
+      listener.setImage("checkerboard",
+          JOptionPane.showInputDialog(
+              "Enter the number of horizontal squares, number of vertical squares, "
+                  + "and the size of each square in pixels to generate a checkerboard.")
+              .split(" "));
+    });
+    runBatchScriptMenuItem.addActionListener(evt -> {
+      listener.script(chooseBatchScript().getAbsolutePath());
     });
     // TODO: add functionality for programmatic images when menu items are selected
 
@@ -384,6 +396,15 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
     } else {
       chooser.showSaveDialog(mainSplitPlane);
     }
+    return chooser.getSelectedFile();
+  }
+
+  private File chooseBatchScript() {
+    final JFileChooser chooser = new JFileChooser(".");
+    FileNameExtensionFilter filter = new FileNameExtensionFilter(
+        "TXT files only", "txt");
+    chooser.setFileFilter(filter);
+    chooser.showOpenDialog(mainSplitPlane);
     return chooser.getSelectedFile();
   }
 

@@ -98,7 +98,7 @@ public class SetImageCommand implements ControllerCommand {
       throws IllegalArgumentException, IllegalStateException {
     if (args.length != 3) {
       throw new IllegalArgumentException(
-          "Checkerboard images need 2 parameters: number of horizontal squares, "
+          "Checkerboard images need 3 parameters: number of horizontal squares, "
               + "number of vertical squares, and the size of each square in pixels.");
     }
 
