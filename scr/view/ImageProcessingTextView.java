@@ -62,4 +62,9 @@ public class ImageProcessingTextView implements ImageProcessingView {
       }
     }
   }
+
+  @Override
+  public void renderError(String message) throws IllegalStateException {
+    renderMessage(message);
+  }
 }

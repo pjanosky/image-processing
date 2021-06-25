@@ -34,9 +34,9 @@ import view.ImageProcessingView;
  */
 public class SimpleImageProcessingController implements ImageProcessingController {
 
-  private final ImageProcessingModel model;
-  private final ImageProcessingModelState viewModel;
-  private final ImageProcessingView view;
+  protected final ImageProcessingModel model;
+  protected final ImageProcessingModelState viewModel;
+  protected final ImageProcessingView view;
   private final Readable input;
   private final Map<String, Function<Scanner, ControllerCommand>> commands;
 
@@ -132,7 +132,7 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
   /**
    * A command that runs a script of other commands.
    */
-  public class ScriptCommand implements ControllerCommand {
+  protected class ScriptCommand implements ControllerCommand {
 
     private final Readable input;
 

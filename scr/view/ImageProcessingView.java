@@ -25,4 +25,12 @@ public interface ImageProcessingView {
    */
   void renderMessage(String message) throws IllegalStateException;
 
+  /**
+   * Renders the given error.
+   *
+   * @param message the message to be rendered.
+   * @throws IllegalStateException if the view fails to render the error message.
+   */
+  void renderError(String message) throws IllegalStateException;
+
 }

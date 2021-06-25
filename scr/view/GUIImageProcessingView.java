@@ -1,10 +1,10 @@
 package view;
 
-import controller.GuiProcessingController;
+import controller.CommandListener;
 
 public interface GUIImageProcessingView extends ImageProcessingView {
 
-  void setController(GuiProcessingController features);
+  void addCommandListener(CommandListener features);
 
   void setVisible(boolean visible);
 }

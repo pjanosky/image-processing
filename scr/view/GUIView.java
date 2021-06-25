@@ -1,18 +1,10 @@
 package view;
 
-import controller.GuiProcessingController;
-import controller.commands.AddCommand;
+import controller.CommandListener;
 import controller.commands.CurrentCommand;
-import controller.commands.LoadCommand;
-import controller.commands.LoadLayersCommand;
-import controller.commands.RemoveCommand;
-import controller.commands.SaveCommand;
-import controller.commands.SaveLayersCommand;
-import controller.commands.VisibilityCommand;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -41,8 +33,6 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
 
   // Data:
   ImageProcessingModelState model;
-  GuiProcessingController controller;
-
 
   // Panels:
   // main panel
@@ -77,7 +67,9 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
   JMenuItem showMenuItem;
   JMenuItem hideMenuItem;
   JMenu currentMenu;
-  ButtonGroup layerMenuButtons;
+  ButtonGroup currentLayerMenuButtons;
+  Function<String, ActionListener> currentListenerCreator;
+
   // TODO: Add menu item for move command
 
   // image processing menu
@@ -131,7 +123,7 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
     showMenuItem = new JMenuItem("Show Current Layer");
     hideMenuItem = new JMenuItem("Hide Current Layer");
     currentMenu = new JMenu("Current Layer");
-    layerMenuButtons = new ButtonGroup();
+    currentLayerMenuButtons = new ButtonGroup();
 
     layerMenu.add(addMenuItem);
     layerMenu.add(removeMenuItem);
@@ -196,53 +188,38 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
   }
 
   @Override
-  public void setController(GuiProcessingController controller) {
-    this.controller = controller;
-    // TODO: Add checks for exceptions
-
+  public void addCommandListener(CommandListener listener) {
     // File menu
     loadMenuItem.addActionListener(evt -> {
-      File file = chooseImage(true);
-      if (file != null) {
-        controller.runCommand(new LoadCommand(file.getAbsolutePath(), parseExtension(file)));
-      }
+      listener.load(chooseImage(true));
     });
     loadAllMenuItem.addActionListener(evt -> {
-      File file = chooseDirectory(true);
-      if (file != null) {
-        controller.runCommand(new LoadLayersCommand(file.getAbsolutePath()));
-      }
+      listener.loadLayers(chooseDirectory(true));
     });
     saveMenuItem.addActionListener(evt -> {
-      File file = chooseImage(false);
-      if (file != null) {
-        controller.runCommand(new SaveCommand(file.getAbsolutePath(), parseExtension(file)));
-      }
+      listener.save(chooseImage(false));
     });
     saveAllMenuItem.addActionListener(evt -> {
-      File file = chooseDirectory(false);
-      if (file != null) {
-        controller.runCommand(new SaveLayersCommand(file.getAbsolutePath(),
-            JOptionPane.showInputDialog("Chose a name for the new subdirectory"
-                + " where layers will be saved.")));
-      }
+      listener.saveLayers(chooseDirectory(false),
+          JOptionPane.showInputDialog("Chose a name for the new subdirectory"
+              + " where layers will be saved."));
     });
     // TODO: add functionality for loading programmatic images menu items
 
     // Layers menu
     addMenuItem.addActionListener(evt -> {
-      controller.runCommand(
-          new AddCommand(JOptionPane.showInputDialog("Enter a name for the new layer.")));
+      listener.add(JOptionPane.showInputDialog("Enter a name for the new layer."));
     });
     removeMenuItem.addActionListener(evt -> {
-      controller.runCommand(new RemoveCommand());
+      listener.remove();
     });
     showMenuItem.addActionListener(evt -> {
-      controller.runCommand(new VisibilityCommand(true));
+      listener.visibility(true);
     });
     hideMenuItem.addActionListener(evt -> {
-      controller.runCommand(new VisibilityCommand(false));
+      listener.visibility(false);
     });
+    currentListenerCreator = name -> (evt -> new CurrentCommand(name));
     // TODO: add functionality for move command menu item
 
     // Image Processing menu
@@ -256,7 +233,7 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
   private void updateLayers(ImageProcessingModelState model) {
     // updated current layers menu bar item
     currentMenu.removeAll();
-    layerMenuButtons = new ButtonGroup();
+    currentLayerMenuButtons = new ButtonGroup();
     layersPanel.removeAll();
     layersLabels.clear();
     for (int index = 0; index < model.numLayers(); index += 1) {
@@ -270,19 +247,17 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
       }
 
       // Menu
-      if (controller != null) {
-        button.addActionListener(evt -> {
-          controller.runCommand(new CurrentCommand(layerName));
-        });
+      if (currentListenerCreator != null) {
+        button.addActionListener(currentListenerCreator.apply(layerName));
       }
-      layerMenuButtons.add(button);
+      currentLayerMenuButtons.add(button);
       currentMenu.add(button);
 
       // Layers Panel
       String line = index + 1 + ". " + layerName;
       if (model.isVisible(layerName)) {
         line += " (V)";
-      }else {
+      } else {
         line += "( )";
       }
       if (layerName.equals(model.getCurrentName())) {
@@ -298,8 +273,8 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
   }
 
   /**
-   * Updates the  image that is shown on screen after a change is made to the model.
-   * Should only be called from the renderLayers method.
+   * Updates the  image that is shown on screen after a change is made to the model. Should only be
+   * called from the renderLayers method.
    */
   private void updateImage(ImageProcessingModelState model) {
     Image displayedImage = null;
@@ -320,20 +295,6 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
     imageLabel.setIcon(imageIcon);
     imageCaption.setText("Displaying: " + displayedLayerName);
     mainPanel.revalidate();
-  }
-
-  /**
-   * Parses the file extension for a file.
-   *
-   * @param file the file to get the extension of.
-   * @return the file extension or an empty string if no extension can be parsed.
-   */
-  private String parseExtension(File file) {
-    int extensionIndex = file.getName().lastIndexOf('.');
-    if (extensionIndex < 0 || extensionIndex + 1 >= file.getName().length()) {
-      return "";
-    }
-    return file.getName().substring(extensionIndex + 1);
   }
 
   /**
@@ -410,72 +371,3 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
     return buffer;
   }
 }
-
-/*
-File choosers:
-
-  private File loadedFilePathGetter() {
-    File f = null;
-    final JFileChooser fchooser = new JFileChooser(".");
-    int retvalue = fchooser.showSaveDialog(this);
-    if (retvalue == JFileChooser.APPROVE_OPTION) {
-      f = fchooser.getSelectedFile();
-    }
-    return f;
-  }
-
-  private File saveFilePathGetter() {
-    File f = null;
-    final JFileChooser fchooser = new JFileChooser(".");
-    int retvalue = fchooser.showSaveDialog(this);
-    if (retvalue == JFileChooser.APPROVE_OPTION) {
-      f = fchooser.getSelectedFile();
-    }
-    return f;
-  }
-
-
-
-//show an image with a scrollbar
-    JPanel imagePanel = new JPanel();
-    //a border around the panel with a caption
-    imagePanel.setBorder(BorderFactory.createTitledBorder("Showing an image"));
-    imagePanel.setLayout(new GridLayout(1, 0, 10, 10));
-    //imagePanel.setMaximumSize(null);
-    mainPanel.add(imagePanel);
-
-    String[] images = {"Jellyfish.jpg", "Koala.jpg", "Penguins.jpg"};
-    JLabel[] imageLabel = new JLabel[images.length];
-    JScrollPane[] imageScrollPane = new JScrollPane[images.length];
-
-    for (int i = 0; i < imageLabel.length; i++) {
-      imageLabel[i] = new JLabel();
-      imageScrollPane[i] = new JScrollPane(imageLabel[i]);
-      imageLabel[i].setIcon(new ImageIcon(images[i]));
-      imageScrollPane[i].setPreferredSize(new Dimension(100, 600));
-      imagePanel.add(imageScrollPane[i]);
-    }
-
-
-    //file open
-    JPanel fileopenPanel = new JPanel();
-    fileopenPanel.setLayout(new FlowLayout());
-    dialogBoxesPanel.add(fileopenPanel);
-    JButton fileOpenButton = new JButton("Open a file");
-    fileOpenButton.setActionCommand("Open file");
-    fileOpenButton.addActionListener(this);
-    fileopenPanel.add(fileOpenButton);
-    fileOpenDisplay = new JLabel("File path will appear here");
-    fileopenPanel.add(fileOpenDisplay);
-
-    //file save
-    JPanel filesavePanel = new JPanel();
-    filesavePanel.setLayout(new FlowLayout());
-    dialogBoxesPanel.add(filesavePanel);
-    JButton fileSaveButton = new JButton("Save a file");
-    fileSaveButton.setActionCommand("Save file");
-    fileSaveButton.addActionListener(this);
-    filesavePanel.add(fileSaveButton);
-    fileSaveDisplay = new JLabel("File path will appear here");
-    filesavePanel.add(fileSaveDisplay);
- */
