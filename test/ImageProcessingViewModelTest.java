@@ -31,7 +31,7 @@ public class ImageProcessingViewModelTest {
     delegate = new ImageProcessingModelImpl();
     model = new ImageProcessingViewModel(delegate);
 
-    image1 = ImageExamples.rainbow(2, 1);
+    image1 = ImageExamples.rainbow(2, 6);
     image3 = ImageExamples.checkerboard(6, 2, 1, 1,
         new RgbPixel(0, 0, 0),
         new RgbPixel(255, 255, 255));

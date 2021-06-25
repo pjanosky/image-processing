@@ -79,7 +79,7 @@ public class ColorTransformationTest {
   // Tests applying a greyscale transformation to a rainbow image
   @Test
   public void testApplyGreyscaleToRainbow() {
-    Image original = ImageExamples.rainbow(1, 1);
+    Image original = ImageExamples.rainbow(1, 6);
     Image transformed = ImageOperationCreator.create(OperationType.GREYSCALE).apply(original);
 
     assertEquals(new RgbPixel(42, 42, 42),
@@ -99,7 +99,7 @@ public class ColorTransformationTest {
   // Tests applying a sepia transformation to a rainbow image
   @Test
   public void testApplySepiaToRainbow() {
-    Image original = ImageExamples.rainbow(1, 1);
+    Image original = ImageExamples.rainbow(1, 6);
     Image transformed = ImageOperationCreator.create(OperationType.SEPIA).apply(original);
 
     assertEquals(new RgbPixel(78, 69, 54),

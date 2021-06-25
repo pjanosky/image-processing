@@ -83,7 +83,7 @@ public class FilterOperationTest {
   // Tests applying a 5x5 sharpening FilterOperation to a rainbow image.
   @Test
   public void testApplySharpenRainbow() {
-    Image original = ImageExamples.rainbow(10, 2);
+    Image original = ImageExamples.rainbow(10, 12);
     Image filtered = ImageOperationCreator.create(OperationType.SHARPEN).apply(original);
 
     assertEquals(new RgbPixel(225, 0, 0), filtered.getPixelAt(0, 0));

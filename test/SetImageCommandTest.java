@@ -1,6 +1,8 @@
 import static org.junit.Assert.assertEquals;
 
+import controller.commands.ControllerCommand;
 import controller.commands.SetImageCommand;
+import javax.naming.ldap.Control;
 import model.Image;
 import model.ImageExamples;
 import model.ImageProcessingModel;
@@ -26,14 +28,14 @@ public class SetImageCommandTest {
   public SetImageCommandTest() {
     model = new ImageProcessingModelImpl();
     output = new StringBuilder();
-    view = new ImageProcessingTextView(model, output);
+    view = new ImageProcessingTextView(output);
   }
 
   @Before
   public void setup() {
     model = new ImageProcessingModelImpl();
     output = new StringBuilder();
-    view = new ImageProcessingTextView(model, output);
+    view = new ImageProcessingTextView(output);
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -65,7 +67,7 @@ public class SetImageCommandTest {
 
   @Test(expected = IllegalStateException.class)
   public void testGoRainbowNoCurrentLayerSet() {
-    String[] args = {"1", "1"};
+    String[] args = {"1", "6"};
     new SetImageCommand("rainbow", args).runCommand(model, view);
   }
 
@@ -78,9 +80,9 @@ public class SetImageCommandTest {
   @Test
   public void testGoRainbowValid() {
     model.addLayer("layer1");
-    String[] args = {"2", "2"};
+    String[] args = {"2", "12"};
     new SetImageCommand("rainbow", args).runCommand(model, view);
-    Image expected = ImageExamples.rainbow(2, 2);
+    Image expected = ImageExamples.rainbow(2, 12);
     assertEquals(expected, model.getImageIn("layer1"));
   }
 

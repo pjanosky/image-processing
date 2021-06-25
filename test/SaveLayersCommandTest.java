@@ -32,14 +32,14 @@ public class SaveLayersCommandTest {
   public SaveLayersCommandTest() {
     model = new ImageProcessingModelImpl();
     output = new StringBuilder();
-    view = new ImageProcessingTextView(model, output);
+    view = new ImageProcessingTextView(output);
   }
 
   @Before
   public void setup() {
     model = new ImageProcessingModelImpl();
     output = new StringBuilder();
-    view = new ImageProcessingTextView(model, output);
+    view = new ImageProcessingTextView(output);
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -70,7 +70,7 @@ public class SaveLayersCommandTest {
   @Test
   public void testGoValid() {
     clean();
-    Image image1 = ImageExamples.rainbow(10, 2);
+    Image image1 = ImageExamples.rainbow(10, 12);
     Image image2 = ImageExamples.checkerboard(12, 10, 1, 1,
         new RgbPixel(0, 0, 0),
         new RgbPixel(255, 255, 255));

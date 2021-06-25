@@ -24,6 +24,7 @@ import controller.commands.CurrentCommand;
 import model.ImageOperationCreator;
 import model.ImageOperationCreator.OperationType;
 import model.ImageProcessingModel;
+import model.ImageProcessingModelState;
 import model.ImageProcessingViewModel;
 import view.ImageProcessingTextView;
 import view.ImageProcessingView;
@@ -33,8 +34,9 @@ import view.ImageProcessingView;
  */
 public class SimpleImageProcessingController implements ImageProcessingController {
 
-  private final ImageProcessingModel model;
-  private final ImageProcessingView view;
+  protected final ImageProcessingModel model;
+  protected final ImageProcessingModelState viewModel;
+  protected final ImageProcessingView view;
   private final Readable input;
   private final Map<String, Function<Scanner, ControllerCommand>> commands;
 
@@ -55,7 +57,8 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
 
     // Initialize fields
     this.model = model;
-    this.view = new ImageProcessingTextView(new ImageProcessingViewModel(model), output);
+    this.view = new ImageProcessingTextView(output);
+    this.viewModel = new ImageProcessingViewModel(model);
     this.input = input;
 
     // Add all of the supported commands
@@ -84,9 +87,9 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
 
   @Override
   public void run() {
-    renderMessage("Enter a command");
+    view.renderMessage("Enter a command");
     runCommands(input);
-    renderMessage("Quitting.");
+    view.renderMessage("Quitting.");
   }
 
   /**
@@ -109,58 +112,27 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
       }
       Function<Scanner, ControllerCommand> command = commands.get(commandName);
       if (command == null) {
-        renderMessage("Unknown Command");
+        view.renderMessage("Unknown Command");
         continue;
       }
       try {
         command.apply(lineScanner).runCommand(model, view);
       } catch (NoSuchElementException e) {
-        renderMessage("Invalid number of arguments for " + commandName + ".");
+        view.renderMessage("Invalid number of arguments for " + commandName + ".");
       } catch (IllegalArgumentException | IllegalStateException e) {
-        renderMessage(e.getMessage());
+        view.renderMessage(e.getMessage());
         continue;
       }
-      if (!commandName.equals("script")) {
-        renderLayers();
-      }
+      view.renderLayers(viewModel);
     }
     throw new IllegalStateException(
         "Reached the end of the provided Readable object without quitting the program.");
   }
 
-
-  /**
-   * Renders a message to the view.
-   *
-   * @param message the message to render
-   * @throws IllegalStateException if writing the the Appendable object fails.
-   */
-  private void renderMessage(String message) throws IllegalStateException {
-    try {
-      view.renderMessage(message + System.lineSeparator());
-    } catch (IOException e) {
-      throw new IllegalStateException("Failed to render message to output.");
-    }
-  }
-
-  /**
-   * Renders the layers of the model to the view.
-   *
-   * @throws IllegalStateException if writing the the Appendable object fails.
-   */
-  private void renderLayers() throws IllegalStateException {
-    try {
-      view.renderLayers();
-      view.renderMessage(System.lineSeparator());
-    } catch (IOException e) {
-      throw new IllegalStateException("Failed to render image layers to output.");
-    }
-  }
-
   /**
    * A command that runs a script of other commands.
    */
-  public class ScriptCommand implements ControllerCommand {
+  protected class ScriptCommand implements ControllerCommand {
 
     private final Readable input;
 

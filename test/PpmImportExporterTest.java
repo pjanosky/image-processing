@@ -59,7 +59,7 @@ public class PpmImportExporterTest {
   // Tests saving a rainbow image to an output steam
   @Test
   public void testSaveRainbow() {
-    Image image = ImageExamples.rainbow(1, 1);
+    Image image = ImageExamples.rainbow(1, 6);
     OutputStream output = new ByteArrayOutputStream();
 
     saveImage(output, image);
@@ -81,7 +81,7 @@ public class PpmImportExporterTest {
   // Tests the an image is preserved when saving and parsing.
   @Test
   public void testSaveParseImage() {
-    Image original = ImageExamples.rainbow(20, 2);
+    Image original = ImageExamples.rainbow(20, 12);
     ByteArrayOutputStream output = new ByteArrayOutputStream();
     saveImage(output, original);
 
@@ -118,7 +118,7 @@ public class PpmImportExporterTest {
   @Test(expected = IllegalArgumentException.class)
   public void testSaveImageNullOutput() {
     try {
-      ie.saveImage(null, ImageExamples.rainbow(10, 2));
+      ie.saveImage(null, ImageExamples.rainbow(10, 12));
     } catch (IOException e) {
       fail("Should throw IllegalArgumentException");
     }

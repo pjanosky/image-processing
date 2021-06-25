@@ -2,6 +2,7 @@ package controller.commands;
 
 import model.ImageOperation;
 import model.ImageProcessingModel;
+import model.ImageProcessingViewModel;
 import view.ImageProcessingView;
 
 /**

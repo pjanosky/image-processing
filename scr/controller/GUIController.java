@@ -1,84 +1,200 @@
 package controller;
 
+import controller.commands.AddCommand;
 import controller.commands.ControllerCommand;
-import java.io.IOException;
+import controller.commands.CurrentCommand;
+import controller.commands.ImageProcessCommand;
+import controller.commands.LoadCommand;
+import controller.commands.LoadLayersCommand;
+import controller.commands.MoveCommand;
+import controller.commands.RemoveCommand;
+import controller.commands.SaveCommand;
+import controller.commands.SaveLayersCommand;
+import controller.commands.SetImageCommand;
+import controller.commands.VisibilityCommand;
+import java.io.File;
+import java.io.StringReader;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import model.Image;
+import model.ImageOperation;
+import model.ImageOperationCreator;
 import model.ImageProcessingModel;
 import view.GUIImageProcessingView;
-import javax.swing.JFrame;
-import view.GUIView;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 
-public class GUIController implements GuiProcessingController {
+public class GUIController extends SimpleImageProcessingController implements CommandListener {
 
-  private ImageProcessingModel model;
-  private GUIImageProcessingView view;
+  GUIImageProcessingView view;
 
   public GUIController(ImageProcessingModel model, GUIImageProcessingView view)
       throws IllegalArgumentException {
-    if (model == null || view == null) {
+    super(model, new StringReader(""), new StringBuilder());
+    if (view == null) {
       throw new IllegalArgumentException("Parameters for the controller cannot be null.");
     }
 
-    this.model = model;
     this.view = view;
-    view.setController(this);
+    view.addCommandListener(this);
 
     try {
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
     } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException
         | IllegalAccessException e) {
-      renderMessage("Could not set look and feel.");
+      view.renderMessage("Could not set look and feel.");
     }
-
-    view.setVisible(true);
   }
 
   @Override
   public void run() {
-
+    try {
+      view.setVisible(true);
+    } catch (IllegalArgumentException | IllegalStateException e) {
+      view.renderError(e.getMessage());
+    }
   }
 
   @Override
-  public void runCommand(ControllerCommand command) {
+  public void add(String name) {
     try {
-      command.runCommand(model, view);
+      runCommand(new AddCommand(name));
     } catch (IllegalArgumentException | IllegalStateException e) {
-      renderMessage(e.getMessage());
+      view.renderError(e.getMessage());
     }
   }
 
-
-
-
-  /**
-   * Renders a message to the view.
-   *
-   * @param message the message to render
-   */
-  private void renderMessage(String message) throws IllegalStateException {
+  @Override
+  public void remove() {
     try {
-      view.renderMessage(message + System.lineSeparator());
-    } catch (IOException e) {
-      throw new IllegalStateException("Failed to render message to output.");
+      runCommand(new RemoveCommand());
+    } catch (IllegalArgumentException | IllegalStateException e) {
+      view.renderError(e.getMessage());
+    }
+  }
+
+  @Override
+  public void current(String layerName) {
+    try {
+      runCommand(new CurrentCommand(layerName));
+    } catch (IllegalArgumentException | IllegalStateException e) {
+      view.renderError(e.getMessage());
+    }
+  }
+
+  @Override
+  public void move(int index) {
+    try {
+      runCommand(new MoveCommand(index));
+    } catch (IllegalArgumentException | IllegalStateException e) {
+      view.renderError(e.getMessage());
+    }
+  }
+
+  @Override
+  public void imageProcess(ImageOperationCreator.OperationType type) {
+    try {
+      ImageOperation operation = ImageOperationCreator.create(type);
+      runCommand(new ImageProcessCommand(operation));
+    } catch (IllegalArgumentException | IllegalStateException e) {
+      view.renderError(e.getMessage());
+    }
+  }
+
+  @Override
+  public void load(File file) {
+    if (file == null) {
+      return;
+    }
+    try {
+      runCommand(new LoadCommand(file.getAbsolutePath(), parseExtension(file)));
+    } catch (IllegalArgumentException | IllegalStateException e) {
+      view.renderError(e.getMessage());
+    }
+  }
+
+  @Override
+  public void loadLayers(File file) {
+    if (file == null) {
+      return;
+    }
+    try {
+      runCommand(new LoadLayersCommand(file.getAbsolutePath()));
+    } catch (IllegalArgumentException | IllegalStateException e) {
+      view.renderError(e.getMessage());
+    }
+  }
+
+  @Override
+  public void save(File file) {
+    if (file == null) {
+      return;
+    }
+    try {
+      runCommand(new SaveCommand(file.getAbsolutePath(), parseExtension(file)));
+    } catch (IllegalArgumentException | IllegalStateException e) {
+      view.renderError(e.getMessage());
+    }
+  }
+
+  @Override
+  public void saveLayers(File file, String name) {
+    if (file == null) {
+      return;
+    }
+    try {
+      runCommand(new SaveLayersCommand(file.getAbsolutePath(), name));
+    } catch (IllegalArgumentException | IllegalStateException e) {
+      view.renderError(e.getMessage());
+    }
+  }
+
+  @Override
+  public void setImage(String type, String... args) {
+    try {
+      runCommand(new SetImageCommand(type, args));
+    } catch (IllegalArgumentException | IllegalStateException e) {
+      view.renderError(e.getMessage());
+    }
+  }
+
+  @Override
+  public void visibility(boolean isVisible) {
+    try {
+      runCommand(new VisibilityCommand(isVisible));
+    } catch (IllegalArgumentException | IllegalStateException e) {
+      view.renderError(e.getMessage());
+    }
+  }
+
+  @Override
+  public void script(String filePath) {
+    try {
+      runCommand(new ScriptCommand(filePath));
+    } catch (IllegalArgumentException | IllegalStateException e) {
+      view.renderError(e.getMessage());
     }
   }
 
   /**
-   * Renders the layers of the model to the view.
+   * Runs a controller command and renders any error messages to the view.
    *
-   * @throws IllegalStateException if writing the the Appendable object fails.
+   * @param command the command to run.
    */
-  private void renderLayers() throws IllegalStateException {
-    try {
-      view.renderLayers();
-      view.renderMessage(System.lineSeparator());
-    } catch (IOException e) {
-      throw new IllegalStateException("Failed to render image layers to output.");
+  private void runCommand(ControllerCommand command) {
+    command.runCommand(model, view);
+    view.renderLayers(model);
+  }
+
+  /**
+   * Parses the file extension for a file.
+   *
+   * @param file the file to get the extension of.
+   * @return the file extension or an empty string if no extension can be parsed.
+   */
+  private String parseExtension(File file) {
+    int extensionIndex = file.getName().lastIndexOf('.');
+    if (extensionIndex < 0 || extensionIndex + 1 >= file.getName().length()) {
+      return "";
     }
+    return file.getName().substring(extensionIndex + 1);
   }
 }
