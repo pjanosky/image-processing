@@ -3,6 +3,7 @@ package controller;
 import controller.commands.AddCommand;
 import controller.commands.ControllerCommand;
 import controller.commands.CurrentCommand;
+import controller.commands.ImageProcessAllCommand;
 import controller.commands.ImageProcessCommand;
 import controller.commands.LoadCommand;
 import controller.commands.LoadLayersCommand;
@@ -12,13 +13,11 @@ import controller.commands.SaveCommand;
 import controller.commands.SaveLayersCommand;
 import controller.commands.SetImageCommand;
 import controller.commands.VisibilityCommand;
-import java.awt.font.NumericShaper;
 import java.io.File;
 import java.io.StringReader;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import model.ImageOperation;
-import model.ImageOperationCreator;
 import model.ImageProcessingModel;
 import view.GUIImageProcessingView;
 
@@ -93,10 +92,18 @@ public class GUIController extends SimpleImageProcessingController implements Co
   }
 
   @Override
-  public void imageProcess(ImageOperationCreator.OperationType type) {
+  public void imageProcess(ImageOperation operation) {
     try {
-      ImageOperation operation = ImageOperationCreator.create(type);
       runCommand(new ImageProcessCommand(operation));
+    } catch (IllegalArgumentException | IllegalStateException e) {
+      view.renderError(e.getMessage());
+    }
+  }
+
+  @Override
+  public void imageProcessAll(ImageOperation operation) {
+    try {
+      runCommand(new ImageProcessAllCommand(operation));
     } catch (IllegalArgumentException | IllegalStateException e) {
       view.renderError(e.getMessage());
     }

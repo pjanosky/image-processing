@@ -14,7 +14,9 @@ public interface CommandListener {
 
   void move(String index);
 
-  void imageProcess(ImageOperationCreator.OperationType type);
+  void imageProcess(ImageOperation operation);
+
+  void imageProcessAll(ImageOperation operation);
 
   void load(File file);
 

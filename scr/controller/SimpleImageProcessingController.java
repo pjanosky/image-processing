@@ -2,6 +2,7 @@ package controller;
 
 import controller.commands.AddCommand;
 import controller.commands.ControllerCommand;
+import controller.commands.ImageProcessAllCommand;
 import controller.commands.ImageProcessCommand;
 import controller.commands.LoadCommand;
 import controller.commands.LoadLayersCommand;
@@ -21,6 +22,7 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.function.Function;
 import controller.commands.CurrentCommand;
+import model.DownscaleOperation;
 import model.ImageOperationCreator;
 import model.ImageOperationCreator.OperationType;
 import model.ImageProcessingModel;
@@ -83,6 +85,8 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
     commands.put("current", s -> new CurrentCommand(s.next()));
     commands.put("move", s -> new MoveCommand(s.nextInt()));
     commands.put("set", new SetImageCommandCreator());
+    commands.put("downscale", s-> new ImageProcessAllCommand(
+        new DownscaleOperation(s.nextDouble())));
   }
 
   @Override

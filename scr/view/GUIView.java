@@ -1,8 +1,6 @@
 package view;
 
 import controller.CommandListener;
-import controller.commands.CurrentCommand;
-import controller.commands.ImageProcessCommand;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
@@ -29,6 +27,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import model.DownscaleOperation;
 import model.Image;
 import model.ImageOperationCreator;
 import model.ImageOperationCreator.OperationType;
@@ -86,6 +85,7 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
   JMenuItem sharpenImageItem;
   JMenuItem greyscaleImageItem;
   JMenuItem sepiaImageItem;
+  JMenuItem downscaleImageItem;
 
 
   public GUIView(ImageProcessingModelState model) {
@@ -120,7 +120,7 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
     saveMenuItem = new JMenuItem("Save Current Layer");
     saveAllMenuItem = new JMenuItem("Save All Layers");
     presetImageMenu = new JMenu("Load Preset Image");
-    rainbowMenuItem = new JMenu("Rainbow");
+    rainbowMenuItem = new JMenuItem("Rainbow");
     checkerboardMenuItem = new JMenuItem("Checkerboard");
     presetImageMenu.add(rainbowMenuItem);
     presetImageMenu.add(checkerboardMenuItem);
@@ -163,11 +163,13 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
     sharpenImageItem = new JMenuItem("Sharpen Current Layer");
     sepiaImageItem = new JMenuItem("Sepia Current Layer");
     greyscaleImageItem = new JMenuItem("Greyscale Current Layer");
+    downscaleImageItem = new JMenuItem("Downscale All Images");
 
     imageProcessMenu.add(blurImageItem);
     imageProcessMenu.add(sharpenImageItem);
     imageProcessMenu.add(sepiaImageItem);
     imageProcessMenu.add(greyscaleImageItem);
+    imageProcessMenu.add(downscaleImageItem);
 
     menuBar.add(imageProcessMenu);
 
@@ -253,7 +255,6 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
     runBatchScriptMenuItem.addActionListener(evt -> {
       listener.script(chooseBatchScript().getAbsolutePath());
     });
-    // TODO: add functionality for programmatic images when menu items are selected
 
     // Layers menu
     addMenuItem.addActionListener(evt -> {
@@ -276,16 +277,24 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
     });
 
     blurImageItem.addActionListener(evt -> {
-      listener.imageProcess(OperationType.BLUR);
+      listener.imageProcess(ImageOperationCreator.create(OperationType.BLUR));
     });
     sharpenImageItem.addActionListener(evt -> {
-      listener.imageProcess(OperationType.SHARPEN);
+      listener.imageProcess(ImageOperationCreator.create(OperationType.SHARPEN));
     });
     sepiaImageItem.addActionListener(evt -> {
-      listener.imageProcess(OperationType.SEPIA);
+      listener.imageProcess(ImageOperationCreator.create(OperationType.SEPIA));
     });
     greyscaleImageItem.addActionListener(evt -> {
-      listener.imageProcess(OperationType.GREYSCALE);
+      listener.imageProcess(ImageOperationCreator.create(OperationType.GREYSCALE));
+    });
+    downscaleImageItem.addActionListener(ect -> {
+      try {
+        listener.imageProcessAll(new DownscaleOperation(Double.parseDouble(
+            JOptionPane.showInputDialog("Enter a scale factor between 0 and 1"))));
+      } catch (NumberFormatException e) {
+        renderError("Invalid scale factor.");
+      }
     });
   }
 
@@ -352,13 +361,15 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
       }
     }
     if (displayedImage == null) {
-      return;
+      imageLabel.setIcon(null);
+      imageCaption.setText("");
+    } else {
+      imageIcon = new ImageIcon(convertImage(displayedImage));
+      imageLabel.setIcon(imageIcon);
+      imageScrollPane.setPreferredSize(
+          new Dimension(displayedImage.getWidth(), displayedImage.getHeight()));
+      imageCaption.setText("Displaying: " + displayedLayerName);
     }
-    imageIcon = new ImageIcon(convertImage(displayedImage));
-    imageLabel.setIcon(imageIcon);
-    imageScrollPane.setPreferredSize(
-        new Dimension(displayedImage.getWidth(), displayedImage.getHeight()));
-    imageCaption.setText("Displaying: " + displayedLayerName);
     revalidate();
   }
 
@@ -389,8 +400,7 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
    */
   private File chooseDirectory(boolean open) {
     final JFileChooser chooser = new JFileChooser(".");
-    FileFilter filter = chooser.getFileFilter();
-    chooser.setFileFilter(new DirectoryFileFilter());
+    chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
     if (open) {
       chooser.showOpenDialog(mainSplitPlane);
     } else {
@@ -406,22 +416,6 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
     chooser.setFileFilter(filter);
     chooser.showOpenDialog(mainSplitPlane);
     return chooser.getSelectedFile();
-  }
-
-  /**
-   * A file filter that only accepts directories.
-   */
-  private static class DirectoryFileFilter extends FileFilter {
-
-    @Override
-    public boolean accept(File pathname) {
-      return pathname.isDirectory();
-    }
-
-    @Override
-    public String getDescription() {
-      return "Directories";
-    }
   }
 
   /**

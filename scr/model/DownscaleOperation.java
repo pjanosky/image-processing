@@ -64,15 +64,14 @@ public class DownscaleOperation implements ImageOperation {
       return image.getValueAt((int) y, (int) x, channel);
     }
 
-    double ca = image.getValueAt((int) Math.floor(y), (int) Math.floor(x), channel);
-    double cb = image.getValueAt((int) Math.floor(y), (int) Math.ceil(x), channel);
-    double cc = image.getValueAt((int) Math.ceil(y), (int) Math.floor(x), channel);
-    double cd = image.getValueAt((int) Math.ceil(y), (int) Math.ceil(x), channel);
+    double ca = image.getValueAt((int) floor(y), (int) floor(x), channel);
+    double cb = image.getValueAt((int) floor(y), (int) ceil(x), channel);
+    double cc = image.getValueAt((int) ceil(y), (int) Math.floor(x), channel);
+    double cd = image.getValueAt((int) ceil(y), (int) Math.ceil(x), channel);
 
-    double m = cb * (x - Math.floor(x)) + ca * (Math.ceil(x) - x);
-    double n = cd * (x - Math.floor(x)) + cc * (Math.ceil(x) - x);
-
-    double cp = n * (y - Math.floor(y)) + m * (Math.ceil(y) - y);
+    double m = cb * (x - floor(x)) + ca * (ceil(x) - x);
+    double n = cd * (x - floor(x)) + cc * (ceil(x) - x);
+    double cp = n * (y - floor(y)) + m * (ceil(y) - y);
     return (int) cp;
   }
 
@@ -82,7 +81,7 @@ public class DownscaleOperation implements ImageOperation {
    * @param value the double value to round down
    * @return the rounded value.
    */
-  private int floor(double value) {
+  private double floor(double value) {
     return (int) value;
   }
 
@@ -92,7 +91,7 @@ public class DownscaleOperation implements ImageOperation {
    * @param value the double value to round up.
    * @return the rounded value.
    */
-  private int ceil(double value) {
+  private double ceil(double value) {
     return (int) value + 1;
   }
 }
