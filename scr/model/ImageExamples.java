@@ -56,11 +56,11 @@ public class ImageExamples {
         new RgbPixel(160, 0, 200),
     };
 
-    int stripeHeight = height / 6;
-    Pixel[][] pixels = new Pixel[stripeHeight * colors.length][width];
+    int stripeHeight = height / colors.length;
+    Pixel[][] pixels = new Pixel[height][width];
     for (int r = 0; r < height; r += 1) {
       for (int c = 0; c < width; c += 1) {
-        pixels[r][c] = colors[r / stripeHeight];
+        pixels[r][c] = colors[Math.min(colors.length - 1, r / stripeHeight)];
       }
     }
     return new Image24Bit(pixels);
