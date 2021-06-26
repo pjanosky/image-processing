@@ -1,0 +1,23 @@
+add layer1
+load res/flowers.ppm ppm
+add layer2
+load res/flowers.ppm ppm
+sepia
+blur
+hide
+add layer3
+load res/flowers.ppm ppm
+sharpen
+greyscale
+save res/flowers-sharpen-greyscale.ppm ppm
+hide
+add layer4
+set rainbow 200 25
+mosaic 3000
+save res/flowers-rainbow-mosaic-3000-seeds.png png
+hide
+current layer2
+show
+move 4
+saveall res/ layers
+q
