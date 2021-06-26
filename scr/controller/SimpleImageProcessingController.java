@@ -118,15 +118,15 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
       }
       Function<Scanner, ControllerCommand> command = commands.get(commandName);
       if (command == null) {
-        view.renderMessage("Unknown Command");
+        view.renderError("Unknown Command");
         continue;
       }
       try {
         command.apply(lineScanner).runCommand(model, view);
       } catch (NoSuchElementException e) {
-        view.renderMessage("Invalid number of arguments for " + commandName + ".");
+        view.renderError("Invalid number of arguments for " + commandName + ".");
       } catch (IllegalArgumentException | IllegalStateException e) {
-        view.renderMessage(e.getMessage());
+        view.renderError(e.getMessage());
         continue;
       }
       view.renderLayers(viewModel);

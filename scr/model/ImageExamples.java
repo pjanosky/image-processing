@@ -23,6 +23,10 @@ public class ImageExamples {
    */
   public static Image checkerboard(int numRows, int numCols, int recWidth, int recHeight,
       Pixel color1, Pixel color2) {
+    if (numRows <= 0 || numCols <= 0 || recWidth <= 0 || recHeight <= 0) {
+      throw new IllegalArgumentException("Arguments must be positive numbers.");
+    }
+
     Pixel[][] pixels = new Pixel[numRows * recHeight][numCols * recWidth];
     for (int r = 0; r < numRows * recHeight; r += 1) {
       for (int c = 0; c < numCols * recWidth; c += 1) {
@@ -35,6 +39,7 @@ public class ImageExamples {
         }
       }
     }
+
     return new Image24Bit(pixels);
   }
 
@@ -47,6 +52,10 @@ public class ImageExamples {
    * @return the rainbow image
    */
   public static Image rainbow(int width, int height) {
+    if (width <= 0 || height <= 0) {
+      throw new IllegalArgumentException("Arguments must be positive numbers.");
+    }
+
     Pixel[] colors = {
         new RgbPixel(200, 0, 0),
         new RgbPixel(200, 75, 0),
@@ -63,6 +72,7 @@ public class ImageExamples {
         pixels[r][c] = colors[Math.min(colors.length - 1, r / stripeHeight)];
       }
     }
+
     return new Image24Bit(pixels);
   }
 }

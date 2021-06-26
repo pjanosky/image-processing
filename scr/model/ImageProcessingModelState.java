@@ -49,32 +49,4 @@ public interface ImageProcessingModelState {
    * @return the number of layers
    */
   int numLayers();
-
-
-  /**
-   * Gets the top most visible image from the layers in the model.
-   *
-   * @return the top most visible image or null if there are no visible images.
-   */
-  Image topVisibleImage();
 }
-
-/*
-
-Blur applied to layer first
-
-
-1. first "manhattan.png" (visible) <-- we can change if we figure out a way to represent visibility
-2. second
-3. thrid
-
-
-
-Controller
-get of number of layers
-for i = 0; i < num of layers; i ++ {
-  get the name of layer i
-  get the file name of layer i
-  get the visibility of layer i
-}
-*/
