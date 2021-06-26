@@ -55,7 +55,7 @@ public class GuiController extends TextController implements CommandListener {
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
     } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException
         | IllegalAccessException e) {
-      view.renderMessage("Could not set look and feel.");
+      view.renderError("Could not set look and feel.");
     }
 
     view.setVisible(true);
@@ -160,7 +160,15 @@ public class GuiController extends TextController implements CommandListener {
     }
     String name = file.getName();
     String absolutePath = file.getPath();
-    String path = absolutePath.substring(0, absolutePath.length() - name.length());
+    String path;
+    int endIndex = absolutePath.length() - name.length() - 1;
+    if (endIndex < 0 || endIndex >= absolutePath.length()) {
+      view.renderError("Invalid file path.");
+      return;
+    } else {
+      path = absolutePath.substring(0, endIndex);
+    }
+
     try {
       runCommand(new SaveLayersCommand(path, name));
     } catch (IllegalArgumentException | IllegalStateException e) {
@@ -173,6 +181,8 @@ public class GuiController extends TextController implements CommandListener {
     try {
       if (args != null) {
         runCommand(new SetImageCommand(type, args.split(" ")));
+      } else {
+        view.renderError("Invalid arguments for " + type + ".");
       }
     } catch (IllegalArgumentException | IllegalStateException e) {
       view.renderError(e.getMessage());

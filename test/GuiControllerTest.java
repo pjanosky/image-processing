@@ -5,16 +5,14 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import controller.ImageProcessingController;
+import controller.CommandListener;
+import controller.GuiController;
 import controller.PngImportExporter;
 import controller.PpmImportExporter;
-import controller.TextController;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.StringReader;
 import model.DownscaleOperation;
 import model.Image;
 import model.ImageExamples;
@@ -22,25 +20,33 @@ import model.ImageOperationCreator;
 import model.ImageOperationCreator.OperationType;
 import model.ImageProcessingModel;
 import model.ImageProcessingModelImpl;
+import model.ImageProcessingModelState;
 import model.MosaicOperation;
 import model.RgbPixel;
 import org.junit.Before;
 import org.junit.Test;
+import view.GuiImageProcessingView;
 
 /**
- * Tests the methods and constructors of the controller.
+ * Test the GuiController class.
  */
-public class TextControllerTest {
+public class GuiControllerTest {
 
   private ImageProcessingModel model;
+  private Appendable output;
+  private MockGuiView view;
+  private GuiController controller;
   private final Image image1;
   private final Image image2;
 
   /**
-   * Construct a new SimpleImageProcessingControllerTest initializing all example test data.
+   * Constructs a new GuiControllerTest initializing all example test data.
    */
-  public TextControllerTest() {
+  public GuiControllerTest() {
     model = new ImageProcessingModelImpl();
+    output = new StringBuilder();
+    view = new MockGuiView(output);
+    controller = new GuiController(model, view);
     image1 = ImageExamples.rainbow(10, 12);
     image2 = ImageExamples.checkerboard(12, 10, 1, 1,
         new RgbPixel(0, 0, 0),
@@ -50,39 +56,35 @@ public class TextControllerTest {
   @Before
   public void setup() {
     model = new ImageProcessingModelImpl();
-  }
-
-
-  @Test(expected = IllegalArgumentException.class)
-  public void testConstructorWithNullModel() {
-    new TextController(null,
-        new InputStreamReader(System.in), new StringBuilder());
+    output = new StringBuilder();
+    view = new MockGuiView(output);
+    controller = new GuiController(model, view);
   }
 
   @Test(expected = IllegalArgumentException.class)
-  public void testConstructorWithNullReadable() {
-    new TextController(new ImageProcessingModelImpl(),
-        null, new StringBuilder());
+  public void testConstructorNullModel() {
+    new GuiController(null, view);
   }
 
   @Test(expected = IllegalArgumentException.class)
-  public void testConstructorWithNullAppendable() {
-    new TextController(new ImageProcessingModelImpl(),
-        new InputStreamReader(System.in), null);
+  public void testConstructorNullView() {
+    new GuiController(model, null);
   }
 
-  @Test(expected = IllegalStateException.class)
-  public void testRunFailReadable() {
-    Readable input = new FailReadable();
-    Appendable output = new StringBuilder();
-    new TextController(model, input, output).run();
+  // Tests that the controller makes the view visible.
+  @Test
+  public void testSetVisible() {
+    assertFalse(view.isVisible());
+    controller.run();
+    assertTrue(view.isVisible());
   }
 
-  @Test(expected = IllegalStateException.class)
-  public void testRunFailAppendable() {
-    Readable input = new StringReader("add layer1 q");
-    Appendable output = new FailAppendable();
-    new TextController(model, input, output).run();
+  // Tests that the controller properly sets the command listener in the view to itself.
+  @Test
+  public void testCommandListenerSet() {
+    assertNull(view.getListener());
+    controller.run();
+    assertEquals(controller, view.getListener());
   }
 
   @Test
@@ -96,25 +98,15 @@ public class TextControllerTest {
     model.addLayer("layer3");
     model.setLayerImage("layer3", image1);
 
-    String output = runCommands(
-        "save test/data/image.ppm ppm",
-        "save test/data/image.png png",
-        "q"
-    );
     String expected = concatenateLines(
-        "Enter a command",
-        "Saved layer \"layer3\" to test/data/image.ppm.",
-        "Layers:",
-        "1. layer1 (V)",
-        "2. layer2 ( )",
-        "3. layer3 (V) (current)",
-        "Saved layer \"layer3\" to test/data/image.png.",
-        "Layers:",
-        "1. layer1 (V)",
-        "2. layer2 ( )",
-        "3. layer3 (V) (current)",
-        "Quitting."
+        "message: Saved layer \"layer3\" to test/data/image.ppm.",
+        "rendering layers",
+        "message: Saved layer \"layer3\" to test/data/image.png.",
+        "rendering layers"
     );
+
+    controller.save(new File("test/data/image.ppm"));
+    controller.save(new File("test/data/image.png"));
     try {
       assertEquals(image1,
           new PpmImportExporter().parseImage(new FileInputStream("test/data/image.ppm")));
@@ -123,9 +115,15 @@ public class TextControllerTest {
     } catch (IOException e) {
       fail("Failed to parse saved images. " + e.getMessage());
     }
-    assertEquals(expected, output);
+    assertEquals(expected, output.toString());
 
     clean();
+  }
+
+  @Test
+  public void testSaveNullFile() {
+    controller.save(null);
+    assertEquals("", output.toString());
   }
 
   @Test
@@ -144,37 +142,29 @@ public class TextControllerTest {
     model.addLayer("layer1");
     model.addLayer("layer2");
 
-    String output = runCommands(
-        "current layer1",
-        "load test/data/image.ppm ppm",
-        "current layer2",
-        "load test/data/image.png png",
-        "q"
-    );
+    model.setCurrentLayer("layer1");
+    controller.load(new File("test/data/image.ppm"));
+    model.setCurrentLayer("layer2");
+    controller.load(new File("test/data/image.png"));
+
     String expected = concatenateLines(
-        "Enter a command",
-        "Layers:",
-        "1. layer1 (V) (current)",
-        "2. layer2 (V)",
-        "Loaded test/data/image.ppm into layer \"layer1\".",
-        "Layers:",
-        "1. layer1 (V) (current)",
-        "2. layer2 (V)",
-        "Layers:",
-        "1. layer1 (V)",
-        "2. layer2 (V) (current)",
-        "Loaded test/data/image.png into layer \"layer2\".",
-        "Layers:",
-        "1. layer1 (V)",
-        "2. layer2 (V) (current)",
-        "Quitting."
+        "message: Loaded test/data/image.ppm into layer \"layer1\".",
+        "rendering layers",
+        "message: Loaded test/data/image.png into layer \"layer2\".",
+        "rendering layers"
     );
 
     assertEquals(image1, model.getImageIn("layer1"));
     assertEquals(image1, model.getImageIn("layer2"));
-    assertEquals(expected, output);
+    assertEquals(expected, output.toString());
 
     clean();
+  }
+
+  @Test
+  public void testLoadNullFile() {
+    controller.load(null);
+    assertEquals("", output.toString());
   }
 
   @Test
@@ -184,19 +174,13 @@ public class TextControllerTest {
 
     assertFalse(model.isVisible("layer1"));
 
-    String output = runCommands(
-        "show",
-        "q"
-    );
+    controller.visibility(true);
     String expected = concatenateLines(
-        "Enter a command",
-        "Layers:",
-        "1. layer1 (V) (current)",
-        "Quitting."
+        "rendering layers"
     );
 
     assertTrue(model.isVisible("layer1"));
-    assertEquals(expected, output);
+    assertEquals(expected, output.toString());
   }
 
   @Test
@@ -205,19 +189,14 @@ public class TextControllerTest {
 
     assertTrue(model.isVisible("layer1"));
 
-    String output = runCommands(
-        "hide",
-        "q"
-    );
+    controller.visibility(false);
+
     String expected = concatenateLines(
-        "Enter a command",
-        "Layers:",
-        "1. layer1 ( ) (current)",
-        "Quitting."
+        "rendering layers"
     );
 
     assertFalse(model.isVisible("layer1"));
-    assertEquals(expected, output);
+    assertEquals(expected, output.toString());
   }
 
   @Test
@@ -231,18 +210,10 @@ public class TextControllerTest {
     model.setLayerImage("layer2", image2);
     model.addLayer("layer3");
 
-    String output = runCommands(
-        "saveall test/data layers",
-        "q"
-    );
+    controller.saveLayers(new File("test/data/layers"));
     String expected = concatenateLines(
-        "Enter a command",
-        "Saved all layers to test/data/layers.",
-        "Layers:",
-        "1. layer1 (V)",
-        "2. layer2 ( )",
-        "3. layer3 (V) (current)",
-        "Quitting."
+        "message: Saved all layers to test/data/layers.",
+        "rendering layers"
     );
     String textFile = "layer1 true test/data/layers/layer1.png\n"
         + "layer2 false test/data/layers/layer2.png\n"
@@ -257,9 +228,15 @@ public class TextControllerTest {
     } catch (IOException e) {
       fail("Failed to parse saved images. " + e.getMessage());
     }
-    assertEquals(expected, output);
+    assertEquals(expected, output.toString());
 
     clean();
+  }
+
+  @Test
+  public void testSaveAllNullFile() {
+    controller.saveLayers(null);
+    assertEquals("", output.toString());
   }
 
   @Test
@@ -282,18 +259,10 @@ public class TextControllerTest {
       fail("Failed to save test images. " + e.getMessage());
     }
 
-    String output = runCommands(
-        "loadall test/data/layers",
-        "q"
-    );
+    controller.loadLayers(new File("test/data/layers"));
     String expected = concatenateLines(
-        "Enter a command",
-        "Loaded layers from test/data/layers.",
-        "Layers:",
-        "1. layer1 (V)",
-        "2. layer2 ( )",
-        "3. layer3 (V) (current)",
-        "Quitting."
+        "message: Loaded layers from test/data/layers.",
+        "rendering layers"
     );
 
     assertEquals(3, model.numLayers());
@@ -310,34 +279,32 @@ public class TextControllerTest {
     assertNull(model.getImageIn("layer3"));
     assertTrue(model.isVisible("layer3"));
 
-    assertEquals(expected, output);
+    assertEquals(expected, output.toString());
 
     clean();
+  }
+
+  @Test
+  public void testLoadAllNullFile() {
+    controller.loadLayers(null);
+    assertEquals("", output.toString());
   }
 
   @Test
   public void testRunAdd() {
     assertEquals(0, model.numLayers());
 
-    String output = runCommands(
-        "add layer1",
-        "add layer2",
-        "q"
-    );
+    controller.add("layer1");
+    controller.add("layer2");
     String expected = concatenateLines(
-        "Enter a command",
-        "Layers:",
-        "1. layer1 (V) (current)",
-        "Layers:",
-        "1. layer1 (V)",
-        "2. layer2 (V) (current)",
-        "Quitting."
+        "rendering layers",
+        "rendering layers"
     );
 
     assertEquals(2, model.numLayers());
     assertEquals("layer1", model.getLayerNameAt(0));
     assertEquals("layer2", model.getLayerNameAt(1));
-    assertEquals(expected, output);
+    assertEquals(expected, output.toString());
   }
 
   @Test
@@ -349,20 +316,14 @@ public class TextControllerTest {
     assertEquals("layer1", model.getLayerNameAt(0));
     assertEquals("layer2", model.getLayerNameAt(1));
 
-    String output = runCommands(
-        "remove",
-        "q"
-    );
+    controller.remove();
     String expected = concatenateLines(
-        "Enter a command",
-        "Layers:",
-        "1. layer1 (V)",
-        "Quitting."
+        "rendering layers"
     );
 
     assertEquals(1, model.numLayers());
     assertEquals("layer1", model.getLayerNameAt(0));
-    assertEquals(expected, output);
+    assertEquals(expected, output.toString());
   }
 
   @Test
@@ -372,21 +333,15 @@ public class TextControllerTest {
 
     assertEquals(image1, model.getImageIn("layer1"));
 
-    String output = runCommands(
-        "sharpen",
-        "q"
-    );
+    controller.imageProcess(ImageOperationCreator.create(OperationType.SHARPEN));
     String expected = concatenateLines(
-        "Enter a command",
-        "Applied operation to layer \"layer1\".",
-        "Layers:",
-        "1. layer1 (V) (current)",
-        "Quitting."
+        "message: Applied operation to layer \"layer1\".",
+        "rendering layers"
     );
 
     Image image1Sharpen = ImageOperationCreator.create(OperationType.SHARPEN).apply(image1);
     assertEquals(image1Sharpen, model.getImageIn("layer1"));
-    assertEquals(expected, output);
+    assertEquals(expected, output.toString());
   }
 
   @Test
@@ -396,21 +351,15 @@ public class TextControllerTest {
 
     assertEquals(image1, model.getImageIn("layer1"));
 
-    String output = runCommands(
-        "blur",
-        "q"
-    );
+    controller.imageProcess(ImageOperationCreator.create(OperationType.BLUR));
     String expected = concatenateLines(
-        "Enter a command",
-        "Applied operation to layer \"layer1\".",
-        "Layers:",
-        "1. layer1 (V) (current)",
-        "Quitting."
+        "message: Applied operation to layer \"layer1\".",
+        "rendering layers"
     );
 
     Image image1Blur = ImageOperationCreator.create(OperationType.BLUR).apply(image1);
     assertEquals(image1Blur, model.getImageIn("layer1"));
-    assertEquals(expected, output);
+    assertEquals(expected, output.toString());
   }
 
   @Test
@@ -420,21 +369,15 @@ public class TextControllerTest {
 
     assertEquals(image1, model.getImageIn("layer1"));
 
-    String output = runCommands(
-        "greyscale",
-        "q"
-    );
+    controller.imageProcess(ImageOperationCreator.create(OperationType.GREYSCALE));
     String expected = concatenateLines(
-        "Enter a command",
-        "Applied operation to layer \"layer1\".",
-        "Layers:",
-        "1. layer1 (V) (current)",
-        "Quitting."
+        "message: Applied operation to layer \"layer1\".",
+        "rendering layers"
     );
 
     Image image1Greyscale = ImageOperationCreator.create(OperationType.GREYSCALE).apply(image1);
     assertEquals(image1Greyscale, model.getImageIn("layer1"));
-    assertEquals(expected, output);
+    assertEquals(expected, output.toString());
   }
 
   @Test
@@ -444,21 +387,15 @@ public class TextControllerTest {
 
     assertEquals(image1, model.getImageIn("layer1"));
 
-    String output = runCommands(
-        "sepia",
-        "q"
-    );
+    controller.imageProcess(ImageOperationCreator.create(OperationType.SEPIA));
     String expected = concatenateLines(
-        "Enter a command",
-        "Applied operation to layer \"layer1\".",
-        "Layers:",
-        "1. layer1 (V) (current)",
-        "Quitting."
+        "message: Applied operation to layer \"layer1\".",
+        "rendering layers"
     );
 
     Image image1Sepia = ImageOperationCreator.create(OperationType.SEPIA).apply(image1);
     assertEquals(image1Sepia, model.getImageIn("layer1"));
-    assertEquals(expected, output);
+    assertEquals(expected, output.toString());
   }
 
   @Test
@@ -471,24 +408,17 @@ public class TextControllerTest {
     assertEquals(image1, model.getImageIn("layer1"));
     assertEquals(image2, model.getImageIn("layer2"));
 
-    String output = runCommands(
-        "downscale 0.5",
-        "q"
-    );
+    controller.imageProcessAll(new DownscaleOperation(0.5));
     String expected = concatenateLines(
-        "Enter a command",
-        "Applied operation to all layers.",
-        "Layers:",
-        "1. layer1 (V)",
-        "2. layer2 (V) (current)",
-        "Quitting."
+        "message: Applied operation to all layers.",
+        "rendering layers"
     );
 
     Image image1Down = new DownscaleOperation(0.5).apply(image1);
     Image image2Down = new DownscaleOperation(0.5).apply(image2);
     assertEquals(image1Down, model.getImageIn("layer1"));
     assertEquals(image2Down, model.getImageIn("layer2"));
-    assertEquals(expected, output);
+    assertEquals(expected, output.toString());
   }
 
   @Test
@@ -498,50 +428,29 @@ public class TextControllerTest {
 
     assertEquals(image1, model.getImageIn("layer1"));
 
-    String output = runCommands(
-        "mosaic 50",
-        "q"
-    );
+    controller.imageProcess(new MosaicOperation(50));
     String expected = concatenateLines(
-        "Enter a command",
-        "Applied operation to layer \"layer1\".",
-        "Layers:",
-        "1. layer1 (V) (current)",
-        "Quitting."
+        "message: Applied operation to layer \"layer1\".",
+        "rendering layers"
     );
 
     Image image1Mosaic = new MosaicOperation(50).apply(image1);
     assertNotEquals(image1Mosaic, model.getImageIn("layer1"));
-    assertEquals(expected, output);
+    assertEquals(expected, output.toString());
   }
 
   @Test
   public void testRunScript() {
     assertEquals(0, model.numLayers());
 
-    String output = runCommands(
-        "script test/data/scripts/script1.txt",
-        "q"
-    );
+    controller.script("test/data/scripts/script1.txt");
     String expected = concatenateLines(
-        "Enter a command",
-        "Layers:",
-        "1. layer1 (V) (current)",
-        "Layers:",
-        "1. layer1 (V)",
-        "2. layer2 (V) (current)",
-        "Layers:",
-        "1. layer1 (V)",
-        "Layers:",
-        "1. layer1 (V)",
-        "Layers:",
-        "1. layer1 (V)",
-        "Quitting."
+        "rendering layers"
     );
 
     assertEquals(1, model.numLayers());
     assertEquals("layer1", model.getLayerNameAt(0));
-    assertEquals(expected, output);
+    assertEquals(expected, output.toString());
   }
 
   @Test
@@ -550,20 +459,13 @@ public class TextControllerTest {
     model.addLayer("layer2");
     assertEquals("layer2", model.getCurrentName());
 
-    String output = runCommands(
-        "current layer1",
-        "q"
-    );
+    controller.current("layer1");
     String expected = concatenateLines(
-        "Enter a command",
-        "Layers:",
-        "1. layer1 (V) (current)",
-        "2. layer2 (V)",
-        "Quitting."
+        "rendering layers"
     );
 
     assertEquals("layer1", model.getCurrentName());
-    assertEquals(expected, output);
+    assertEquals(expected, output.toString());
   }
 
   @Test
@@ -573,21 +475,25 @@ public class TextControllerTest {
     assertEquals("layer1", model.getLayerNameAt(0));
     assertEquals("layer2", model.getLayerNameAt(1));
 
-    String output = runCommands(
-        "move 1",
-        "q"
-    );
+    controller.move("1");
     String expected = concatenateLines(
-        "Enter a command",
-        "Layers:",
-        "1. layer2 (V) (current)",
-        "2. layer1 (V)",
-        "Quitting."
+        "rendering layers"
     );
 
     assertEquals("layer2", model.getLayerNameAt(0));
     assertEquals("layer1", model.getLayerNameAt(1));
-    assertEquals(expected, output);
+    assertEquals(expected, output.toString());
+  }
+
+  @Test
+  public void testMoveInvalidIndexNotInteger() {
+    controller.move("not a number");
+
+    String expected = concatenateLines(
+        "error: Invalid index."
+    );
+
+    assertEquals(expected, output.toString());
   }
 
   @Test
@@ -597,65 +503,50 @@ public class TextControllerTest {
     assertEquals("layer1", model.getLayerNameAt(0));
     assertEquals("layer2", model.getLayerNameAt(1));
 
-    String output = runCommands(
-        "set rainbow 1 6",
-        "q"
-    );
+    controller.setImage("rainbow", "1 6");
     String expected = concatenateLines(
-        "Enter a command",
-        "Successfully set image in layer \"layer2\".",
-        "Layers:",
-        "1. layer1 (V)",
-        "2. layer2 (V) (current)",
-        "Quitting."
+        "message: Successfully set image in layer \"layer2\".",
+        "rendering layers"
     );
 
     assertEquals(ImageExamples.rainbow(1, 6),
         model.getImageIn("layer2"));
-    assertEquals(expected, output);
+    assertEquals(expected, output.toString());
   }
 
+  @Test
+  public void testSetImageNullArguments() {
+    controller.setImage("rainbow", null);
+    String expected = concatenateLines(
+        "error: Invalid arguments for rainbow."
+    );
+
+    assertEquals(expected, output.toString());
+  }
 
   @Test
   public void testRunMultipleCommands() {
     assertEquals(0, model.numLayers());
 
-    String output = runCommands(
-        "add layer1",
-        "add layer2",
-        "set rainbow 10 12",
-        "sepia",
-        "current layer1",
-        "remove",
-        "current layer2",
-        "hide",
-        "q"
-    );
+    controller.add("layer1");
+    controller.add("layer2");
+    controller.setImage("rainbow", "10 12");
+    controller.imageProcess(ImageOperationCreator.create(OperationType.SEPIA));
+    controller.current("layer1");
+    controller.remove();
+    controller.current("layer2");
+    controller.visibility(false);
     String expected = concatenateLines(
-        "Enter a command",
-        "Layers:",
-        "1. layer1 (V) (current)",
-        "Layers:",
-        "1. layer1 (V)",
-        "2. layer2 (V) (current)",
-        "Successfully set image in layer \"layer2\".",
-        "Layers:",
-        "1. layer1 (V)",
-        "2. layer2 (V) (current)",
-        "Applied operation to layer \"layer2\".",
-        "Layers:",
-        "1. layer1 (V)",
-        "2. layer2 (V) (current)",
-        "Layers:",
-        "1. layer1 (V) (current)",
-        "2. layer2 (V)",
-        "Layers:",
-        "1. layer2 (V)",
-        "Layers:",
-        "1. layer2 (V) (current)",
-        "Layers:",
-        "1. layer2 ( ) (current)",
-        "Quitting."
+        "rendering layers",
+        "rendering layers",
+        "message: Successfully set image in layer \"layer2\".",
+        "rendering layers",
+        "message: Applied operation to layer \"layer2\".",
+        "rendering layers",
+        "rendering layers",
+        "rendering layers",
+        "rendering layers",
+        "rendering layers"
     );
 
     Image edited = ImageOperationCreator.create(OperationType.SEPIA).apply(image1);
@@ -666,77 +557,31 @@ public class TextControllerTest {
     assertFalse(model.isVisible("layer2"));
     assertEquals("layer2", model.getCurrentName());
 
-    assertEquals(expected, output);
-  }
-
-  // Tests inputting commands that are not valid into the controller.
-  @Test
-  public void testInvalidCommands() {
-    String output = runCommands(
-        "notarealcommand",
-        "anotherfakecommand",
-        "yay",
-        "q"
-    );
-    String expected = concatenateLines(
-        "Enter a command",
-        "Unknown Command",
-        "Unknown Command",
-        "Unknown Command",
-        "Quitting."
-    );
-
-    assertEquals(expected, output);
+    assertEquals(expected, output.toString());
   }
 
   /**
-   * Tests inputting invalid arguments for a valid command into the controller. Just test the
-   * controller's ability to render error messages produced by a ControllerCommand implementation.
-   * The actual error behavior of specific invalid arguments is tested for each ControllerCommand
-   * implementation individually.
-   **/
+   * Tests inputting invalid arguments for a valid the controller that are processed in the Command
+   * objects. Just test the controller's ability to render error messages produced by a
+   * ControllerCommand implementation. The actual error behavior of specific invalid arguments is
+   * tested for each ControllerCommand implementation individually.
+   */
   @Test
-  public void testInvalidCommandArguments() {
+  public void testInvalidCommandArgumentsCommandObjects() {
     model.addLayer("layer1");
     model.addLayer("layer2");
     model.setLayerImage("layer1", image1);
 
-    String output = runCommands(
-        "current name",
-        "sharpen",
-        "save notarealpath/fake/crashandburn ppm",
-        "move -3",
-        "q"
-    );
+    controller.current("name");
+    controller.imageProcess(ImageOperationCreator.create(OperationType.SHARPEN));
+    controller.move("-3");
     String expected = concatenateLines(
-        "Enter a command",
-        "No layer named name.",
-        "The image right now is null!",
-        "Failed to save file. notarealpath/fake/crashandburn (No such file or directory)",
-        "Invalid index.",
-        "Quitting."
+        "error: No layer named name.",
+        "error: The image right now is null!",
+        "error: Invalid index."
     );
 
-    assertEquals(expected, output);
-  }
-
-
-  /**
-   * Runs a series of commands in a new SimpleImageProcessingController.
-   *
-   * @param commands the commands that should be run in the controller. Each command is separated by
-   *                 a new line character.
-   * @return the output of the controller as a String.
-   */
-  private String runCommands(String... commands) {
-
-    Readable input = new StringReader(concatenateLines(commands));
-    Appendable output = new StringBuilder();
-    ImageProcessingController controller =
-        new TextController(model, input, output);
-
-    controller.run();
-    return output.toString();
+    assertEquals(expected, output.toString());
   }
 
   /**
@@ -772,6 +617,83 @@ public class TextControllerTest {
       for (File file : files) {
         file.delete();
       }
+    }
+  }
+
+  /**
+   * A mock GuiImageProcessingView to test whether the controller displays the right messages,
+   * error, and layers, and sets the right command listener and visibility.
+   */
+  private static class MockGuiView implements GuiImageProcessingView {
+
+    private final Appendable output;
+    private boolean visible;
+    private CommandListener listener;
+
+    /**
+     * Construct a new MockGuiView to render output to the given Appendable object.
+     *
+     * @param output the Appendable object to render the view's output including layers, messages,
+     *               and erros to.
+     */
+    public MockGuiView(Appendable output) {
+      this.output = output;
+      this.visible = false;
+    }
+
+    @Override
+    public void setCommandListener(CommandListener listener) {
+      this.listener = listener;
+    }
+
+    @Override
+    public void setVisible(boolean visible) {
+      this.visible = visible;
+    }
+
+    @Override
+    public void renderLayers(ImageProcessingModelState model) throws IllegalStateException {
+      try {
+        output.append("rendering layers").append(System.lineSeparator());
+      } catch (IOException exception) {
+        throw new IllegalStateException("Failed to write to output.");
+      }
+    }
+
+    @Override
+    public void renderMessage(String message) throws IllegalStateException {
+      try {
+        output.append("message: ").append(message).append(System.lineSeparator());
+      } catch (IOException exception) {
+        throw new IllegalStateException("Failed to write to output.");
+      }
+    }
+
+    @Override
+    public void renderError(String message) throws IllegalStateException {
+      try {
+        output.append("error: ").append(message).append(System.lineSeparator());
+      } catch (IOException exception) {
+        throw new IllegalStateException("Failed to write to output.");
+      }
+    }
+
+    /**
+     * Determines if this view has been made visible by the controller. Used only for testing.
+     *
+     * @return whether the view has been made visible.
+     */
+    public boolean isVisible() {
+      return this.visible;
+    }
+
+    /**
+     * Returns the command listener that has been set by the controller. Used only for testing.
+     *
+     * @return the set command listener.
+     */
+    public CommandListener getListener() {
+      return this.listener;
     }
   }
 }
