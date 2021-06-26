@@ -314,6 +314,8 @@ public class GuiView extends JFrame implements GuiImageProcessingView {
         }
       } catch (NumberFormatException e) {
         renderError("Invalid scale factor.");
+      } catch (IllegalArgumentException e) {
+        renderError(e.getMessage());
       }
     });
     mosaicImageItem.addActionListener(evt -> {
@@ -324,6 +326,8 @@ public class GuiView extends JFrame implements GuiImageProcessingView {
         }
       } catch (NumberFormatException e) {
         renderError("Invalid seed number.");
+      } catch (IllegalArgumentException e) {
+        renderError(e.getMessage());
       }
     });
   }
