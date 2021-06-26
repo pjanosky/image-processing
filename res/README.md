@@ -39,7 +39,7 @@ Views are represented by the ImageProcessingView interface. Additionally, the Gu
 
 
 
-Sample Image Citations:
+ ## Image Citations:
 “Angiosperms.” British Broadcasting Corporation, 14 Jan. 2018,
   ichef.bbci.co.uk/news/976/cpsprodpb/9110/production/_99563173_gettyimages-479233691.jpg.
 “Giant Panda.” World Wildlife Fund, 2021,
