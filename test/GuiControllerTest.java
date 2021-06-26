@@ -408,14 +408,14 @@ public class GuiControllerTest {
     assertEquals(image1, model.getImageIn("layer1"));
     assertEquals(image2, model.getImageIn("layer2"));
 
-    controller.imageProcessAll(new DownscaleOperation(0.5));
+    controller.imageProcessAll(new DownscaleOperation(0.5, 0.75));
     String expected = concatenateLines(
         "message: Applied operation to all layers.",
         "rendering layers"
     );
 
-    Image image1Down = new DownscaleOperation(0.5).apply(image1);
-    Image image2Down = new DownscaleOperation(0.5).apply(image2);
+    Image image1Down = new DownscaleOperation(0.5, 0.75).apply(image1);
+    Image image2Down = new DownscaleOperation(0.5, 0.75).apply(image2);
     assertEquals(image1Down, model.getImageIn("layer1"));
     assertEquals(image2Down, model.getImageIn("layer2"));
     assertEquals(expected, output.toString());

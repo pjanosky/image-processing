@@ -88,7 +88,7 @@ public class TextController implements ImageProcessingController {
     commands.put("move", s -> new MoveCommand(s.nextInt()));
     commands.put("set", new SetImageCommandCreator());
     commands.put("downscale", s-> new ImageProcessAllCommand(
-        new DownscaleOperation(s.nextDouble())));
+        new DownscaleOperation(s.nextDouble(), s.nextDouble())));
     commands.put("mosaic", s -> new ImageProcessCommand(new MosaicOperation(s.nextInt())));
   }
 

@@ -472,7 +472,7 @@ public class TextControllerTest {
     assertEquals(image2, model.getImageIn("layer2"));
 
     String output = runCommands(
-        "downscale 0.5",
+        "downscale 0.5 0.75",
         "q"
     );
     String expected = concatenateLines(
@@ -484,8 +484,8 @@ public class TextControllerTest {
         "Quitting."
     );
 
-    Image image1Down = new DownscaleOperation(0.5).apply(image1);
-    Image image2Down = new DownscaleOperation(0.5).apply(image2);
+    Image image1Down = new DownscaleOperation(0.5, 0.75).apply(image1);
+    Image image2Down = new DownscaleOperation(0.5, 0.75).apply(image2);
     assertEquals(image1Down, model.getImageIn("layer1"));
     assertEquals(image2Down, model.getImageIn("layer2"));
     assertEquals(expected, output);

@@ -8,20 +8,23 @@ package model;
  */
 public class DownscaleOperation implements ImageOperation {
 
-  private final double scale;
+  private final double xscale;
+  private final double yscale;
 
   /**
    * Constructs a new Downscale operation with the given scale factor.
    *
-   * @param scale the scale factor to use for the downscaled image. For example, a scale factor of
-   *              0.5 applied to a 10x10 pixel image will result in a downscaled image of 5x5
-   *              pixels.
+   * @param xscale the scale factor to use for the downscaled image in the horrizontal direction.
+   *               For example, a scale factor of 0.5 applied to a 10x10 pixel image will result in
+   *               a downscaled image of 5 pixels wide pixels.
+   * @param yscale
    */
-  public DownscaleOperation(double scale) {
-    if (scale <= 0 || scale > 1) {
-      throw new IllegalArgumentException("Scale must be in the range (0, 1]");
+  public DownscaleOperation(double xscale, double yscale) {
+    if (xscale <= 0 || xscale > 1 || yscale <= 0 || yscale > 1) {
+      throw new IllegalArgumentException("Scales must be in the range (0, 1]");
     }
-    this.scale = scale;
+    this.xscale = xscale;
+    this.yscale = yscale;
   }
 
   @Override
@@ -32,8 +35,8 @@ public class DownscaleOperation implements ImageOperation {
 
     int originalWidth = image.getWidth();
     int originalHeight = image.getHeight();
-    int scaledWidth = (int) ((double) image.getWidth() * scale);
-    int scaledHeight = (int) ((double) image.getHeight() * scale);
+    int scaledWidth = (int) ((double) image.getWidth() * xscale);
+    int scaledHeight = (int) ((double) image.getHeight() * yscale);
     Pixel[][] pixels = new Pixel[scaledHeight][scaledWidth];
 
     for (int scaledX = 0; scaledX < scaledWidth; scaledX += 1) {

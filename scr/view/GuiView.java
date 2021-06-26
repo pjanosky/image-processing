@@ -302,9 +302,15 @@ public class GuiView extends JFrame implements GuiImageProcessingView {
     });
     downscaleImageItem.addActionListener(ect -> {
       try {
-        String scale = JOptionPane.showInputDialog("Enter a scale factor between 0 and 1");
+        String scale = JOptionPane.showInputDialog(
+            "Enter a x and y scale factor between 1 and 0 factor separated by a space.");
         if (scale != null) {
-          listener.imageProcessAll(new DownscaleOperation(Double.parseDouble(scale)));
+          String[] parts = scale.split(" ");
+          if (parts.length != 2) {
+            renderError("Invalid scale factors.");
+          }
+          listener.imageProcessAll(new DownscaleOperation(Double.parseDouble(parts[0]),
+              Double.parseDouble(parts[1])));
         }
       } catch (NumberFormatException e) {
         renderError("Invalid scale factor.");
