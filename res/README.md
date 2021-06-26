@@ -1,24 +1,42 @@
-The main interface for our model is the ImageProcessingModel interface which has all the operations that a client would need to load, alter, and save images. This interface extends the ImageProcessingModelState interface which specifies the read only operations that a model should support. We made this distinction between the two interfaces to support future designs where we need to limit the operations that a client can perform on a model. For example, a view should not be able to modify the model's state. The ImageProcessingModelImpl class is our implementation of these interfaces.
+# Readme
+
+## Program Overview
+
+The main interface for our model is the ImageProcessingModel interface which has all the operations that a client would need to load, alter, and save images. This interface extends the ImageProcessingModelState interface which specifies the read only operations that a model should support. 
 
 Images in our program are represented by the Image interface which lists a handful of operations that provide information about specific parts of the image (pixels, color channels, etc.). We implemented this interface with an abstract class called AbstractImage. This class implements almost all of the functionality required by the interface. We made this class abstract to add the flexibility to support multiple bit numbers for colors. For example, the concrete class, Image24Bit, supports 8-bit color values.
 
 AbstractImage stores image data as a collection of Pixels. The Pixel interface represents the color of one pixel in an image. Its implementation, Rgb pixel, stores this data as red, green, and blue color values. Both Pixels and Images are immutable. We made this decision to prevent unintended modification of our model's state.
 
-Image edits are represented by the ImageOperation interface. In essence, an operation on an image just something that modifies an image to produce a new image, so the interface defines a single apply method. The two types of image operations are represented by two classes that implement the ImageOperationInterface: FilterOperation and ColorTransformation. These classes are parameterized by the kernel or linear transformation matrix that defines a certain filter/transformation. Different kinds of filters can be created by constructing a FilterOperation with a different kernel, and likewise for color transformations.
+Image edits are represented by the ImageOperation interface. In essence, an operation on an image just something that modifies an image to produce a new image, so the interface defines a single apply method. The program currently supports 4 kinds of image operation in both interactive and text-based interface modes: FilterOperation, ColorTransformation, DownscaleOperation, and MosaicOperation. ColorTransformation and FilterOperation are parameterized by the kernel or linear transformation matrix that defines a certain filter/transformation. Different kinds of filters can be created by constructing a FilterOperation with a different kernel, and likewise for color transformations.
 
-For the flexibility to support importing and export different image file formats, we designed the ImageImportExporter interface which is implemented by the PpmImportExporter class. This class implements the ability to import and export PPM format images.
+For the flexibility to support importing and export different image file formats, we designed the ImageImportExporter interface which has three implementations for ppm, png, and jpeg images.
 
-Lastly, we defined a factory class, ImageOperationCreator, to allow us to easily create some default ImageTransformation objects such as blur, sharpen, greyscale, and sepia as required by the assignment.
+Lastly, we defined a factory class, ImageOperationCreator, to allow us to easily create some default ImageTransformation objects such as blur, sharpen, greyscale, and sepia.
+
+Controllers are represented by the ImageProcessingController interface with a single run method to start the program. Two implementations of interface exist: TextController, and GuiController.
+
+Views are represented by the ImageProcessingView interface. Additionally, the GuiImageProcessingView interface extends ImageProcessing view to add new functionality that is required for a graphical interface. For example, the view can set a listener that is notified whenever the user performs an action.
+
+## List of Features
+ - Downscaling extra credit is working both in the graphical interface and the text based interface.
+   - Two sample images are provided in the res/ folder which are downscaled version of the original image panda.png. panda_downscale1.png has been downscaled by 0.75 along both axis, and panda_downscale2.png has been downscaled by 0.4 in the horrizontal direction and 0.8 in the vertical direction.
+ - Mosaic extra credit is working both in the graphical interface and the text based interface.
+   - Three sample images are provided in the res/ foler which are mosaiced versions of the original image panda.png. panda_mosaic_50seed has been mosaiced with 50 seeds, panda_mosaic_200seed.png has been mosaiced with 200 seeeds, and panda_mosiac_1000seed has been mosaiced with 1000 seeds.
+ - All other parts of the program are working per the assignment specifications.
 
 
-Modifications to the model:
- - Changed ImageProcessingModelState and ImageProcessingModel interfaces to work with Layers instead of individual Images. The model implementation and associated interfaces were  completely rewritten. Updated ImageProcessingModelImpl to match.
- - Moved import and export methods from ImageProcessingModel to the controller as they deal with IO.
- - The model supports importing and exporting of two other image types: jpeg and png. The original import-exporter is abstracted to minimize the amount of changes to make if there is a need to support new file format in the future.
+## Design Changes (from Assignment 6)
 
-We added two new interfaces: ImageProcessingController and ImageProcessingView. The two newly added interfaces contain methods that allows the user to interact and see respectively. Due to the changes we made to the model, the controller is able to import and export different image types. The commands the controller supports will be further elaborated in the USEME file.
+ - Added the GuiImageProcessingView and CommandListener interfaces. Added the GuiView and GuiController classes.
+ - Changed the runCommand method in ImageProcessingController interface to take in the view as a parameter. This allows the command objects to render messages to the view to notify the user that certain actions have been performed. 
+ - Changed the rainbow method in the ImageExamples class to take in a height for the image.
+ - Make the view, modelView, and ScriptCommand fields and inner classes in the TextController class protected instead of private. This allows the GuiController to reuse code in the text controller to run script files, since scripts files contain textual commands.
+ - Slightly modified the ImageProcessingView interface to more of a "push" design. The renderLayers method now takes in a read-only copy of the view instead of implementations storing the model as a field. This more closely follows MVC and facilitates better design.
+ - Added new controller command for applying an image operation to all images in the model.
+ - Added new mosaic and downscal commands to the map of commands in the text view.
 
-As for the view, it renders the state (the index, name, visibility, and whether it is the current layer or not) of layers stored in the model and if needed, renders messages. 
+
 
 
 Sample Image Citations:
