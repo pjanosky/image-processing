@@ -39,7 +39,7 @@ import view.ImageProcessingView;
 public class TextController implements ImageProcessingController {
 
   protected final ImageProcessingModel model;
-  private final ImageProcessingModelState viewModel;
+  protected final ImageProcessingModelState viewModel;
   private final ImageProcessingView view;
   private final Readable input;
   private final Map<String, Function<Scanner, ControllerCommand>> commands;

@@ -214,7 +214,7 @@ public class GuiController extends TextController implements CommandListener {
    */
   private void runCommand(ControllerCommand command) {
     command.runCommand(model, view);
-    view.renderLayers(model);
+    view.renderLayers(viewModel);
   }
 
   /**
