@@ -2,7 +2,7 @@ package view;
 
 import controller.CommandListener;
 
-public interface GUIImageProcessingView extends ImageProcessingView {
+public interface GuiImageProcessingView extends ImageProcessingView {
 
   void addCommandListener(CommandListener features);
 

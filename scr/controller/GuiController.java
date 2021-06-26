@@ -19,14 +19,14 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import model.ImageOperation;
 import model.ImageProcessingModel;
-import view.GUIImageProcessingView;
+import view.GuiImageProcessingView;
 
 
-public class GUIController extends SimpleImageProcessingController implements CommandListener {
+public class GuiController extends TextController implements CommandListener {
 
-  GUIImageProcessingView view;
+  GuiImageProcessingView view;
 
-  public GUIController(ImageProcessingModel model, GUIImageProcessingView view)
+  public GuiController(ImageProcessingModel model, GuiImageProcessingView view)
       throws IllegalArgumentException {
     super(model, new StringReader(""), new StringBuilder());
     if (view == null) {

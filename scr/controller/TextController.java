@@ -35,7 +35,7 @@ import view.ImageProcessingView;
 /**
  * Runs a simple image processing program.
  */
-public class SimpleImageProcessingController implements ImageProcessingController {
+public class TextController implements ImageProcessingController {
 
   protected final ImageProcessingModel model;
   protected final ImageProcessingModelState viewModel;
@@ -51,7 +51,7 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
    * @param output an Appendable object to append and output the view on in text format
    * @throws IllegalArgumentException if any of the parameters are null
    */
-  public SimpleImageProcessingController(ImageProcessingModel model, Readable input,
+  public TextController(ImageProcessingModel model, Readable input,
       Appendable output) throws IllegalArgumentException {
     // Check validity of arguments
     if (model == null || input == null || output == null) {

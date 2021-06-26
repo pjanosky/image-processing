@@ -33,10 +33,7 @@ import model.ImageProcessingModelState;
 import model.MosaicOperation;
 import model.Pixel;
 
-public class GUIView extends JFrame implements GUIImageProcessingView {
-
-  // Data:
-  ImageProcessingModelState model;
+public class GuiView extends JFrame implements GuiImageProcessingView {
 
   // Panels:
   // main panel
@@ -88,12 +85,11 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
   JMenuItem mosaicImageItem;
 
 
-  public GUIView(ImageProcessingModelState model) {
+  /**
+   * Constructs a new {@code GuiView} to display model data.
+   */
+  public GuiView() {
     super();
-    if (model == null) {
-      throw new IllegalArgumentException("Model must not be null.");
-    }
-    this.model = model;
 
     setName("Image Processing");
     setSize(600, 400);
@@ -213,6 +209,7 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
     add(mainSplitPlane);
   }
 
+  @Override
   public void renderLayers(ImageProcessingModelState model) {
     updateImage(model);
     updateLayers(model);
@@ -223,6 +220,7 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
     JOptionPane.showMessageDialog(mainSplitPlane, message, "", JOptionPane.PLAIN_MESSAGE);
   }
 
+  @Override
   public void renderError(String message) {
     JOptionPane.showMessageDialog(mainSplitPlane, message, "Error", JOptionPane.ERROR_MESSAGE);
   }
@@ -422,6 +420,12 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
     return chooser.getSelectedFile();
   }
 
+  /**
+   * Displays a JFileChooser allowing the user to choose a txt file containing batch commands
+   * from the disk.
+   *
+   * @return the chosen text file.
+   */
   private File chooseBatchScript() {
     final JFileChooser chooser = new JFileChooser(".");
     FileNameExtensionFilter filter = new FileNameExtensionFilter(

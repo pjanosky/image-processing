@@ -1,9 +1,7 @@
 package controller;
 
-import controller.commands.ControllerCommand;
 import java.io.File;
 import model.ImageOperation;
-import model.ImageOperationCreator;
 
 public interface CommandListener {
   void add(String name);

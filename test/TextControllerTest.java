@@ -8,7 +8,7 @@ import static org.junit.Assert.fail;
 import controller.ImageProcessingController;
 import controller.PngImportExporter;
 import controller.PpmImportExporter;
-import controller.SimpleImageProcessingController;
+import controller.TextController;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -30,7 +30,7 @@ import org.junit.Test;
 /**
  * Tests the methods and constructors of the controller.
  */
-public class SimpleImageProcessingControllerTest {
+public class TextControllerTest {
 
   private ImageProcessingModel model;
   private final Image image1;
@@ -39,7 +39,7 @@ public class SimpleImageProcessingControllerTest {
   /**
    * Construct a new SimpleImageProcessingControllerTest initializing all example test data.
    */
-  public SimpleImageProcessingControllerTest() {
+  public TextControllerTest() {
     model = new ImageProcessingModelImpl();
     image1 = ImageExamples.rainbow(10, 12);
     image2 = ImageExamples.checkerboard(12, 10, 1, 1,
@@ -55,19 +55,19 @@ public class SimpleImageProcessingControllerTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void testConstructorWithNullModel() {
-    new SimpleImageProcessingController(null,
+    new TextController(null,
         new InputStreamReader(System.in), new StringBuilder());
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testConstructorWithNullReadable() {
-    new SimpleImageProcessingController(new ImageProcessingModelImpl(),
+    new TextController(new ImageProcessingModelImpl(),
         null, new StringBuilder());
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testConstructorWithNullAppendable() {
-    new SimpleImageProcessingController(new ImageProcessingModelImpl(),
+    new TextController(new ImageProcessingModelImpl(),
         new InputStreamReader(System.in), null);
   }
 
@@ -75,14 +75,14 @@ public class SimpleImageProcessingControllerTest {
   public void testRunFailReadable() {
     Readable input = new FailReadable();
     Appendable output = new StringBuilder();
-    new SimpleImageProcessingController(model, input, output).run();
+    new TextController(model, input, output).run();
   }
 
   @Test(expected = IllegalStateException.class)
   public void testRunFailAppendable() {
     Readable input = new StringReader("add layer1 q");
     Appendable output = new FailAppendable();
-    new SimpleImageProcessingController(model, input, output).run();
+    new TextController(model, input, output).run();
   }
 
   @Test
@@ -729,7 +729,7 @@ public class SimpleImageProcessingControllerTest {
     Readable input = new StringReader(concatenateLines(commands));
     Appendable output = new StringBuilder();
     ImageProcessingController controller =
-        new SimpleImageProcessingController(model, input, output);
+        new TextController(model, input, output);
 
     controller.run();
     return output.toString();
