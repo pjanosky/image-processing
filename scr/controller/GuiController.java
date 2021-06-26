@@ -45,6 +45,10 @@ public class GuiController extends TextController implements CommandListener {
     }
 
     this.view = view;
+  }
+
+  @Override
+  public void run() {
     view.setCommandListener(this);
 
     try {
@@ -53,15 +57,8 @@ public class GuiController extends TextController implements CommandListener {
         | IllegalAccessException e) {
       view.renderMessage("Could not set look and feel.");
     }
-  }
 
-  @Override
-  public void run() {
-    try {
-      view.setVisible(true);
-    } catch (IllegalArgumentException | IllegalStateException e) {
-      view.renderError(e.getMessage());
-    }
+    view.setVisible(true);
   }
 
   @Override
@@ -126,7 +123,7 @@ public class GuiController extends TextController implements CommandListener {
       return;
     }
     try {
-      runCommand(new LoadCommand(file.getAbsolutePath(), parseExtension(file)));
+      runCommand(new LoadCommand(file.getPath(), parseExtension(file)));
     } catch (IllegalArgumentException | IllegalStateException e) {
       view.renderError(e.getMessage());
     }
@@ -138,7 +135,7 @@ public class GuiController extends TextController implements CommandListener {
       return;
     }
     try {
-      runCommand(new LoadLayersCommand(file.getAbsolutePath()));
+      runCommand(new LoadLayersCommand(file.getPath()));
     } catch (IllegalArgumentException | IllegalStateException e) {
       view.renderError(e.getMessage());
     }
@@ -150,7 +147,7 @@ public class GuiController extends TextController implements CommandListener {
       return;
     }
     try {
-      runCommand(new SaveCommand(file.getAbsolutePath(), parseExtension(file)));
+      runCommand(new SaveCommand(file.getPath(), parseExtension(file)));
     } catch (IllegalArgumentException | IllegalStateException e) {
       view.renderError(e.getMessage());
     }
@@ -162,7 +159,7 @@ public class GuiController extends TextController implements CommandListener {
       return;
     }
     String name = file.getName();
-    String absolutePath = file.getAbsolutePath();
+    String absolutePath = file.getPath();
     String path = absolutePath.substring(0, absolutePath.length() - name.length());
     try {
       runCommand(new SaveLayersCommand(path, name));

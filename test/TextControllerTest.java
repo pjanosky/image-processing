@@ -124,6 +124,8 @@ public class TextControllerTest {
       fail("Failed to parse saved images. " + e.getMessage());
     }
     assertEquals(expected, output);
+
+    clean();
   }
 
   @Test
@@ -171,6 +173,8 @@ public class TextControllerTest {
     assertEquals(image1, model.getImageIn("layer1"));
     assertEquals(image1, model.getImageIn("layer2"));
     assertEquals(expected, output);
+
+    clean();
   }
 
   @Test
@@ -255,12 +259,7 @@ public class TextControllerTest {
     }
     assertEquals(expected, output);
 
-    // Clean up
-    File directory = new File("test/data/layers");
-    for (File file : directory.listFiles()) {
-      file.delete();
-    }
-    directory.delete();
+    clean();
   }
 
   @Test
@@ -313,12 +312,7 @@ public class TextControllerTest {
 
     assertEquals(expected, output);
 
-    // Clean up
-    File directory = new File("test/data/layers");
-    for (File file : directory.listFiles()) {
-      file.delete();
-    }
-    directory.delete();
+    clean();
   }
 
   @Test

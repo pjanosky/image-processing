@@ -87,6 +87,8 @@ public class LoadCommandTest {
 
     new LoadCommand(path, "png").runCommand(model, view);
     assertEquals(image, model.getImageIn("layer1"));
+
+    clean();
   }
 
   /**

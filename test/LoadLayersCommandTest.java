@@ -84,6 +84,7 @@ public class LoadLayersCommandTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void testGoNullView() {
+    clean();
     String textFile = "layer1 true test/data/layers/layer1.png\n"
         + "layer2\n"
         + "layer3 true\n";
@@ -99,8 +100,8 @@ public class LoadLayersCommandTest {
     }
 
     ControllerCommand command = new LoadLayersCommand("test/data/layers");
-    clean();
     command.runCommand(model, null);
+    clean();
   }
 
   @Test(expected = IllegalStateException.class)
