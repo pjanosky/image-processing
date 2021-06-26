@@ -13,7 +13,7 @@ import org.junit.Test;
  */
 public class RgbPixelTest {
 
-  // Tests constructing new RgbPixels
+  // Tests constructing new RgbPixels.
   @Test
   public void testConstructor() {
     //normally constructed Pixel
@@ -21,7 +21,7 @@ public class RgbPixelTest {
     assertEquals(new RgbPixel(125, 0, 125), magentaPixel);
   }
 
-  // Tests clamping values that are greater than the allowed maximum
+  // Tests clamping values that are greater than the allowed maximum.
   @Test
   public void testClampMaxValues() {
     //red to be clamped:
@@ -37,7 +37,7 @@ public class RgbPixelTest {
     assertEquals(new RgbPixel(125, 125, 255), lavenderPixel);
   }
 
-  // Tests clamping values that are less than the allowed minimum
+  // Tests clamping values that are less than the allowed minimum.
   @Test
   public void testClampMinValues() {
     //red to be clamped:
@@ -53,7 +53,7 @@ public class RgbPixelTest {
     assertEquals(new RgbPixel(125, 125, 0), grassGreenPixel);
   }
 
-  // Tests the getRedValue method
+  // Tests the getRedValue method.
   @Test
   public void testGetRedValue() {
     Pixel greenPixel = new RgbPixel(0, 200, 23);
@@ -65,7 +65,7 @@ public class RgbPixelTest {
     assertEquals(255, purplePixel.getRedValue());
   }
 
-  // Tests the getGreenValue method
+  // Tests the getGreenValue method.
   @Test
   public void testGetGreenValue() {
     Pixel greenPixel = new RgbPixel(0, 200, 23);
@@ -77,7 +77,7 @@ public class RgbPixelTest {
     assertEquals(0, purplePixel.getGreenValue());
   }
 
-  // Tests the getBlueValue method
+  // Tests the getBlueValue method.
   @Test
   public void testGetBlueValue() {
     Pixel greenPixel = new RgbPixel(0, 200, 23);
@@ -89,7 +89,7 @@ public class RgbPixelTest {
     assertEquals(210, purplePixel.getBlueValue());
   }
 
-  // Tests the getRgbVector method
+  // Tests the getRgbVector method.
   @Test
   public void testGetRgbVector() {
     Pixel greenPixel = new RgbPixel(0, 200, 23);
@@ -102,7 +102,7 @@ public class RgbPixelTest {
   }
 
 
-  // Test the toString method
+  // Test the toString method.
   @Test
   public void testToString() {
     Pixel greenPixel = new RgbPixel(10, 200, 23);
@@ -114,7 +114,7 @@ public class RgbPixelTest {
     assertEquals("200 15 210", purplePixel.toString());
   }
 
-  // Tests the equals method
+  // Tests the equals method.
   @Test
   public void testEquals() {
     Pixel pixel1 = new RgbPixel(10, 200, 23);
@@ -132,7 +132,7 @@ public class RgbPixelTest {
     assertNotEquals(pixel1, diffPixel);
   }
 
-  // Tests the hashCode method
+  // Tests the hashCode method.
   @Test
   public void testHashCode() {
     Pixel greenPixel = new RgbPixel(10, 200, 23);
