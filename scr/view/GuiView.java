@@ -37,52 +37,52 @@ public class GuiView extends JFrame implements GuiImageProcessingView {
 
   // Panels:
   // main panel
-  JSplitPane mainSplitPlane;
+  private JSplitPane mainSplitPlane;
 
   // image panel
-  JPanel imagePanel;
-  JScrollPane imageScrollPane;
-  JLabel imageLabel;
-  JLabel imageCaption;
-  Icon imageIcon;
+  private JPanel imagePanel;
+  private JScrollPane imageScrollPane;
+  private JLabel imageLabel;
+  private JLabel imageCaption;
+  private Icon imageIcon;
 
   // layers panel
-  JPanel layersPanel;
-  JScrollPane layersScrollPane;
-  ButtonGroup layerButtons;
+  private JPanel layersPanel;
+  private JScrollPane layersScrollPane;
+  private ButtonGroup layerButtons;
 
 
   // Menus:
   // file menu
-  JMenu fileMenu;
-  JMenuItem loadMenuItem;
-  JMenuItem loadAllMenuItem;
-  JMenuItem saveMenuItem;
-  JMenuItem saveAllMenuItem;
-  JMenu presetImageMenu;
-  JMenuItem rainbowMenuItem;
-  JMenuItem checkerboardMenuItem;
-  JMenuItem runBatchScriptMenuItem;
+  private JMenu fileMenu;
+  private JMenuItem loadMenuItem;
+  private JMenuItem loadAllMenuItem;
+  private JMenuItem saveMenuItem;
+  private JMenuItem saveAllMenuItem;
+  private JMenu presetImageMenu;
+  private JMenuItem rainbowMenuItem;
+  private JMenuItem checkerboardMenuItem;
+  private JMenuItem runBatchScriptMenuItem;
 
   // layers menu
-  JMenu layerMenu;
-  JMenuItem addMenuItem;
-  JMenuItem removeMenuItem;
-  JMenuItem showMenuItem;
-  JMenuItem hideMenuItem;
-  JMenu currentMenu;
-  ButtonGroup currentLayerMenuButtons;
-  Function<String, ActionListener> currentListenerCreator;
-  JMenuItem moveMenuItem;
+  private JMenu layerMenu;
+  private JMenuItem addMenuItem;
+  private JMenuItem removeMenuItem;
+  private JMenuItem showMenuItem;
+  private JMenuItem hideMenuItem;
+  private JMenu currentMenu;
+  private ButtonGroup currentLayerMenuButtons;
+  private Function<String, ActionListener> currentListenerCreator;
+  private JMenuItem moveMenuItem;
 
   // image processing menu
-  JMenu imageProcessMenu;
-  JMenuItem blurImageItem;
-  JMenuItem sharpenImageItem;
-  JMenuItem greyscaleImageItem;
-  JMenuItem sepiaImageItem;
-  JMenuItem downscaleImageItem;
-  JMenuItem mosaicImageItem;
+  private JMenu imageProcessMenu;
+  private JMenuItem blurImageItem;
+  private JMenuItem sharpenImageItem;
+  private JMenuItem greyscaleImageItem;
+  private JMenuItem sepiaImageItem;
+  private JMenuItem downscaleImageItem;
+  private JMenuItem mosaicImageItem;
 
 
   /**
@@ -130,7 +130,6 @@ public class GuiView extends JFrame implements GuiImageProcessingView {
     fileMenu.add(runBatchScriptMenuItem);
 
     menuBar.add(fileMenu);
-    // TODO: initialize menu item for loading programmatic images
 
     // Layers Menu (add, remove, hide/show, current)
     layerMenu = new JMenu("Layers");
@@ -226,7 +225,7 @@ public class GuiView extends JFrame implements GuiImageProcessingView {
   }
 
   @Override
-  public void addCommandListener(CommandListener listener) {
+  public void setCommandListener(CommandListener listener) {
     // File menu
     loadMenuItem.addActionListener(evt -> {
       listener.load(chooseImage(true));

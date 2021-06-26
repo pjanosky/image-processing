@@ -21,11 +21,22 @@ import model.ImageOperation;
 import model.ImageProcessingModel;
 import view.GuiImageProcessingView;
 
-
+/**
+ * Runs the image processing program with an interactive graphical user interface. Receives input
+ * from the view and executes the corresponding image progressing commands. Extends TextController
+ * to help with running text commands from script files.
+ */
 public class GuiController extends TextController implements CommandListener {
 
-  GuiImageProcessingView view;
+  private final GuiImageProcessingView view;
 
+  /**
+   * Constructs a new GuiController object.
+   *
+   * @param model the model used to manage the program data.
+   * @param view  the view to render output and detect user input.
+   * @throws IllegalArgumentException if the model or view is null.
+   */
   public GuiController(ImageProcessingModel model, GuiImageProcessingView view)
       throws IllegalArgumentException {
     super(model, new StringReader(""), new StringBuilder());
@@ -34,7 +45,7 @@ public class GuiController extends TextController implements CommandListener {
     }
 
     this.view = view;
-    view.addCommandListener(this);
+    view.setCommandListener(this);
 
     try {
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -84,7 +95,7 @@ public class GuiController extends TextController implements CommandListener {
   public void move(String index) {
     try {
       runCommand(new MoveCommand(Integer.parseInt(index)));
-    } catch(NumberFormatException e){
+    } catch (NumberFormatException e) {
       view.renderError("Invalid index.");
     } catch (IllegalArgumentException | IllegalStateException e) {
       view.renderError(e.getMessage());

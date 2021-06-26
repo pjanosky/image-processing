@@ -33,13 +33,14 @@ import view.ImageProcessingTextView;
 import view.ImageProcessingView;
 
 /**
- * Runs a simple image processing program.
+ * Runs a simple image processing program with a text-based interface. Commands and output
+ * are entered and displayed with Appendable and Readable text objects.
  */
 public class TextController implements ImageProcessingController {
 
   protected final ImageProcessingModel model;
-  protected final ImageProcessingModelState viewModel;
-  protected final ImageProcessingView view;
+  private final ImageProcessingModelState viewModel;
+  private final ImageProcessingView view;
   private final Readable input;
   private final Map<String, Function<Scanner, ControllerCommand>> commands;
 
