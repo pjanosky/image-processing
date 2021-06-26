@@ -1,3 +1,7 @@
+#Useme
+
+##Text Interface
+
 When running commands for the text-based controller, the user will be using the console to type the commands in. If this is the case, please refer to the command tmeplate below.
 
 Running a script file: "script path-to-script-file". Change directories to the project directory to easily run scripts in the res folder.
@@ -18,6 +22,7 @@ Downsizing the layers: when the user wants to downsize the images on all the cur
 
 Image mosaicing: "mosaic number-of-seeds". The number of seeds is an integer. Make sure to load an image to mosaic before running this command. An example workflow for this command looks something of this: "add layer1" -> "load res/flowers.ppm ppm" -> "mosaic 8000" -> "q"
 
+## Graphical Interface
 
 When running the GUI, the user will be interacting with different menu options in the pop-up. Below the menu bar, the user is able to see the loaded image and its transformation. On the side to the image display is the list of layers. Whichever layer the user is currently on shall be selected in the radio button menu. The layers that are visible shall be indicated as (V) on the side, e.g. "1. Layer1 (V)".
 
