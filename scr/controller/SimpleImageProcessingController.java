@@ -28,6 +28,7 @@ import model.ImageOperationCreator.OperationType;
 import model.ImageProcessingModel;
 import model.ImageProcessingModelState;
 import model.ImageProcessingViewModel;
+import model.MosaicOperation;
 import view.ImageProcessingTextView;
 import view.ImageProcessingView;
 
@@ -87,6 +88,7 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
     commands.put("set", new SetImageCommandCreator());
     commands.put("downscale", s-> new ImageProcessAllCommand(
         new DownscaleOperation(s.nextDouble())));
+    commands.put("mosaic", s -> new ImageProcessAllCommand(new MosaicOperation(s.nextInt())));
   }
 
   @Override

@@ -26,7 +26,7 @@ public interface CommandListener {
 
   void saveLayers(File file);
 
-  void setImage(String type, String... args);
+  void setImage(String type, String args);
 
   void visibility(boolean isVisible);
 

@@ -6,15 +6,12 @@ import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Function;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -33,6 +30,7 @@ import model.Image;
 import model.ImageOperationCreator;
 import model.ImageOperationCreator.OperationType;
 import model.ImageProcessingModelState;
+import model.MosaicOperation;
 import model.Pixel;
 
 public class GUIView extends JFrame implements GUIImageProcessingView {
@@ -87,6 +85,7 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
   JMenuItem greyscaleImageItem;
   JMenuItem sepiaImageItem;
   JMenuItem downscaleImageItem;
+  JMenuItem mosaicImageItem;
 
 
   public GUIView(ImageProcessingModelState model) {
@@ -164,13 +163,15 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
     sharpenImageItem = new JMenuItem("Sharpen Current Layer");
     sepiaImageItem = new JMenuItem("Sepia Current Layer");
     greyscaleImageItem = new JMenuItem("Greyscale Current Layer");
-    downscaleImageItem = new JMenuItem("Downscale All Images");
+    downscaleImageItem = new JMenuItem("Downscale All Layers");
+    mosaicImageItem = new JMenuItem("Mosaic Current Layer");
 
     imageProcessMenu.add(blurImageItem);
     imageProcessMenu.add(sharpenImageItem);
     imageProcessMenu.add(sepiaImageItem);
     imageProcessMenu.add(greyscaleImageItem);
     imageProcessMenu.add(downscaleImageItem);
+    imageProcessMenu.add(mosaicImageItem);
 
     menuBar.add(imageProcessMenu);
 
@@ -243,15 +244,13 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
     });
     rainbowMenuItem.addActionListener(evt -> {
       listener.setImage("rainbow",
-          JOptionPane.showInputDialog("Enter the width and the height of the rainbow image: ")
-              .split(" "));
+          JOptionPane.showInputDialog("Enter the width and the height of the rainbow image: "));
     });
     checkerboardMenuItem.addActionListener(evt -> {
       listener.setImage("checkerboard",
           JOptionPane.showInputDialog(
               "Enter the number of horizontal squares, number of vertical squares, "
-                  + "and the size of each square in pixels to generate a checkerboard.")
-              .split(" "));
+                  + "and the size of each square in pixels to generate a checkerboard."));
     });
     runBatchScriptMenuItem.addActionListener(evt -> {
       listener.script(chooseBatchScript().getAbsolutePath());
@@ -296,6 +295,14 @@ public class GUIView extends JFrame implements GUIImageProcessingView {
       } catch (NumberFormatException e) {
         renderError("Invalid scale factor.");
       }
+    });
+    mosaicImageItem.addActionListener(evt -> {
+      try {
+      listener.imageProcess(new MosaicOperation(Integer.parseInt(
+          JOptionPane.showInputDialog("Enter the number of seeds in the mosaic."))));
+      } catch (NumberFormatException e) {
+        renderError("Invalid seed number.");
+      };
     });
   }
 

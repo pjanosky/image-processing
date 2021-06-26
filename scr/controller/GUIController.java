@@ -161,9 +161,11 @@ public class GUIController extends SimpleImageProcessingController implements Co
   }
 
   @Override
-  public void setImage(String type, String... args) {
+  public void setImage(String type, String args) {
     try {
-      runCommand(new SetImageCommand(type, args));
+      if (args != null) {
+        runCommand(new SetImageCommand(type, args.split(" ")));
+      }
     } catch (IllegalArgumentException | IllegalStateException e) {
       view.renderError(e.getMessage());
     }
