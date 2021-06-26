@@ -61,7 +61,7 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
     if (!hasLayer(layerName)) {
       throw new IllegalArgumentException("No layer named " + layerName + ".");
     }
-    ensureImageSize(image);
+    ensureImageSize(image, layerName);
     getLayer(layerName).setImage(image);
   }
 
@@ -191,14 +191,16 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
    * Ensures that an image is the same size as the images in the other layers if there are images in
    * the other layers.
    *
-   * @param image the image to check the dimensions of.
+   * @param image   the image to check the dimensions of.
+   * @param exclude the name of layer to exclude from the check.
    * @throws IllegalArgumentException if the image does not match the dimension of the images in
    *                                  other layers.
    */
-  private void ensureImageSize(Image image) throws IllegalArgumentException {
+  private void ensureImageSize(Image image, String exclude) throws IllegalArgumentException {
     for (Layer layer : layers) {
       Image layerImage = layer.getImage();
-      if (layerImage != null
+      if (!exclude.equals(layer.getName())
+          && layerImage != null
           && (layerImage.getWidth() != image.getWidth()
           || layerImage.getHeight() != image.getHeight())) {
         throw new IllegalArgumentException("All layers must have images of the same size: "

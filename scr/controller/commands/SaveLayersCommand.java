@@ -84,6 +84,7 @@ public class SaveLayersCommand implements ControllerCommand {
     } catch (IOException e) {
       throw new IllegalStateException("Failed to save text info file.");
     }
+    view.renderMessage("Saved all layers to " + path + ".");
   }
 
   /**

@@ -103,10 +103,12 @@ public class TextControllerTest {
     );
     String expected = concatenateLines(
         "Enter a command",
+        "Saved layer \"layer3\" to test/data/image.ppm.",
         "Layers:",
         "1. layer1 (V)",
         "2. layer2 ( )",
         "3. layer3 (V) (current)",
+        "Saved layer \"layer3\" to test/data/image.png.",
         "Layers:",
         "1. layer1 (V)",
         "2. layer2 ( )",
@@ -152,12 +154,14 @@ public class TextControllerTest {
         "Layers:",
         "1. layer1 (V) (current)",
         "2. layer2 (V)",
+        "Loaded test/data/image.ppm into layer \"layer1\".",
         "Layers:",
         "1. layer1 (V) (current)",
         "2. layer2 (V)",
         "Layers:",
         "1. layer1 (V)",
         "2. layer2 (V) (current)",
+        "Loaded test/data/image.png into layer \"layer2\".",
         "Layers:",
         "1. layer1 (V)",
         "2. layer2 (V) (current)",
@@ -229,6 +233,7 @@ public class TextControllerTest {
     );
     String expected = concatenateLines(
         "Enter a command",
+        "Saved all layers to test/data/layers.",
         "Layers:",
         "1. layer1 (V)",
         "2. layer2 ( )",
@@ -284,6 +289,7 @@ public class TextControllerTest {
     );
     String expected = concatenateLines(
         "Enter a command",
+        "Loaded layers from test/data/layers.",
         "Layers:",
         "1. layer1 (V)",
         "2. layer2 ( )",

@@ -19,6 +19,7 @@ public class LoadLayersCommand implements ControllerCommand {
 
   private final Scanner scan;
   private final ImageImportExporter ie;
+  private final String filePath;
 
   /**
    * Constructs a {@code LoadLayersCommand} object. A directory of layer files is retrieved via the
@@ -49,6 +50,7 @@ public class LoadLayersCommand implements ControllerCommand {
     }
 
     ie = new PngImportExporter();
+    filePath = path;
   }
 
   @Override
@@ -73,6 +75,8 @@ public class LoadLayersCommand implements ControllerCommand {
         model.setLayerImage(layerName, loadImage(args[2]));
       }
     }
+
+    view.renderMessage("Loaded layers from " + filePath + ".");
   }
 
   /**

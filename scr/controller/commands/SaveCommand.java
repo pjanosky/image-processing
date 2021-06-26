@@ -17,6 +17,7 @@ public class SaveCommand implements ControllerCommand {
 
   private final ImageImportExporter ie;
   private final OutputStream output;
+  private final String filePath;
 
   /**
    * Constructs a new SaveCommand setup to save in a specific format an location on disk.
@@ -40,6 +41,8 @@ public class SaveCommand implements ControllerCommand {
     } catch (IOException e) {
       throw new IllegalArgumentException("Failed to save file. " + e.getMessage());
     }
+
+    this.filePath = filePath;
   }
 
   @Override
@@ -49,21 +52,24 @@ public class SaveCommand implements ControllerCommand {
       throw new IllegalArgumentException("Arguments cannot be null.");
     }
 
+    String layerName = null;
     Image image = null;
     for (int index = 0; index < model.numLayers(); index += 1) {
       String name = model.getLayerNameAt(index);
       if (model.isVisible(name) & model.getImageIn(name) != null) {
         image = model.getImageIn(name);
+        layerName = name;
         break;
       }
     }
 
-    if (image == null) {
+    if (image == null || layerName == null) {
       throw new IllegalStateException("No visible layers to export");
     }
 
     try {
       ie.saveImage(output, image);
+      view.renderMessage("Saved layer \"" + layerName + "\" to " + filePath + ".");
     } catch (IOException e) {
       throw new IllegalStateException("Failed to save image. " + e.getMessage());
     }

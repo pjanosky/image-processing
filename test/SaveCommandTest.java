@@ -114,7 +114,7 @@ public class SaveCommandTest {
       fail("Failed to parse saved images. " + e.getMessage());
     }
 
-    String expected = "";
+    String expected = "Saved layer \"layer3\" to test/data/image.png." + System.lineSeparator();
     assertEquals(expected, output.toString());
   }
 

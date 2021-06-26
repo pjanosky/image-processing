@@ -18,6 +18,7 @@ public class LoadCommand implements ControllerCommand {
 
   private final ImageImportExporter ie;
   private final InputStream input;
+  private final String filePath;
 
   /**
    * Constructs a {@code LoadCommand} object. The appropriate image import-exporter will be created
@@ -41,6 +42,7 @@ public class LoadCommand implements ControllerCommand {
     } catch (IOException e) {
       throw new IllegalArgumentException("Failed to load file. " + e.getMessage());
     }
+    this.filePath = filepath;
   }
 
   @Override
@@ -59,9 +61,9 @@ public class LoadCommand implements ControllerCommand {
     String current = model.getCurrentName();
     if (current != null) {
       model.setLayerImage(current, parsedImage);
+      view.renderMessage("Loaded " + filePath + " into layer \"" + current + "\".");
     } else {
       throw new IllegalStateException("No current layer set");
     }
-
   }
 }

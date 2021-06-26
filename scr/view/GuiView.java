@@ -45,6 +45,7 @@ public class GuiView extends JFrame implements GuiImageProcessingView {
   private JLabel imageLabel;
   private JLabel imageCaption;
   private Icon imageIcon;
+  private JLabel messageLable;
 
   // layers panel
   private JPanel layersPanel;
@@ -190,7 +191,9 @@ public class GuiView extends JFrame implements GuiImageProcessingView {
     imagePanel.add(imageScrollPane, BorderLayout.CENTER);
     imageCaption = new JLabel();
     imageCaption.setHorizontalAlignment(JLabel.CENTER);
-    imagePanel.add(imageCaption, BorderLayout.SOUTH);
+    imagePanel.add(imageCaption, BorderLayout.NORTH);
+    messageLable = new JLabel("");
+    imagePanel.add(messageLable, BorderLayout.SOUTH);
     imagePanel.setMinimumSize(new Dimension(250, 150));
     mainSplitPlane.setLeftComponent(imagePanel);
 
@@ -216,7 +219,7 @@ public class GuiView extends JFrame implements GuiImageProcessingView {
 
   @Override
   public void renderMessage(String message) {
-    JOptionPane.showMessageDialog(mainSplitPlane, message, "", JOptionPane.PLAIN_MESSAGE);
+    messageLable.setText(message);
   }
 
   @Override
