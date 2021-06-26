@@ -11,7 +11,7 @@ import view.GUIView;
 /**
  * An entry point for running the program
  */
-public class EntryPoint {
+public class ImageProcessing {
 
   /**
    * Runs the image processing program. Creates a new controller, model and view, and runs the
