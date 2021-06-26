@@ -157,7 +157,7 @@ public class TextController implements ImageProcessingController {
       try {
         this.input = new FileReader(filePath);
       } catch (IOException e) {
-        throw new IllegalArgumentException("Failed to read from scrip: " + filePath + ".");
+        throw new IllegalArgumentException("Failed to read from script: " + filePath + ".");
       }
     }
 

@@ -1,0 +1,8 @@
+script res/script1.txt
+add layer5
+loadall res/layers
+downscale 0.5 0.5
+add layer6
+set checkerboard 20 15 10
+saveall res layers2
+q
