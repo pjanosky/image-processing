@@ -302,19 +302,23 @@ public class GuiView extends JFrame implements GuiImageProcessingView {
     });
     downscaleImageItem.addActionListener(ect -> {
       try {
-        listener.imageProcessAll(new DownscaleOperation(Double.parseDouble(
-            JOptionPane.showInputDialog("Enter a scale factor between 0 and 1"))));
+        String scale = JOptionPane.showInputDialog("Enter a scale factor between 0 and 1");
+        if (scale != null) {
+          listener.imageProcessAll(new DownscaleOperation(Double.parseDouble(scale)));
+        }
       } catch (NumberFormatException e) {
         renderError("Invalid scale factor.");
       }
     });
     mosaicImageItem.addActionListener(evt -> {
       try {
-      listener.imageProcess(new MosaicOperation(Integer.parseInt(
-          JOptionPane.showInputDialog("Enter the number of seeds in the mosaic."))));
+        String seeds = JOptionPane.showInputDialog("Enter the number of seeds in the mosaic.");
+        if (seeds != null) {
+          listener.imageProcess(new MosaicOperation(Integer.parseInt(seeds)));
+        }
       } catch (NumberFormatException e) {
         renderError("Invalid seed number.");
-      };
+      }
     });
   }
 
@@ -343,7 +347,6 @@ public class GuiView extends JFrame implements GuiImageProcessingView {
       }
       currentLayerMenuButtons.add(button);
       currentMenu.add(button);
-
 
       // Layers Panel
       JRadioButton layerButton;
@@ -435,8 +438,8 @@ public class GuiView extends JFrame implements GuiImageProcessingView {
   }
 
   /**
-   * Displays a JFileChooser allowing the user to choose a txt file containing batch commands
-   * from the disk.
+   * Displays a JFileChooser allowing the user to choose a txt file containing batch commands from
+   * the disk.
    *
    * @return the chosen text file.
    */
