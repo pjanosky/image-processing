@@ -56,7 +56,7 @@ public class ImageExamples {
         new RgbPixel(160, 0, 200),
     };
 
-    int stripeHeight = height / colors.length;
+    int stripeHeight = Math.max(1, height / colors.length);
     Pixel[][] pixels = new Pixel[height][width];
     for (int r = 0; r < height; r += 1) {
       for (int c = 0; c < width; c += 1) {
