@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import model.Image;
 import model.ImageProcessingModel;
-import model.ImageProcessingViewModel;
 import view.ImageProcessingView;
 
 /**
@@ -18,7 +17,6 @@ import view.ImageProcessingView;
 public class LoadCommand implements ControllerCommand {
 
   private final ImageImportExporter ie;
-  private final String filepath;
   private final InputStream input;
 
   /**
@@ -43,7 +41,6 @@ public class LoadCommand implements ControllerCommand {
     } catch (IOException e) {
       throw new IllegalArgumentException("Failed to load file. " + e.getMessage());
     }
-    this.filepath = filepath;
   }
 
   @Override
