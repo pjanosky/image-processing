@@ -88,7 +88,7 @@ public class SimpleImageProcessingController implements ImageProcessingControlle
     commands.put("set", new SetImageCommandCreator());
     commands.put("downscale", s-> new ImageProcessAllCommand(
         new DownscaleOperation(s.nextDouble())));
-    commands.put("mosaic", s -> new ImageProcessAllCommand(new MosaicOperation(s.nextInt())));
+    commands.put("mosaic", s -> new ImageProcessCommand(new MosaicOperation(s.nextInt())));
   }
 
   @Override

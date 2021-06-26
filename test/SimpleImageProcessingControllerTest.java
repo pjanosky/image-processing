@@ -1,5 +1,6 @@
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -14,12 +15,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringReader;
+import model.DownscaleOperation;
 import model.Image;
 import model.ImageExamples;
 import model.ImageOperationCreator;
 import model.ImageOperationCreator.OperationType;
 import model.ImageProcessingModel;
 import model.ImageProcessingModelImpl;
+import model.MosaicOperation;
 import model.RgbPixel;
 import org.junit.Before;
 import org.junit.Test;
@@ -149,14 +152,12 @@ public class SimpleImageProcessingControllerTest {
         "Layers:",
         "1. layer1 (V) (current)",
         "2. layer2 (V)",
-        "test/data/image.ppm successfully loading into layer \"layer1\".",
         "Layers:",
         "1. layer1 (V) (current)",
         "2. layer2 (V)",
         "Layers:",
         "1. layer1 (V)",
         "2. layer2 (V) (current)",
-        "test/data/image.png successfully loading into layer \"layer2\".",
         "Layers:",
         "1. layer1 (V)",
         "2. layer2 (V) (current)",
@@ -372,13 +373,14 @@ public class SimpleImageProcessingControllerTest {
     );
     String expected = concatenateLines(
         "Enter a command",
+        "Applied operation to layer \"layer1\".",
         "Layers:",
         "1. layer1 (V) (current)",
         "Quitting."
     );
 
-    Image image1Edit = ImageOperationCreator.create(OperationType.SHARPEN).apply(image1);
-    assertEquals(image1Edit, model.getImageIn("layer1"));
+    Image image1Sharpen = ImageOperationCreator.create(OperationType.SHARPEN).apply(image1);
+    assertEquals(image1Sharpen, model.getImageIn("layer1"));
     assertEquals(expected, output);
   }
 
@@ -395,13 +397,14 @@ public class SimpleImageProcessingControllerTest {
     );
     String expected = concatenateLines(
         "Enter a command",
+        "Applied operation to layer \"layer1\".",
         "Layers:",
         "1. layer1 (V) (current)",
         "Quitting."
     );
 
-    Image image1Edit = ImageOperationCreator.create(OperationType.BLUR).apply(image1);
-    assertEquals(image1Edit, model.getImageIn("layer1"));
+    Image image1Blur = ImageOperationCreator.create(OperationType.BLUR).apply(image1);
+    assertEquals(image1Blur, model.getImageIn("layer1"));
     assertEquals(expected, output);
   }
 
@@ -418,13 +421,14 @@ public class SimpleImageProcessingControllerTest {
     );
     String expected = concatenateLines(
         "Enter a command",
+        "Applied operation to layer \"layer1\".",
         "Layers:",
         "1. layer1 (V) (current)",
         "Quitting."
     );
 
-    Image image1Sharpen = ImageOperationCreator.create(OperationType.GREYSCALE).apply(image1);
-    assertEquals(image1Sharpen, model.getImageIn("layer1"));
+    Image image1Greyscale = ImageOperationCreator.create(OperationType.GREYSCALE).apply(image1);
+    assertEquals(image1Greyscale, model.getImageIn("layer1"));
     assertEquals(expected, output);
   }
 
@@ -441,6 +445,7 @@ public class SimpleImageProcessingControllerTest {
     );
     String expected = concatenateLines(
         "Enter a command",
+        "Applied operation to layer \"layer1\".",
         "Layers:",
         "1. layer1 (V) (current)",
         "Quitting."
@@ -448,6 +453,60 @@ public class SimpleImageProcessingControllerTest {
 
     Image image1Sharpen = ImageOperationCreator.create(OperationType.SEPIA).apply(image1);
     assertEquals(image1Sharpen, model.getImageIn("layer1"));
+    assertEquals(expected, output);
+  }
+
+  @Test
+  public void testRunDownscale() {
+    model.addLayer("layer1");
+    model.addLayer("layer2");
+    model.setLayerImage("layer1", image1);
+    model.setLayerImage("layer2", image2);
+
+    assertEquals(image1, model.getImageIn("layer1"));
+    assertEquals(image2, model.getImageIn("layer2"));
+
+    String output = runCommands(
+        "downscale 0.5",
+        "q"
+    );
+    String expected = concatenateLines(
+        "Enter a command",
+        "Applied operation to all layers.",
+        "Layers:",
+        "1. layer1 (V)",
+        "2. layer2 (V) (current)",
+        "Quitting."
+    );
+
+    Image image1Down = new DownscaleOperation(0.5).apply(image1);
+    Image image2Down = new DownscaleOperation(0.5).apply(image2);
+    assertEquals(image1Down, model.getImageIn("layer1"));
+    assertEquals(image2Down, model.getImageIn("layer2"));
+    assertEquals(expected, output);
+  }
+
+  @Test
+  public void testRunMosaic() {
+    model.addLayer("layer1");
+    model.setLayerImage("layer1", image1);
+
+    assertEquals(image1, model.getImageIn("layer1"));
+
+    String output = runCommands(
+        "mosaic 50",
+        "q"
+    );
+    String expected = concatenateLines(
+        "Enter a command",
+        "Applied operation to layer \"layer1\".",
+        "Layers:",
+        "1. layer1 (V) (current)",
+        "Quitting."
+    );
+
+    Image image1Mosaic = new MosaicOperation(50).apply(image1);
+    assertNotEquals(image1Mosaic, model.getImageIn("layer1"));
     assertEquals(expected, output);
   }
 
@@ -578,6 +637,7 @@ public class SimpleImageProcessingControllerTest {
         "Layers:",
         "1. layer1 (V)",
         "2. layer2 (V) (current)",
+        "Applied operation to layer \"layer2\".",
         "Layers:",
         "1. layer1 (V)",
         "2. layer2 (V) (current)",
