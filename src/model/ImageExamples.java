@@ -1,10 +1,5 @@
 package model;
 
-import model.Image;
-import model.Image24Bit;
-import model.Pixel;
-import model.RgbPixel;
-
 /**
  * A class for generating different types of example images for testing.
  */

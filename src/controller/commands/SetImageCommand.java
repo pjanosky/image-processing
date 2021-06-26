@@ -64,7 +64,7 @@ public class SetImageCommand implements ControllerCommand {
    * input. Rainbow image commands take the form "rainbow width height".
    *
    * @param model the model to set the current layers of.
-   * @param view the view to render the messages to.
+   * @param view  the view to render the messages to.
    * @throws IllegalArgumentException if the parameters for the image are wrong.
    * @throws IllegalStateException    if there is no current layers set in the model.
    */
@@ -92,7 +92,7 @@ public class SetImageCommand implements ControllerCommand {
    * user input. Checkerboard images have the form "checkerboard numRows numCols squareSize".
    *
    * @param model the model to set the current layers of.
-   * @param view the view to render the messages to.
+   * @param view  the view to render the messages to.
    * @throws IllegalArgumentException if the parameters for the image are wrong.
    * @throws IllegalStateException    if there is no current layers set in the model.
    */
@@ -126,7 +126,7 @@ public class SetImageCommand implements ControllerCommand {
    *
    * @param image the image to set to the layers.
    * @param model the model to set the current layer of.
-   * @param view the view to render the success message to.
+   * @param view  the view to render the success message to.
    * @throws IllegalStateException if there is no current layer set.
    */
   private void setImage(Image image, ImageProcessingModel model, ImageProcessingView view)

@@ -1,8 +1,8 @@
 package model;
 
 /**
- * Represents a 24-bit image consisting of 3 8-bit red, green, and blue, color channels.
- * Image24Bits are immutable.
+ * Represents a 24-bit image consisting of 3 8-bit red, green, and blue, color channels. Image24Bits
+ * are immutable.
  */
 public class Image24Bit extends AbstractImage {
 
@@ -44,7 +44,7 @@ public class Image24Bit extends AbstractImage {
   public Image24Bit(Pixel[][] pixels) throws IllegalArgumentException {
     this(pixels, false);
   }
-  
+
   @Override
   public Image fromPixels(Pixel[][] pixels, boolean clamp) {
     return new Image24Bit(pixels, clamp);

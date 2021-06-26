@@ -35,7 +35,7 @@ public class ImageProcessCommand implements ControllerCommand {
     String current = model.getCurrentName();
     if (current != null) {
       model.applyOperation(current, operation);
-      view.renderMessage("Applied operation to layer \"" + current +"\".");
+      view.renderMessage("Applied operation to layer \"" + current + "\".");
     } else {
       throw new IllegalStateException("No current layer set");
     }

@@ -5,8 +5,8 @@ import java.util.Arrays;
 /**
  * An abstract class representing an image as a 2-dimensional array of pixels.
  *
- * <p>Different AbstractImage implementations should work together by using all of the pixels in the
- * image for the equals method and the hashCode method.
+ * <p>Different AbstractImage implementations should work together by using all of the pixels in
+ * the image for the equals method and the hashCode method.
  */
 public abstract class AbstractImage implements Image {
 

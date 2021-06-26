@@ -14,7 +14,7 @@ public class DownscaleOperation implements ImageOperation {
   /**
    * Constructs a new Downscale operation with the given scale factor.
    *
-   * @param xscale the scale factor to use for the downscaled image in the horrizontal direction.
+   * @param xscale the scale factor to use for the downscaled image in the horizontal direction.
    *               For example, a scale factor of 0.5 applied to a 10x10 pixel image will result in
    *               a downscaled image of 5 pixels wide pixels.
    * @param yscale

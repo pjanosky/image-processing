@@ -33,8 +33,8 @@ import view.ImageProcessingTextView;
 import view.ImageProcessingView;
 
 /**
- * Runs a simple image processing program with a text-based interface. Commands and output
- * are entered and displayed with Appendable and Readable text objects.
+ * Runs a simple image processing program with a text-based interface. Commands and output are
+ * entered and displayed with Appendable and Readable text objects.
  */
 public class TextController implements ImageProcessingController {
 
@@ -87,7 +87,7 @@ public class TextController implements ImageProcessingController {
     commands.put("current", s -> new CurrentCommand(s.next()));
     commands.put("move", s -> new MoveCommand(s.nextInt()));
     commands.put("set", new SetImageCommandCreator());
-    commands.put("downscale", s-> new ImageProcessAllCommand(
+    commands.put("downscale", s -> new ImageProcessAllCommand(
         new DownscaleOperation(s.nextDouble(), s.nextDouble())));
     commands.put("mosaic", s -> new ImageProcessCommand(new MosaicOperation(s.nextInt())));
   }

@@ -1,11 +1,10 @@
 package model;
 
 /**
- * Represents a image processing operation that applies a 2D kernel to pixel values in
- * each color channel to alter the appearance of an image. Color values of surrounding
- * Pixels are multiplied by their corresponding value in the kernel to produce the new
- * color value for a given pixel in the image. This is repeated for each color channel
- * in the image.
+ * Represents a image processing operation that applies a 2D kernel to pixel values in each color
+ * channel to alter the appearance of an image. Color values of surrounding Pixels are multiplied by
+ * their corresponding value in the kernel to produce the new color value for a given pixel in the
+ * image. This is repeated for each color channel in the image.
  */
 public class FilterOperation implements ImageOperation {
 
