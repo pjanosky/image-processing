@@ -36,7 +36,12 @@ Views are represented by the ImageProcessingView interface. Additionally, the Gu
  - Added new controller command for applying an image operation to all images in the model.
  - Added new mosaic and downscal commands to the map of commands in the text view.
 
+## Extra Credit Design Changes
+### Downscaling
+To support this feature, we added a new ImageOperation implementation the contained all the code to downscale an image. To get this operation to be applied to every layer in the model, we also added a new ControllerCommand called "ImageProcessAllCommand" and a corresponding method in our CommandListener interface. To add this feature to the graphical interface, we simply added a new menu item and called the new method. To add this feature to the textual interface we added a new command to the map of commands in TextController.
 
+### Mosaic
+To support this feature, we added a new ImageOperation implementation that contained all the code to create a mosaic image. Since our controller implementations already supported applying an ImageOperation to a layer, all we had to do was add a new menu item in the graphical view, and add a new command to the map in the TextController.
 
 
  ## Image Citations:

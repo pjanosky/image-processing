@@ -6,6 +6,9 @@ import model.ImageExamples;
 import model.RgbPixel;
 import org.junit.Test;
 
+/**
+ * Tests the DownscaleOperation class.
+ */
 public class DownscaleOperationTest {
 
   @Test(expected = IllegalArgumentException.class)

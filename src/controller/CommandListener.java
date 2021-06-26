@@ -75,7 +75,7 @@ public interface CommandListener {
    * Saves all the layers in the model to disk. Saves the entire state of the program including
    * layers, images, and visibility statuses.
    *
-   * @param file
+   * @param file  the file representing teh path to the directory where the layers will be saved.
    */
   void saveLayers(File file);
 

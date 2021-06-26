@@ -33,40 +33,34 @@ import model.ImageProcessingModelState;
 import model.MosaicOperation;
 import model.Pixel;
 
+/**
+ * Displays information to the user in a graphical interface. Allows the user to execute operations
+ * by selecting different menu items on the screen.
+ */
 public class GuiView extends JFrame implements GuiImageProcessingView {
 
   // Panels:
   // main panel
   private JSplitPane mainSplitPlane;
 
-  // image panel
-  private JPanel imagePanel;
   private JScrollPane imageScrollPane;
   private JLabel imageLabel;
   private JLabel imageCaption;
-  private Icon imageIcon;
-  private JLabel messageLable;
+  private JLabel messageLabel;
 
   // layers panel
   private JPanel layersPanel;
-  private JScrollPane layersScrollPane;
   private ButtonGroup layerButtons;
 
 
-  // Menus:
-  // file menu
-  private JMenu fileMenu;
   private JMenuItem loadMenuItem;
   private JMenuItem loadAllMenuItem;
   private JMenuItem saveMenuItem;
   private JMenuItem saveAllMenuItem;
-  private JMenu presetImageMenu;
   private JMenuItem rainbowMenuItem;
   private JMenuItem checkerboardMenuItem;
   private JMenuItem runBatchScriptMenuItem;
 
-  // layers menu
-  private JMenu layerMenu;
   private JMenuItem addMenuItem;
   private JMenuItem removeMenuItem;
   private JMenuItem showMenuItem;
@@ -76,8 +70,6 @@ public class GuiView extends JFrame implements GuiImageProcessingView {
   private Function<String, ActionListener> currentListenerCreator;
   private JMenuItem moveMenuItem;
 
-  // image processing menu
-  private JMenu imageProcessMenu;
   private JMenuItem blurImageItem;
   private JMenuItem sharpenImageItem;
   private JMenuItem greyscaleImageItem;
@@ -110,13 +102,15 @@ public class GuiView extends JFrame implements GuiImageProcessingView {
     JMenuBar menuBar = new JMenuBar();
 
     // File Menu (load, save, loadall, saveall)
-    fileMenu = new JMenu("File");
+    // Menus:
+    // file menu
+    JMenu fileMenu = new JMenu("File");
 
     loadMenuItem = new JMenuItem("Load Current Layer");
     loadAllMenuItem = new JMenuItem("Load All layers");
     saveMenuItem = new JMenuItem("Save Current Layer");
     saveAllMenuItem = new JMenuItem("Save All Layers");
-    presetImageMenu = new JMenu("Load Preset Image");
+    JMenu presetImageMenu = new JMenu("Load Preset Image");
     rainbowMenuItem = new JMenuItem("Rainbow");
     checkerboardMenuItem = new JMenuItem("Checkerboard");
     presetImageMenu.add(rainbowMenuItem);
@@ -133,7 +127,8 @@ public class GuiView extends JFrame implements GuiImageProcessingView {
     menuBar.add(fileMenu);
 
     // Layers Menu (add, remove, hide/show, current)
-    layerMenu = new JMenu("Layers");
+    // layers menu
+    JMenu layerMenu = new JMenu("Layers");
 
     addMenuItem = new JMenuItem("Add Layer");
     removeMenuItem = new JMenuItem("Remove Current Layer");
@@ -153,7 +148,8 @@ public class GuiView extends JFrame implements GuiImageProcessingView {
     menuBar.add(layerMenu);
 
     // Image Processing Menu (blur, sharpen, sepia, greyscale)
-    imageProcessMenu = new JMenu("Image Processing");
+    // image processing menu
+    JMenu imageProcessMenu = new JMenu("Image Processing");
 
     blurImageItem = new JMenuItem("Blur Current Layer");
     sharpenImageItem = new JMenuItem("Sharpen Current Layer");
@@ -183,7 +179,8 @@ public class GuiView extends JFrame implements GuiImageProcessingView {
     mainSplitPlane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 
     // image panel
-    imagePanel = new JPanel();
+    // image panel
+    JPanel imagePanel = new JPanel();
     imagePanel.setLayout(new BorderLayout());
     imageLabel = new JLabel();
     imageLabel.setHorizontalAlignment(JLabel.CENTER);
@@ -192,8 +189,8 @@ public class GuiView extends JFrame implements GuiImageProcessingView {
     imageCaption = new JLabel();
     imageCaption.setHorizontalAlignment(JLabel.CENTER);
     imagePanel.add(imageCaption, BorderLayout.NORTH);
-    messageLable = new JLabel("");
-    imagePanel.add(messageLable, BorderLayout.SOUTH);
+    messageLabel = new JLabel("");
+    imagePanel.add(messageLabel, BorderLayout.SOUTH);
     imagePanel.setMinimumSize(new Dimension(250, 150));
     mainSplitPlane.setLeftComponent(imagePanel);
 
@@ -202,7 +199,7 @@ public class GuiView extends JFrame implements GuiImageProcessingView {
     layersPanel.setLayout(new BoxLayout(layersPanel, BoxLayout.Y_AXIS));
     layersPanel.setBorder(BorderFactory.createTitledBorder("Layers"));
     layerButtons = new ButtonGroup();
-    layersScrollPane = new JScrollPane(layersPanel);
+    JScrollPane layersScrollPane = new JScrollPane(layersPanel);
     layersScrollPane.setMinimumSize(new Dimension(150, 150));
     mainSplitPlane.setRightComponent(layersScrollPane);
 
@@ -225,7 +222,7 @@ public class GuiView extends JFrame implements GuiImageProcessingView {
     if (message == null) {
       throw new IllegalArgumentException("Message cannot be null.");
     }
-    messageLable.setText(message);
+    messageLabel.setText(message);
   }
 
   @Override
@@ -402,7 +399,7 @@ public class GuiView extends JFrame implements GuiImageProcessingView {
       imageLabel.setIcon(null);
       imageCaption.setText("");
     } else {
-      imageIcon = new ImageIcon(convertImage(displayedImage));
+      Icon imageIcon = new ImageIcon(convertImage(displayedImage));
       imageLabel.setIcon(imageIcon);
       imageScrollPane.setPreferredSize(
           new Dimension(displayedImage.getWidth(), displayedImage.getHeight()));

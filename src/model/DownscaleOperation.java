@@ -14,10 +14,12 @@ public class DownscaleOperation implements ImageOperation {
   /**
    * Constructs a new Downscale operation with the given scale factor.
    *
-   * @param xscale the scale factor to use for the downscaled image in the horizontal direction.
-   *               For example, a scale factor of 0.5 applied to a 10x10 pixel image will result in
-   *               a downscaled image of 5 pixels wide pixels.
-   * @param yscale
+   * @param xscale the scale factor to use for the downscaled image in the horizontal direction. For
+   *               example, a scale factor of 0.5 applied to a 10x10 pixel image will result in a
+   *               downscaled image of 5 pixels wide pixels.
+   * @param yscale the scale factor to use for the downscaled image in the vertical direction. For
+   *               example, a scale factor of 0.5 applied to a 10x10 pixel image will result in a
+   *               downscaled image of 5 pixels wide high.
    */
   public DownscaleOperation(double xscale, double yscale) {
     if (xscale <= 0 || xscale > 1 || yscale <= 0 || yscale > 1) {
@@ -54,6 +56,8 @@ public class DownscaleOperation implements ImageOperation {
   }
 
   /**
+   * Calculates the new color value for a pixel in the scaled image.
+   *
    * @param x       the floating point x coordinate of the pixel in the original image.
    * @param y       the floating point y coordinate of the pixel in the original image.
    * @param image   the image that is being downscaled.
