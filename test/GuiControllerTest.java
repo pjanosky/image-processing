@@ -634,7 +634,7 @@ public class GuiControllerTest {
      * Construct a new MockGuiView to render output to the given Appendable object.
      *
      * @param output the Appendable object to render the view's output including layers, messages,
-     *               and erros to.
+     *               and errors to.
      */
     public MockGuiView(Appendable output) {
       this.output = output;

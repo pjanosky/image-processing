@@ -4,7 +4,7 @@ import view.GuiImageProcessingView;
 import view.GuiView;
 
 /**
- * Tests a limited subset of the view's functionality. Mostly tests error
+ * Tests a limited subset of the view's functionality. Mostly tests errors.
  */
 public class GuiViewTest {
 
