@@ -213,22 +213,34 @@ public class GuiView extends JFrame implements GuiImageProcessingView {
 
   @Override
   public void renderLayers(ImageProcessingModelState model) {
+    if (model == null) {
+      throw new IllegalArgumentException("Model cannot be null.");
+    }
     updateImage(model);
     updateLayers(model);
   }
 
   @Override
   public void renderMessage(String message) {
+    if (message == null) {
+      throw new IllegalArgumentException("Message cannot be null.");
+    }
     messageLable.setText(message);
   }
 
   @Override
   public void renderError(String message) {
+    if (message == null) {
+      throw new IllegalArgumentException("Message cannot be null.");
+    }
     JOptionPane.showMessageDialog(mainSplitPlane, message, "Error", JOptionPane.ERROR_MESSAGE);
   }
 
   @Override
   public void setCommandListener(CommandListener listener) {
+    if (listener == null) {
+      throw new IllegalArgumentException("Listener cannot be null.");
+    }
     // File menu
     loadMenuItem.addActionListener(evt -> {
       listener.load(chooseImage(true));
