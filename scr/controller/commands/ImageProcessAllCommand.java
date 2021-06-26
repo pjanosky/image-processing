@@ -29,7 +29,7 @@ public class ImageProcessAllCommand implements ControllerCommand {
   public void runCommand(ImageProcessingModel model, ImageProcessingView view)
       throws IllegalStateException, IllegalArgumentException {
     if (model == null || view == null) {
-      throw new IllegalArgumentException("The model cannot be null!");
+      throw new IllegalArgumentException("Arguments cannot be null.");
     }
 
     for (int index = 0; index < model.numLayers(); index += 1) {
@@ -39,5 +39,6 @@ public class ImageProcessAllCommand implements ControllerCommand {
         model.applyOperation(layerName, operation);
       }
     }
+    view.renderMessage("Applied operation to all layers.");
   }
 }

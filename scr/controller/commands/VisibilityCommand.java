@@ -24,8 +24,8 @@ public class VisibilityCommand implements ControllerCommand {
   @Override
   public void runCommand(ImageProcessingModel model, ImageProcessingView view)
       throws IllegalStateException, IllegalArgumentException {
-    if (model == null) {
-      throw new IllegalArgumentException("The model cannot be null!");
+    if (model == null || view == null) {
+      throw new IllegalArgumentException("Arguments cannot be null.");
     }
     String current = model.getCurrentName();
     if (current != null) {

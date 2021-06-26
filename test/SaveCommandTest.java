@@ -67,6 +67,11 @@ public class SaveCommandTest {
   }
 
   @Test(expected = IllegalArgumentException.class)
+  public void testGoNullView() {
+    new SaveCommand("test/data", "png").runCommand(model, null);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
   public void testNoLayers() {
     new SaveCommand("test/data", "png")
         .runCommand(model, view);
@@ -108,11 +113,13 @@ public class SaveCommandTest {
     } catch (IOException e) {
       fail("Failed to parse saved images. " + e.getMessage());
     }
+
+    String expected = "";
+    assertEquals(expected, output.toString());
   }
 
   /**
-   * Deletes files from test/data/layers and layers directory to make sure tests
-   * run independently.
+   * Deletes files from test/data/layers and layers directory to make sure tests run independently.
    */
   private void clean() {
     File directory = new File("test/data/layers");

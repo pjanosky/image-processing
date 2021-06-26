@@ -2,7 +2,6 @@ package controller.commands;
 
 import model.ImageOperation;
 import model.ImageProcessingModel;
-import model.ImageProcessingViewModel;
 import view.ImageProcessingView;
 
 /**
@@ -29,13 +28,14 @@ public class ImageProcessCommand implements ControllerCommand {
   @Override
   public void runCommand(ImageProcessingModel model, ImageProcessingView view)
       throws IllegalStateException, IllegalArgumentException {
-    if (model == null) {
-      throw new IllegalArgumentException("The model cannot be null!");
+    if (model == null || view == null) {
+      throw new IllegalArgumentException("Arguments cannot be null.");
     }
 
     String current = model.getCurrentName();
     if (current != null) {
       model.applyOperation(current, operation);
+      view.renderMessage("Applied operation to layer \"" + current +"\".");
     } else {
       throw new IllegalStateException("No current layer set");
     }

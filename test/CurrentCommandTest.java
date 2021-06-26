@@ -5,6 +5,7 @@ import model.ImageProcessingModel;
 import model.ImageProcessingModelImpl;
 import org.junit.Before;
 import org.junit.Test;
+import view.ImageProcessingTextView;
 import view.ImageProcessingView;
 
 /**
@@ -21,11 +22,15 @@ public class CurrentCommandTest {
    */
   public CurrentCommandTest() {
     model = new ImageProcessingModelImpl();
+    output = new StringBuilder();
+    view = new ImageProcessingTextView(output);
   }
 
   @Before
   public void setup() {
     model = new ImageProcessingModelImpl();
+    output = new StringBuilder();
+    view = new ImageProcessingTextView(output);
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -36,6 +41,11 @@ public class CurrentCommandTest {
   @Test(expected = IllegalArgumentException.class)
   public void testGoNullModel() {
     new CurrentCommand("layer1").runCommand(null, view);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testGoNullView() {
+    new CurrentCommand("layer1").runCommand(model, null);
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -52,5 +62,8 @@ public class CurrentCommandTest {
     new CurrentCommand("layer1").runCommand(model, view);
 
     assertEquals("layer1", model.getCurrentName());
+
+    String expected = "";
+    assertEquals(expected, output.toString());
   }
 }

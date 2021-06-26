@@ -48,8 +48,8 @@ public class SaveLayersCommand implements ControllerCommand {
   @Override
   public void runCommand(ImageProcessingModel model, ImageProcessingView view)
       throws IllegalStateException, IllegalArgumentException {
-    if (model == null) {
-      throw new IllegalArgumentException("Model cannot bu null.");
+    if (model == null || view == null) {
+      throw new IllegalArgumentException("Arguments cannot be null.");
     }
     createDirectory();
     StringBuilder text = new StringBuilder();

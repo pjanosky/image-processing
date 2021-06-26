@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import controller.PngImportExporter;
+import controller.commands.ControllerCommand;
 import controller.commands.LoadLayersCommand;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -62,7 +63,44 @@ public class LoadLayersCommandTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void testGoNullModel() {
-    new LoadLayersCommand(null);
+    String textFile = "layer1 true test/data/layers/layer1.png\n"
+        + "layer2\n"
+        + "layer3 true\n";
+    try {
+      new File("test/data/layers").mkdir();
+      new PngImportExporter().saveImage(
+          new FileOutputStream("test/data/layers/layer1.png"), image1);
+      new PngImportExporter().saveImage(
+          new FileOutputStream("test/data/layers/layer2.png"), image2);
+      new FileOutputStream("test/data/layers/info.txt").write(textFile.getBytes());
+    } catch (IOException e) {
+      fail("Failed to save test images. " + e.getMessage());
+    }
+
+    ControllerCommand command = new LoadLayersCommand("test/data/layers");
+    clean();
+    command.runCommand(null, view);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testGoNullView() {
+    String textFile = "layer1 true test/data/layers/layer1.png\n"
+        + "layer2\n"
+        + "layer3 true\n";
+    try {
+      new File("test/data/layers").mkdir();
+      new PngImportExporter().saveImage(
+          new FileOutputStream("test/data/layers/layer1.png"), image1);
+      new PngImportExporter().saveImage(
+          new FileOutputStream("test/data/layers/layer2.png"), image2);
+      new FileOutputStream("test/data/layers/info.txt").write(textFile.getBytes());
+    } catch (IOException e) {
+      fail("Failed to save test images. " + e.getMessage());
+    }
+
+    ControllerCommand command = new LoadLayersCommand("test/data/layers");
+    clean();
+    command.runCommand(model, null);
   }
 
   @Test(expected = IllegalStateException.class)
@@ -177,8 +215,7 @@ public class LoadLayersCommandTest {
   }
 
   /**
-   * Deletes files from test/data/layers and layers directory to make sure tests
-   * run independently.
+   * Deletes files from test/data/layers and layers directory to make sure tests run independently.
    */
   private void clean() {
     File directory = new File("test/data/layers");

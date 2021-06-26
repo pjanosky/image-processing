@@ -44,12 +44,20 @@ public class ImageProcessCommandTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void testGoNullModel() {
-    new ImageProcessCommand(ImageOperationCreator.create(OperationType.BLUR)).runCommand(null, view);
+    new ImageProcessCommand(ImageOperationCreator.create(OperationType.BLUR))
+        .runCommand(null, view);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testGoNullView() {
+    new ImageProcessCommand(ImageOperationCreator.create(OperationType.BLUR))
+        .runCommand(model, null);
   }
 
   @Test(expected = IllegalStateException.class)
   public void testGoNoCurrentLayer() {
-    new ImageProcessCommand(ImageOperationCreator.create(OperationType.BLUR)).runCommand(model, view);
+    new ImageProcessCommand(ImageOperationCreator.create(OperationType.BLUR))
+        .runCommand(model, view);
   }
 
   @Test
@@ -59,9 +67,13 @@ public class ImageProcessCommandTest {
     model.addLayer("layer1");
     model.setLayerImage("layer1", image);
     assertEquals(image, model.getImageIn("layer1"));
-    new ImageProcessCommand(ImageOperationCreator.create(OperationType.BLUR)).runCommand(model, view);
+    new ImageProcessCommand(ImageOperationCreator.create(OperationType.BLUR))
+        .runCommand(model, view);
 
     assertEquals(edited, model.getImageIn("layer1"));
+
+    String expected = "Applied operation to layer \"layer1\"." + System.lineSeparator();
+    assertEquals(expected, output.toString());
   }
 
   @Test
@@ -71,8 +83,12 @@ public class ImageProcessCommandTest {
     model.addLayer("layer1");
     model.setLayerImage("layer1", image);
     assertEquals(image, model.getImageIn("layer1"));
-    new ImageProcessCommand(ImageOperationCreator.create(OperationType.SEPIA)).runCommand(model, view);
+    new ImageProcessCommand(ImageOperationCreator.create(OperationType.SEPIA))
+        .runCommand(model, view);
 
     assertEquals(edited, model.getImageIn("layer1"));
+
+    String expected = "Applied operation to layer \"layer1\"." + System.lineSeparator();
+    assertEquals(expected, output.toString());
   }
 }

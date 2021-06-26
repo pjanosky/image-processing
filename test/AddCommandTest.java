@@ -67,6 +67,11 @@ public class AddCommandTest {
     new AddCommand("layer1").runCommand(null, view);
   }
 
+  @Test(expected = IllegalArgumentException.class)
+  public void testGoNullView() {
+    new AddCommand("layer1").runCommand(model, null);
+  }
+
   @Test
   public void testGo() {
     assertEquals(0, model.numLayers());
@@ -77,5 +82,8 @@ public class AddCommandTest {
     new AddCommand("layer2").runCommand(model, view);
     assertEquals(2, model.numLayers());
     assertEquals("layer2", model.getLayerNameAt(1));
+
+    String expected = "";
+    assertEquals(expected, output.toString());
   }
 }

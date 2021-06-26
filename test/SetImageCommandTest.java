@@ -1,8 +1,6 @@
 import static org.junit.Assert.assertEquals;
 
-import controller.commands.ControllerCommand;
 import controller.commands.SetImageCommand;
-import javax.naming.ldap.Control;
 import model.Image;
 import model.ImageExamples;
 import model.ImageProcessingModel;
@@ -77,6 +75,18 @@ public class SetImageCommandTest {
     new SetImageCommand("rainbow", args).runCommand(model, view);
   }
 
+  @Test(expected = IllegalArgumentException.class)
+  public void testGoNullModel() {
+    String[] args = {"10", "10"};
+    new SetImageCommand("rainbow", args).runCommand(null, view);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testGoNullView() {
+    String[] args = {"10", "10"};
+    new SetImageCommand("rainbow", args).runCommand(model, null);
+  }
+
   @Test
   public void testGoRainbowValid() {
     model.addLayer("layer1");
@@ -84,6 +94,9 @@ public class SetImageCommandTest {
     new SetImageCommand("rainbow", args).runCommand(model, view);
     Image expected = ImageExamples.rainbow(2, 12);
     assertEquals(expected, model.getImageIn("layer1"));
+
+    String expectedOutput = "Successfully set image in layer \"layer1\"." + System.lineSeparator();
+    assertEquals(expectedOutput, output.toString());
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -113,5 +126,8 @@ public class SetImageCommandTest {
         new RgbPixel(0, 0, 0),
         new RgbPixel(255, 255, 255));
     assertEquals(expected, model.getImageIn("layer1"));
+
+    String expectedOutput = "Successfully set image in layer \"layer1\"." + System.lineSeparator();
+    assertEquals(expectedOutput, output.toString());
   }
 }

@@ -18,6 +18,7 @@ import view.ImageProcessingView;
 public class LoadCommand implements ControllerCommand {
 
   private final ImageImportExporter ie;
+  private final String filepath;
   private final InputStream input;
 
   /**
@@ -42,6 +43,7 @@ public class LoadCommand implements ControllerCommand {
     } catch (IOException e) {
       throw new IllegalArgumentException("Failed to load file. " + e.getMessage());
     }
+    this.filepath = filepath;
   }
 
   @Override
@@ -63,5 +65,6 @@ public class LoadCommand implements ControllerCommand {
     } else {
       throw new IllegalStateException("No current layer set");
     }
+
   }
 }

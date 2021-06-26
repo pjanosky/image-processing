@@ -40,6 +40,12 @@ public class MoveCommandTest {
   }
 
   @Test(expected = IllegalArgumentException.class)
+  public void testGoNullView() {
+    model.addLayer("layer1");
+    new MoveCommand(0).runCommand(model, null);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
   public void testGoLowIndex() {
     model.addLayer("layer1");
     model.addLayer("layer2");
@@ -70,5 +76,8 @@ public class MoveCommandTest {
     assertEquals("layer3", model.getLayerNameAt(0));
     assertEquals("layer1", model.getLayerNameAt(1));
     assertEquals("layer2", model.getLayerNameAt(2));
+
+    String expected = "";
+    assertEquals(expected, output.toString());
   }
 }

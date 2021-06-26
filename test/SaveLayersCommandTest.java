@@ -62,6 +62,11 @@ public class SaveLayersCommandTest {
     new SaveLayersCommand("test/data", "layers").runCommand(null, view);
   }
 
+  @Test(expected = IllegalArgumentException.class)
+  public void testGoNullView() {
+    new SaveLayersCommand("test/data", "layers").runCommand(model, null);
+  }
+
   @Test(expected = IllegalStateException.class)
   public void testGoInvalidName() {
     new SaveLayersCommand("test/data", "invalid/name#$\\%^&*").runCommand(model, view);
@@ -96,6 +101,11 @@ public class SaveLayersCommandTest {
     } catch (IOException e) {
       fail("Failed to parse saved images. " + e.getMessage());
     }
+
+    String expected = "";
+    assertEquals(expected, output.toString());
+
+    clean();
   }
 
   /**

@@ -54,8 +54,8 @@ public class LoadLayersCommand implements ControllerCommand {
   @Override
   public void runCommand(ImageProcessingModel model, ImageProcessingView view)
       throws IllegalStateException, IllegalArgumentException {
-    if (model == null) {
-      throw new IllegalArgumentException("Model cannot be null.");
+    if (model == null || view == null) {
+      throw new IllegalArgumentException("Arguments cannot be null.");
     }
     resetModel(model);
 

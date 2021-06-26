@@ -13,7 +13,7 @@ public interface ControllerCommand {
    *
    * @param model the model representing the state of the image processing program. The command may
    *              query the state of the model or mutate it.
-   * @param view
+   * @param view the view to render messages and layers to.
    * @throws IllegalArgumentException if illegal arguments are passed to the command.
    * @throws IllegalStateException    if the command fails for any other reason
    */

@@ -1,3 +1,4 @@
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -38,6 +39,11 @@ public class VisibilityCommandTest {
     new VisibilityCommand(true).runCommand(null, view);
   }
 
+  @Test(expected = IllegalArgumentException.class)
+  public void testGoNullView() {
+    new VisibilityCommand(true).runCommand(model, null);
+  }
+
   @Test(expected = IllegalStateException.class)
   public void testGoNoCurrentLayerSet() {
     new VisibilityCommand(true).runCommand(model, view);
@@ -50,6 +56,9 @@ public class VisibilityCommandTest {
     assertFalse(model.isVisible("layer1"));
     new VisibilityCommand(true).runCommand(model, view);
     assertTrue(model.isVisible("layer1"));
+
+    String expected = "";
+    assertEquals(expected, output.toString());
   }
 
   @Test
@@ -59,5 +68,8 @@ public class VisibilityCommandTest {
     assertTrue(model.isVisible("layer1"));
     new VisibilityCommand(false).runCommand(model, view);
     assertFalse(model.isVisible("layer1"));
+
+    String expected = "";
+    assertEquals(expected, output.toString());
   }
 }

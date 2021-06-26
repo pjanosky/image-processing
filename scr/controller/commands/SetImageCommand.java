@@ -42,16 +42,16 @@ public class SetImageCommand implements ControllerCommand {
   @Override
   public void runCommand(ImageProcessingModel model, ImageProcessingView view)
       throws IllegalStateException, IllegalArgumentException {
-    if (model == null) {
-      throw new IllegalArgumentException("Model cannot be null.");
+    if (model == null || view == null) {
+      throw new IllegalArgumentException("Arguments cannot be null.");
     }
 
     switch (type) {
       case "rainbow":
-        rainbow(model);
+        rainbow(model, view);
         break;
       case "checkerboard":
-        checkerBoard(model);
+        checkerBoard(model, view);
         break;
       default:
         throw new IllegalArgumentException("Unknown image type.");
@@ -64,10 +64,11 @@ public class SetImageCommand implements ControllerCommand {
    * input. Rainbow image commands take the form "rainbow width height".
    *
    * @param model the model to set the current layers of.
+   * @param view the view to render the messages to.
    * @throws IllegalArgumentException if the parameters for the image are wrong.
    * @throws IllegalStateException    if there is no current layers set in the model.
    */
-  void rainbow(ImageProcessingModel model) {
+  void rainbow(ImageProcessingModel model, ImageProcessingView view) {
     if (args.length != 2) {
       throw new IllegalArgumentException(
           "Rainbow images need 2 parameters: width and stripe height.");
@@ -83,7 +84,7 @@ public class SetImageCommand implements ControllerCommand {
     }
 
     Image image = ImageExamples.rainbow(width, height);
-    setImage(image, model);
+    setImage(image, model, view);
   }
 
   /**
@@ -91,10 +92,11 @@ public class SetImageCommand implements ControllerCommand {
    * user input. Checkerboard images have the form "checkerboard numRows numCols squareSize".
    *
    * @param model the model to set the current layers of.
+   * @param view the view to render the messages to.
    * @throws IllegalArgumentException if the parameters for the image are wrong.
    * @throws IllegalStateException    if there is no current layers set in the model.
    */
-  void checkerBoard(ImageProcessingModel model)
+  void checkerBoard(ImageProcessingModel model, ImageProcessingView view)
       throws IllegalArgumentException, IllegalStateException {
     if (args.length != 3) {
       throw new IllegalArgumentException(
@@ -116,7 +118,7 @@ public class SetImageCommand implements ControllerCommand {
     Image image = ImageExamples.checkerboard(rows, cols, size, size,
         new RgbPixel(0, 0, 0),
         new RgbPixel(255, 255, 255));
-    setImage(image, model);
+    setImage(image, model, view);
   }
 
   /**
@@ -124,12 +126,15 @@ public class SetImageCommand implements ControllerCommand {
    *
    * @param image the image to set to the layers.
    * @param model the model to set the current layer of.
+   * @param view the view to render the success message to.
    * @throws IllegalStateException if there is no current layer set.
    */
-  private void setImage(Image image, ImageProcessingModel model) throws IllegalStateException {
+  private void setImage(Image image, ImageProcessingModel model, ImageProcessingView view)
+      throws IllegalStateException {
     String current = model.getCurrentName();
     if (current != null) {
       model.setLayerImage(current, image);
+      view.renderMessage("Successfully set image in layer \"" + current + "\".");
     } else {
       throw new IllegalStateException("No current layer set");
     }
