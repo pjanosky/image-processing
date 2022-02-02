@@ -3,7 +3,7 @@
 Image Processing is a desktop image editor for processing multi-layered images.
 
 ## Usage
-A compiled version of ImageProcessing can be found in out/ImageProcessing.jar. It can be run with Java 11. By default, the program launches with the interactive GUI, but a command based interface can also be used by adding the -text flag. Additionally, a script of image processing commands can be run by adding the -scrip flag and specifying the path to the script. The various image processing commands is described below:
+A compiled version of ImageProcessing can be found in `out/artifacts/ImageProcessing_jar/ImageProcessing.jar`. It can be run with Java 11. By default, the program launches with the interactive GUI, but a command based interface can also be used by adding the -text flag. Additionally, a script of image processing commands can be run by adding the -scrip flag and specifying the path to the script. The various image processing commands is described below:
 
  * save \<file path\> \<format\> *- saves the current layer to disk*
  * load \<file path\> \<format\> *- loads an image from disk into the current layer*
@@ -29,3 +29,16 @@ This project was developed entirely using Java. The code for the image editing c
 
 ## Purpose
 This project was created to practice and explore object-oriented design concepts leaned in CS 3500 at Northeastern University. Flexibility, extensibility and modularity were factored into the program architecture at every step. To accomplish this, Image Processing makes heavy use of abstraction, encapsulation, and the model-view-controller (MVC) framework. Additionally, over 300 unit and integration tests were written to ensure code correctness.
+
+## Screenshots
+The main interface for Image Processing
+![](res/Screenshots/Screenshot1.png)
+
+A flower image that has the sepia filter and a blur applied
+![](res/Screenshots/Screenshot2.png)
+
+Applying the mosaic effect to a photograph of a Panda
+![](res/Screenshots/Screenshot3.png)
+
+Saving a layer to disk
+![](res/Screenshots/Screenshot4.png)
