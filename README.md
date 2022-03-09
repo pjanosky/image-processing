@@ -3,7 +3,7 @@
 Image Processing is a desktop image editor for processing multi-layered images.
 
 ## Usage
-A compiled version of ImageProcessing can be found in `out/artifacts/ImageProcessing_jar/ImageProcessing.jar`. It can be run with Java 11. By default, the program launches with the interactive GUI, but a command based interface can also be used by adding the -text flag. Additionally, a script of image processing commands can be run by adding the -scrip flag and specifying the path to the script. The various image processing commands is described below:
+A compiled version of ImageProcessing can be found in `out/artifacts/ImageProcessing_jar/ImageProcessing.jar`. It can be run with Java 11. By default, the program launches with the interactive GUI, but a command based interface can also be used by adding the -text flag. Additionally, a script of image processing commands can be run by adding the -scrip flag and specifying the path to the script. The various image processing commands are described below:
 
  * save \<file path\> \<format\> *- saves the current layer to disk*
  * load \<file path\> \<format\> *- loads an image from disk into the current layer*
